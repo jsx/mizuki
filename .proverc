@@ -1,0 +1,3 @@
+--exec "jsx --add-search-path lib --test"
+--ext .jsx
+

@@ -1,35 +1,6 @@
 
-/**
-  * POSIX strftime(3) implementation
-  */
-
-class _Main {
-	static function main(args : string[]) : void {
-		log strftime.strftime(new Date, args.join(" ") ?: "%c");
-	}
-}
-
 class _Locale {
-	var name : string;
-	var A : string[];
-	var a : string[];
-	var B : string[];
-	var b : string[];
-
-	function constructor(name : string, A : string[], a : string[], B : string[], b : string[]) {
-		this.name = name;
-
-		this.A = A;
-		this.a = a;
-		this.B = B;
-		this.b = b;
-	}
-}
-
-class strftime {
-	static var defaultLocale = "en";
-
-	static var _locale : Map.<_Locale> = {
+	static var locale : Map.<_Locale> = {
 		en: new _Locale("en",
 			[
 				'Sunday', 'Monday', 'Tuesday', 'Wednesday',
@@ -56,8 +27,28 @@ class strftime {
 			)
 	};
 
+	var name : string;
+	var A : string[];
+	var a : string[];
+	var B : string[];
+	var b : string[];
+
+	function constructor(name : string, A : string[], a : string[], B : string[], b : string[]) {
+		this.name = name;
+
+		this.A = A;
+		this.a = a;
+		this.B = B;
+		this.b = b;
+	}
+}
+
+class POSIX {
+	static var defaultLocale = "en";
+
+
 	static function addLocale(name : string, A : string[], a : string[], B : string[], b : string[]) : void {
-		strftime._locale[name] = new _Locale(name, A, a, B, b);
+		_Locale.locale[name] = new _Locale(name, A, a, B, b);
 	}
 
 
@@ -68,13 +59,13 @@ class strftime {
 
 
 	static function strftime(date : Date, fmt : string) : string {
-		return strftime.strftime(date, fmt, strftime.defaultLocale);
+		return POSIX.strftime(date, fmt, POSIX.defaultLocale);
 	}
 
 	static function strftime(date : Date, fmt : string, locale : string) : string {
 		var r = "";
-		var loc = strftime._locale;
-		var l   = loc[locale] ?: loc[strftime.defaultLocale] ?: loc["en"];
+		var loc = _Locale.locale;
+		var l   = loc[locale] ?: loc[POSIX.defaultLocale] ?: loc["en"];
 
 		for (var i = 0; i < fmt.length; ++i) {
 			var c = fmt.charAt(i);
@@ -82,13 +73,13 @@ class strftime {
 				c = fmt.charAt(++i);
 				var padding = "";
 				switch (c) {
-				case strftime._NO_PADDING:
-				case strftime._SPACE_PADDING:
-				case strftime._ZERO_PADDING:
+				case POSIX._NO_PADDING:
+				case POSIX._SPACE_PADDING:
+				case POSIX._ZERO_PADDING:
 					padding = c;
 					c = fmt.charAt(++i);
 				}
-				r += strftime._format(date, c, padding, l);
+				r += POSIX._format(date, c, padding, l);
 			}
 			else {
 				r += c;
@@ -112,35 +103,35 @@ class strftime {
 		case "c":
 			return d.toLocaleString();
 		case "D":
-			return strftime._format(d, "m", p, l) + "/"
-					+ strftime._format(d, "d", p, l) + "/"
-					+ strftime._format(d, "y", p, l);
+			return POSIX._format(d, "m", p, l) + "/"
+					+ POSIX._format(d, "d", p, l) + "/"
+					+ POSIX._format(d, "y", p, l);
 		case "d":
-			return strftime._pad(d.getDate(), 2, "0", p);
+			return POSIX._pad(d.getDate(), 2, "0", p);
 		case "e":
-			return strftime._pad(d.getDate(), 2, " ", p);
+			return POSIX._pad(d.getDate(), 2, " ", p);
 		case "F":
-			return strftime._format(d, "Y", p, l) + "-"
-					+ strftime._format(d, "m", p, l) + "-"
-					+ strftime._format(d, "d", p, l);
+			return POSIX._format(d, "Y", p, l) + "-"
+					+ POSIX._format(d, "m", p, l) + "-"
+					+ POSIX._format(d, "d", p, l);
 		case "H":
-			return strftime._pad(d.getHours(), 2, "0", p);
+			return POSIX._pad(d.getHours(), 2, "0", p);
 		case "I":
-			return strftime._pad(d.getHours() % 12 ?: 12, 2, "0", p);
+			return POSIX._pad(d.getHours() % 12 ?: 12, 2, "0", p);
 		case "j": // day of year
 			return "j"; // FIXME
 		case "k":
-			return strftime._pad(d.getHours(), 2, " ", p);
+			return POSIX._pad(d.getHours(), 2, " ", p);
 		case "l":
-			return strftime._pad(d.getHours() % 12 ?: 12, 2, "0", p);
+			return POSIX._pad(d.getHours() % 12 ?: 12, 2, "0", p);
 		case "M":
-			return strftime._pad(d.getMinutes(), 2, "0", p);
+			return POSIX._pad(d.getMinutes(), 2, "0", p);
 		case "m":
-			return strftime._pad(d.getMonth()+1, 2, "0", p);
+			return POSIX._pad(d.getMonth()+1, 2, "0", p);
 		case "N":
 			return (function() : string {
 				var nanosecond = d.getMilliseconds() * 1000 * 1000;
-				return strftime._pad(nanosecond, 9, "0", p);
+				return POSIX._pad(nanosecond, 9, "0", p);
 			}());
 		case "n":
 			return "\n";
@@ -149,21 +140,21 @@ class strftime {
 		case "P":
 			return d.getHours() > 11 ? "pm" : "am";
 		case "R":
-			return strftime._format(d, "H", p, l) + ":"
-				+ strftime._format(d, "M", p, l);
+			return POSIX._format(d, "H", p, l) + ":"
+				+ POSIX._format(d, "M", p, l);
 		case "R":
-			return strftime._format(d, "I", p, l) + ":"
-				+ strftime._format(d, "M", p, l) + ":"
-				+ strftime._format(d, "S", p, l) + " "
-				+ strftime._format(d, "p", p, l);
+			return POSIX._format(d, "I", p, l) + ":"
+				+ POSIX._format(d, "M", p, l) + ":"
+				+ POSIX._format(d, "S", p, l) + " "
+				+ POSIX._format(d, "p", p, l);
 		case "S":
-			return strftime._pad(d.getSeconds(), 2, "0", p);
+			return POSIX._pad(d.getSeconds(), 2, "0", p);
 		case "s":
 			return (d.getTime() / 1000) as int as string;
 		case "T":
-			return strftime._format(d, "H", p, l) + ":"
-				+ strftime._format(d, "M", p, l) + ":"
-				+ strftime._format(d, "S", p, l);
+			return POSIX._format(d, "H", p, l) + ":"
+				+ POSIX._format(d, "M", p, l) + ":"
+				+ POSIX._format(d, "S", p, l);
 		case "t":
 			return "\t";
 		case "U": // week of year
@@ -173,9 +164,9 @@ class strftime {
 		case "V":
 			return "V"; // FIXME
 		case "v":
-			return strftime._format(d, "e", p, l) + "-"
-				+ strftime._format(d, "b", p, l) + "-"
-				+ strftime._format(d, "Y", p, l);
+			return POSIX._format(d, "e", p, l) + "-"
+				+ POSIX._format(d, "b", p, l) + "-"
+				+ POSIX._format(d, "Y", p, l);
 		case "W":
 			return "W"; // FIXME
 		case "w":
@@ -187,7 +178,7 @@ class strftime {
 		case "Y":
 			return d.getFullYear() as string;
 		case "y":
-			return strftime._pad(d.getFullYear() % 100 , 2, "0", p);
+			return POSIX._pad(d.getFullYear() % 100 , 2, "0", p);
 		case "Z":
 			return "Z"; // FIXME
 		case "z":
@@ -203,13 +194,13 @@ class strftime {
 	static function _pad (d : number, w : int, p : string, padMode: string) : string{
 		var s = d as string;
 
-		if (padMode == strftime._NO_PADDING) {
+		if (padMode == POSIX._NO_PADDING) {
 			return s;
 		}
-		else if (padMode == strftime._SPACE_PADDING) {
+		else if (padMode == POSIX._SPACE_PADDING) {
 			p = " ";
 		}
-		else if (padMode == strftime._ZERO_PADDING) {
+		else if (padMode == POSIX._ZERO_PADDING) {
 			p = "0";
 		}
 
