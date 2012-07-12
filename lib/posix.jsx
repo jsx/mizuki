@@ -14,10 +14,6 @@ class POSIX {
 	static function strftime(date : Date, fmt : string, locale : string) : string {
 		return _DateFormat._strftime(date, fmt, locale);
 	}
-
-	static function isdigit(c : string) : boolean {
-		return c in _CharClass.isdigit;
-	}
 }
 
 class _Locale {
@@ -97,7 +93,7 @@ class _DateFormat {
 				}
 				// field width
 				var width = 0;
-				while (POSIX.isdigit(fmt.charAt(i))) {
+				while (/^[0-9]/.test(fmt.charAt(i))) {
 					width = (width * 10) + fmt.charAt(i) as int;
 					c = fmt.charAt(++i);
 				}
@@ -229,14 +225,3 @@ class _DateFormat {
 	}
 }
 
-class _CharClass {
-	static function _make(s : string) : Map.<boolean> {
-		var map = new Map.<boolean>();
-		s.split("").forEach( (c) -> {
-			map[c] = true;
-		});
-		return map;
-	}
-
-	static const isdigit = _CharClass._make("0123456789");
-}
