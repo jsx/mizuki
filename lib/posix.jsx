@@ -1,11 +1,6 @@
 
 
 class POSIX {
-	static var currentLocale = "en";
-
-	static function addLocale(name : string, A : string[], a : string[], B : string[], b : string[]) : void {
-		_Locale.locale[name] = new _Locale(name, A, a, B, b);
-	}
 
 	static function strftime(date : Date, fmt : string) : string {
 		return _DateFormat._strftime(date, fmt, POSIX.currentLocale);
@@ -14,7 +9,17 @@ class POSIX {
 	static function strftime(date : Date, fmt : string, locale : string) : string {
 		return _DateFormat._strftime(date, fmt, locale);
 	}
+
+	// locale settings
+
+	static var currentLocale = "en";
+	static function addLocale(name : string, A : string[], a : string[], B : string[], b : string[]) : void {
+		_Locale.locale[name] = new _Locale(name, A, a, B, b);
+	}
+
 }
+
+// implementations
 
 class _Locale {
 	static var locale : Map.<_Locale> = {
