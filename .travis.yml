@@ -1,0 +1,8 @@
+language: node_js
+before_install:
+    - git clone git://github.com/jsx/JSX.git
+script:
+    - make test-all JSX=JSX/bin/jsx
+node_js:
+    - 0.6
+    - 0.8
