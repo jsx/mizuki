@@ -1,4 +1,4 @@
-mizukix
+mizuki
 ====================
 
 Set of class libraries for JSX
@@ -12,9 +12,10 @@ SYNOPSIS
 
     log POSIX.strftime(new Date(), "%Y-%m-%d %H:%M:%S");
 
-
 COPYRIGHT AND LICENSE
 ====================
+
+This library can be distributed under the MIT License unless other licenses are specified in each file.
 
 Copyright (c) 2012 Fuji, Goro (gfx) <gfuji@cpan.org>.
 
