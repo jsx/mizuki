@@ -1,14 +1,17 @@
-jsx-posix
+mizukix
 ====================
 
-Set of utilities defined in POSIX
+Set of class libraries for JSX
 
 SYNOPSIS
 ====================
 
+    import "random-generator/mt.jsx";
+    import "stable-sort.jsx";
     import "posix.jsx";
 
     log POSIX.strftime(new Date(), "%Y-%m-%d %H:%M:%S");
+
 
 COPYRIGHT AND LICENSE
 ====================
