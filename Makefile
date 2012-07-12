@@ -1,6 +1,4 @@
 
-JSX := jsx
-
 all:
 
 test-all: test test-release
