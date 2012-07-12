@@ -1,4 +1,4 @@
-mizuki  [![Build Status](https://secure.travis-ci.org/gfx/mizuki.png)](http://travis-ci.org/gfx/mizuki)
+mizuki [![Build Status](https://secure.travis-ci.org/gfx/mizuki.png)](http://travis-ci.org/gfx/mizuki)
 ====================
 
 Set of class libraries for JSX
@@ -12,7 +12,7 @@ SYNOPSIS
 
     log POSIX.strftime(new Date(), "%Y-%m-%d %H:%M:%S");
 
-CONCEPTS
+DESCRIPTION
 ====================
 
 Mizuki provides a set of utilities which is not a part of JSX language but inevitable.
