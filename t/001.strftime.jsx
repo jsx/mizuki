@@ -37,6 +37,8 @@ class _Test extends TestCase {
 		this.expect(POSIX.strftime(this.date(), "[%a]"), "%a").toBe("[Sat]");
 		this.expect(POSIX.strftime(this.date(), "[%B]"), "%B").toBe("[May]");
 		this.expect(POSIX.strftime(this.date(), "[%b]"), "%b").toBe("[May]");
+
+		this.expect(POSIX.strftime(this.date(), "[%%]"), "%%").toBe("[%]");
 	}
 
 
