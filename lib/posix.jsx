@@ -1,14 +1,14 @@
 
 
 class POSIX {
-	static var defaultLocale = "en";
+	static var currentLocale = "en";
 
 	static function addLocale(name : string, A : string[], a : string[], B : string[], b : string[]) : void {
 		_Locale.locale[name] = new _Locale(name, A, a, B, b);
 	}
 
 	static function strftime(date : Date, fmt : string) : string {
-		return _DateFormat._strftime(date, fmt, POSIX.defaultLocale);
+		return _DateFormat._strftime(date, fmt, POSIX.currentLocale);
 	}
 
 	static function strftime(date : Date, fmt : string, locale : string) : string {
@@ -69,7 +69,7 @@ class _DateFormat {
 	static function _strftime(date : Date, fmt : string, locale : string) : string {
 		var r = "";
 		var loc = _Locale.locale;
-		var l   = loc[locale] ?: loc[POSIX.defaultLocale] ?: loc["en"];
+		var l   = loc[locale] ?: loc[POSIX.currentLocale] ?: loc["en"];
 
 		for (var i = 0; i < fmt.length; ++i) {
 			var c = fmt.charAt(i);
