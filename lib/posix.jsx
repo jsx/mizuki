@@ -1,4 +1,25 @@
 
+
+class POSIX {
+	static var defaultLocale = "en";
+
+	static function addLocale(name : string, A : string[], a : string[], B : string[], b : string[]) : void {
+		_Locale.locale[name] = new _Locale(name, A, a, B, b);
+	}
+
+	static function strftime(date : Date, fmt : string) : string {
+		return _DateFormat._strftime(date, fmt, POSIX.defaultLocale);
+	}
+
+	static function strftime(date : Date, fmt : string, locale : string) : string {
+		return _DateFormat._strftime(date, fmt, locale);
+	}
+
+	static function isdigit(c : string) : boolean {
+		return c in _CharClass.isdigit;
+	}
+}
+
 class _Locale {
 	static var locale : Map.<_Locale> = {
 		en: new _Locale("en",
@@ -44,37 +65,12 @@ class _Locale {
 	}
 }
 
-class _CharClass {
-	static function _make(s : string) : Map.<boolean> {
-		var map = new Map.<boolean>();
-		s.split("").forEach( (c) -> {
-			map[c] = true;
-		});
-		return map;
-	}
-
-	static const isdigit = _CharClass._make("0123456789");
-}
-
-class POSIX {
-	static var defaultLocale = "en";
-
-
-	static function addLocale(name : string, A : string[], a : string[], B : string[], b : string[]) : void {
-		_Locale.locale[name] = new _Locale(name, A, a, B, b);
-	}
-
-
+class _DateFormat {
 	static const _NO_PADDING      = "-";
 	static const _SPACE_PADDING   = "_";
 	static const _ZERO_PADDING    = "0";
 
-
-	static function strftime(date : Date, fmt : string) : string {
-		return POSIX.strftime(date, fmt, POSIX.defaultLocale);
-	}
-
-	static function strftime(date : Date, fmt : string, locale : string) : string {
+	static function _strftime(date : Date, fmt : string, locale : string) : string {
 		var r = "";
 		var loc = _Locale.locale;
 		var l   = loc[locale] ?: loc[POSIX.defaultLocale] ?: loc["en"];
@@ -86,15 +82,15 @@ class POSIX {
 				// flags
 				var padding = "";
 				switch (c) {
-				case POSIX._NO_PADDING:
+				case _DateFormat._NO_PADDING:
 					padding = c;
 					c = fmt.charAt(++i);
 					break;
-				case POSIX._SPACE_PADDING:
+				case _DateFormat._SPACE_PADDING:
 					padding = " ";
 					c = fmt.charAt(++i);
 					break;
-				case POSIX._ZERO_PADDING:
+				case _DateFormat._ZERO_PADDING:
 					padding = "0";
 					c = fmt.charAt(++i);
 					break;
@@ -105,7 +101,7 @@ class POSIX {
 					width = (width * 10) + fmt.charAt(i) as int;
 					c = fmt.charAt(++i);
 				}
-				r += POSIX._format(date, c, padding, width, l);
+				r += _DateFormat._format(date, c, padding, width, l);
 			}
 			else {
 				r += c;
@@ -125,42 +121,42 @@ class POSIX {
 		case "b":
 			return l.b[d.getMonth()];
 		case "C":
-			return POSIX._pad(d.getFullYear() / 100 as int, w ?: 2, p ?: "0");
+			return _DateFormat._pad(d.getFullYear() / 100 as int, w ?: 2, p ?: "0");
 		case "c":
 			return d.toLocaleString();
 		case "D":
-			return POSIX._format(d, "m", p, w, l) + "/"
-					+ POSIX._format(d, "d", p, w, l) + "/"
-					+ POSIX._format(d, "y", p, w, l);
+			return _DateFormat._format(d, "m", p, w, l) + "/"
+					+ _DateFormat._format(d, "d", p, w, l) + "/"
+					+ _DateFormat._format(d, "y", p, w, l);
 		case "d":
-			return POSIX._pad(d.getDate(), w ?: 2, p ?: "0");
+			return _DateFormat._pad(d.getDate(), w ?: 2, p ?: "0");
 		case "e":
-			return POSIX._pad(d.getDate(), w ?: 2, p ?: " ");
+			return _DateFormat._pad(d.getDate(), w ?: 2, p ?: " ");
 		case "F":
-			return POSIX._format(d, "Y", p, w, l) + "-"
-					+ POSIX._format(d, "m", p, w, l) + "-"
-					+ POSIX._format(d, "d", p, w, l);
+			return _DateFormat._format(d, "Y", p, w, l) + "-"
+					+ _DateFormat._format(d, "m", p, w, l) + "-"
+					+ _DateFormat._format(d, "d", p, w, l);
 		case "H":
-			return POSIX._pad(d.getHours(), w ?: 2, p ?: "0");
+			return _DateFormat._pad(d.getHours(), w ?: 2, p ?: "0");
 		case "I":
-			return POSIX._pad(d.getHours() % 12 ?: 12, w ?: 2, p ?: "0");
+			return _DateFormat._pad(d.getHours() % 12 ?: 12, w ?: 2, p ?: "0");
 		case "j": // day of year
 			return "j"; // FIXME
 		case "k":
-			return POSIX._pad(d.getHours(), w ?: 2, p ?: " ");
+			return _DateFormat._pad(d.getHours(), w ?: 2, p ?: " ");
 		case "l":
-			return POSIX._pad(d.getHours() % 12 ?: 12, w ?: 2, p ?: "0");
+			return _DateFormat._pad(d.getHours() % 12 ?: 12, w ?: 2, p ?: "0");
 		case "M":
-			return POSIX._pad(d.getMinutes(), w ?: 2, p ?: "0");
+			return _DateFormat._pad(d.getMinutes(), w ?: 2, p ?: "0");
 		case "m":
-			return POSIX._pad(d.getMonth()+1, w ?: 2, p ?: "0");
+			return _DateFormat._pad(d.getMonth()+1, w ?: 2, p ?: "0");
 		case "N":
 			return (function() : string {
 				var nanosecond = (d.getMilliseconds() * 1000 * 1000) as int;
 				if (w == 0 || w >= 9) {
-					return POSIX._pad(nanosecond, w ?: 9, p ?: "0");
+					return _DateFormat._pad(nanosecond, w ?: 9, p ?: "0");
 				}
-				return POSIX._pad((nanosecond / Math.pow(10, 9 - w)) as int, w, p ?: "0");
+				return _DateFormat._pad((nanosecond / Math.pow(10, 9 - w)) as int, w, p ?: "0");
 			}());
 		case "n":
 			return "\n";
@@ -169,21 +165,21 @@ class POSIX {
 		case "P":
 			return d.getHours() > 11 ? "pm" : "am";
 		case "R":
-			return POSIX._format(d, "H", p, w, l) + ":"
-				+ POSIX._format(d, "M", p, w, l);
+			return _DateFormat._format(d, "H", p, w, l) + ":"
+				+ _DateFormat._format(d, "M", p, w, l);
 		case "R":
-			return POSIX._format(d, "I", p, w, l) + ":"
-				+ POSIX._format(d, "M", p, w, l) + ":"
-				+ POSIX._format(d, "S", p, w, l) + " "
-				+ POSIX._format(d, "p", p, w, l);
+			return _DateFormat._format(d, "I", p, w, l) + ":"
+				+ _DateFormat._format(d, "M", p, w, l) + ":"
+				+ _DateFormat._format(d, "S", p, w, l) + " "
+				+ _DateFormat._format(d, "p", p, w, l);
 		case "S":
-			return POSIX._pad(d.getSeconds(), w ?: 2, p ?: "0");
+			return _DateFormat._pad(d.getSeconds(), w ?: 2, p ?: "0");
 		case "s":
-			return POSIX._pad((d.getTime() / 1000) as int, w ?: 0, p ?: POSIX._NO_PADDING);
+			return _DateFormat._pad((d.getTime() / 1000) as int, w ?: 0, p ?: _DateFormat._NO_PADDING);
 		case "T":
-			return POSIX._format(d, "H", p, w, l) + ":"
-				+ POSIX._format(d, "M", p, w, l) + ":"
-				+ POSIX._format(d, "S", p, w, l);
+			return _DateFormat._format(d, "H", p, w, l) + ":"
+				+ _DateFormat._format(d, "M", p, w, l) + ":"
+				+ _DateFormat._format(d, "S", p, w, l);
 		case "t":
 			return "\t";
 		case "U": // week of year
@@ -193,13 +189,13 @@ class POSIX {
 		case "V":
 			return "V"; // FIXME
 		case "v":
-			return POSIX._format(d, "e", p, w, l) + "-"
-				+ POSIX._format(d, "b", p, w, l) + "-"
-				+ POSIX._format(d, "Y", p, w, l);
+			return _DateFormat._format(d, "e", p, w, l) + "-"
+				+ _DateFormat._format(d, "b", p, w, l) + "-"
+				+ _DateFormat._format(d, "Y", p, w, l);
 		case "W":
 			return "W"; // FIXME
 		case "w":
-			return POSIX._pad(d.getDay(), w ?: 0, p ?: "");
+			return _DateFormat._pad(d.getDay(), w ?: 0, p ?: "");
 		case "X":
 			return d.toTimeString();
 		case "x":
@@ -207,7 +203,7 @@ class POSIX {
 		case "Y":
 			return d.getFullYear() as string;
 		case "y":
-			return POSIX._pad(d.getFullYear() % 100 , w ?: 2, p ?: "0");
+			return _DateFormat._pad(d.getFullYear() % 100 , w ?: 2, p ?: "0");
 		case "Z":
 			return "Z"; // FIXME
 		case "z":
@@ -222,7 +218,7 @@ class POSIX {
 
 	static function _pad (d : number, w : int, p : string) : string{
 		var s = d as string;
-		if (p == POSIX._NO_PADDING) {
+		if (p == _DateFormat._NO_PADDING) {
 			return s;
 		}
 
@@ -231,9 +227,16 @@ class POSIX {
 		}
 		return s;
 	}
-
-	static function isdigit(c : string) : boolean {
-		return c in _CharClass.isdigit;
-	}
 }
 
+class _CharClass {
+	static function _make(s : string) : Map.<boolean> {
+		var map = new Map.<boolean>();
+		s.split("").forEach( (c) -> {
+			map[c] = true;
+		});
+		return map;
+	}
+
+	static const isdigit = _CharClass._make("0123456789");
+}
