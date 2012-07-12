@@ -20,7 +20,7 @@ Mizuki provides a set of utilities which is not a part of JSX language but inevi
 TODO
 ====================
 
-    RandomGeneraotr.shuffle.<T>(a : T[])
+    RandomGeneraotr.shuffle.<T>(a : T[]) : T[];
 
 COPYRIGHT AND LICENSE
 ====================
