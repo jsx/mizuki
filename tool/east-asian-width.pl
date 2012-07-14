@@ -103,30 +103,26 @@ macro range -> $r {
         sprintf("(0x%08X <= c && c <= 0x%08X)", $r[0], $r[1]);
     }
 }
+
+macro make_conditions -> $t {
+    (" " x 4) ~ "return\n";
+    for $t -> $range {
+        (" " x 8) ~ range($range) ~ ($~range.is_last ? "" : " ||") ~ "\n";
+    }
+    (" " x 4) ~ ";\n";
+}
 -:>
 
     static function W(c : int) : boolean {
-        return
-: for $W -> $range {
-            <: range($range) :><: $~range.is_last ? "" : " ||" :>
-: }
-        ;
+        : make_conditions($W);
     } // W
 
     static function F(c : int) : boolean {
-        return
-: for $F -> $range {
-            <: range($range) :><: $~range.is_last ? "" : " ||" :>
-: }
-        ;
+        : make_conditions($F);
     } // F
 
     static function A(c : int) : boolean {
-        return
-: for $A -> $range {
-            <: range($range) :><: $~range.is_last ? "" : " ||" :>
-: }
-        ;
+        : make_conditions($A);
     } // A
 }
 

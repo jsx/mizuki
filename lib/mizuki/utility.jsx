@@ -104,6 +104,7 @@ class StringUtil {
         }
         return s;
     }
+
 }
 
 // vim: set expandtab:

@@ -1,8 +1,8 @@
 
 all:
-	mkdir -p lib/_utility
-	perl tool/east-asian-width.pl > lib/_utility/east-asian-width.jsx
-	jsx lib/_utility/east-asian-width.jsx > /dev/null # syntax check
+	mkdir -p lib/detail
+	perl tool/east-asian-width.pl > lib/detail/east-asian-width.jsx
+	jsx lib/detail/east-asian-width.jsx > /dev/null # syntax check
 
 test-all: test test-release
 
