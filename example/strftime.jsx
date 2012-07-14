@@ -1,4 +1,4 @@
-import "POSIX.jsx";
+import "../lib/mizuki/posix.jsx";
 
 class _Main {
 	static function main(args : string[]) : void {
