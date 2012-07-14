@@ -122,7 +122,7 @@ class _DateFormat {
         case "b":
             return l.b[d.getMonth()];
         case "C":
-            return _DateFormat._pad(d.getFullYear() / 100 as int, w ?: 2, p ?: "0");
+            return _DateFormat._pad((d.getFullYear() / 100) as int, w ?: 2, p ?: "0");
         case "c":
             return d.toLocaleString();
         case "D":
@@ -137,16 +137,26 @@ class _DateFormat {
             return _DateFormat._format(d, "Y", p, w, l) + "-"
                     + _DateFormat._format(d, "m", p, w, l) + "-"
                     + _DateFormat._format(d, "d", p, w, l);
+        case "G": // FIXME
+            return _DateFormat._format(d, "Y", p, w, l);
+        case "g": // FIXME
+            return _DateFormat._format(d, "y", p, w, l);
         case "H":
             return _DateFormat._pad(d.getHours(), w ?: 2, p ?: "0");
+        case "h":
+            return _DateFormat._format(d, "b", p, w, l);
         case "I":
             return _DateFormat._pad(d.getHours() % 12 ?: 12, w ?: 2, p ?: "0");
         case "j": // day of year
-            return "j"; // FIXME
+            return (function() : string {
+                var first = new Date(d.getFullYear(), 0, 1);
+                var msOfYear = d.getTime() - first.getTime();
+                return _DateFormat._pad(Math.ceil(msOfYear / (24 * 60 * 60 * 1000)), w ?: 3, p ?: "0");
+            }());
         case "k":
             return _DateFormat._pad(d.getHours(), w ?: 2, p ?: " ");
         case "l":
-            return _DateFormat._pad(d.getHours() % 12 ?: 12, w ?: 2, p ?: "0");
+            return _DateFormat._pad(d.getHours() % 12 ?: 12, w ?: 2, p ?: " ");
         case "M":
             return _DateFormat._pad(d.getMinutes(), w ?: 2, p ?: "0");
         case "m":
@@ -168,7 +178,7 @@ class _DateFormat {
         case "R":
             return _DateFormat._format(d, "H", p, w, l) + ":"
                 + _DateFormat._format(d, "M", p, w, l);
-        case "R":
+        case "r":
             return _DateFormat._format(d, "I", p, w, l) + ":"
                 + _DateFormat._format(d, "M", p, w, l) + ":"
                 + _DateFormat._format(d, "S", p, w, l) + " "
@@ -184,17 +194,27 @@ class _DateFormat {
         case "t":
             return "\t";
         case "U": // week of year
-            return "U"; // FIXME
+            return (function() : string {
+                var first = new Date(d.getFullYear(), 0, 1);
+                var msOfYear = d.getTime() - first.getTime();
+                return _DateFormat._pad(Math.ceil(msOfYear / (7 * 24 * 60 * 60 * 1000)), w ?: 0, p ?: _DateFormat._NO_PADDING);
+            }());
         case "u":
             return (d.getDay() ?: 7) as string;
         case "V":
-            return "V"; // FIXME
+            /* replaced by the week number of the year (Monday as the first
+               day of the week) as a decimal number (01-53).  If the week con-
+               taining January 1 has four or more days in the new year, then it
+               is week 1; otherwise it is the last week of the previous year,
+               and the next week is week 1.
+              */
+            return "[FIXME:V]";
         case "v":
             return _DateFormat._format(d, "e", p, w, l) + "-"
                 + _DateFormat._format(d, "b", p, w, l) + "-"
                 + _DateFormat._format(d, "Y", p, w, l);
         case "W":
-            return "W"; // FIXME
+            return "[FIXME:W]";
         case "w":
             return _DateFormat._pad(d.getDay(), w ?: 0, p ?: "");
         case "X":
@@ -205,10 +225,28 @@ class _DateFormat {
             return d.getFullYear() as string;
         case "y":
             return _DateFormat._pad(d.getFullYear() % 100 , w ?: 2, p ?: "0");
-        case "Z":
-            return "Z"; // FIXME
-        case "z":
-            return "z"; // FIXME
+        case "Z": // timezone name
+            return (function() : string {
+                var s = d.toString();
+                var pos = s.lastIndexOf("(");
+                if (pos != -1) {
+                    s = s.slice(pos+1);
+                    return s.slice(0, s.indexOf(")"));
+                }
+                else {
+                    return "";
+                }
+            }());
+        case "z": // e.g. "+0900" for TZ=JST-9, "+0912" for TZ=JST-9:12
+            return (function() : string {
+                var o    = -d.getTimezoneOffset();
+                var sign = o >= 0 ? "+" : "-";
+                o = Math.abs(o);
+
+                var h = _DateFormat._pad((o / 60) as int, (w/2) ?: 2, p ?: "0");
+                var m = _DateFormat._pad((o % 60) as int, (w/2) ?: 2, p ?: "0");
+                return sign + h + m;
+            }());
         case "%":
             return "%";
 
