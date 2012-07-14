@@ -66,8 +66,6 @@ class StringUtil {
             return str;
         }
 
-        var suffixWidth = StringUtil.visualWidth(suffix);
-
         var s = "";
         var width = StringUtil.visualWidth(suffix);
         StringUtil.forEach(str, (c) -> {
