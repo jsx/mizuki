@@ -94,35 +94,31 @@ class EastAsianWidth {
 
     // character traits
 
-    <:-
-    macro range -> $r {
-        if $r[0] == $r[1] {
-            sprintf("(c == 0x%08X)", $r[0]);
-        }
-        else {
-            sprintf("(0x%08X <= c && c <= 0x%08X)", $r[0], $r[1]);
-        }
+<:-
+macro range -> $r {
+    if $r[0] == $r[1] {
+        sprintf("(c == 0x%08X)", $r[0]);
     }
-    -:>
-    : macro make_conditions -> $t {
+    else {
+        sprintf("(0x%08X <= c && c <= 0x%08X)", $r[0], $r[1]);
+    }
+}
+-:>
+: macro make_conditions -> $t, $name {
+    static function <: $name :>(c : int) : boolean {
         return
         : for $t -> $range {
             <: range($range) ~ ($~range.is_last ? "" : " ||") :>
         : }
         ;
-    : }
+    } // <: $name :>
+: }
 
-    static function W(c : int) : boolean {
-        : make_conditions($W);
-    } // W
+    : make_conditions($W, "W");
 
-    static function F(c : int) : boolean {
-        : make_conditions($F);
-    } // F
+    : make_conditions($F, "F");
 
-    static function A(c : int) : boolean {
-        : make_conditions($A);
-    } // A
+    : make_conditions($A, "A");
 }
 
 
