@@ -1,8 +1,10 @@
 
+DETAIL = lib/mizuki/detail
+
 all:
-	mkdir -p lib/detail
-	perl tool/east-asian-width.pl > lib/detail/east-asian-width.jsx
-	jsx lib/detail/east-asian-width.jsx > /dev/null # syntax check
+	mkdir -p $(DETAIL)
+	perl tool/east-asian-width.pl > $(DETAIL)/east-asian-width.jsx
+	jsx $(DETAIL)/east-asian-width.jsx > /dev/null # syntax check
 
 test-all: test test-release
 
