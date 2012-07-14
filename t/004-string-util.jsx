@@ -37,4 +37,10 @@ class _Test extends TestCase {
 
 		this.expect(StringUtil.compareIgnoreCase("aaa", "AAA")).toBe(0);
 	}
+
+	function testRepeat() : void {
+		this.expect(StringUtil.repeat("a", 3)).toBe("aaa");
+		this.expect(StringUtil.repeat("a", 0)).toBe("");
+		this.expect(StringUtil.repeat("ab", 2)).toBe("abab");
+	}
 }

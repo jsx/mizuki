@@ -96,6 +96,14 @@ class StringUtil {
     static function compareIgnoreCase(a : string, b : string) : int {
         return StringUtil.compare(a.toUpperCase(), b.toUpperCase());
     }
+
+    static function repeat(str : string, count : int) : string {
+        var s = "";
+        for (var i = 0; i < count; ++i) {
+            s += str;
+        }
+        return s;
+    }
 }
 
 // vim: set expandtab:
