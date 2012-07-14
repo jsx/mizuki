@@ -5,7 +5,7 @@ import "../lib/mizuki/utility.jsx";
 class _Main {
 	static function main(args : string[]) : void {
 		var N = 10000;
-		var s = StringUtil.repeat("[こんにちは世界]", 100);
+		var s = StringUtil.repeat("[✽こんにちは世界✽]", 100);
 
 		console.time("length");
 		var c = 0;
