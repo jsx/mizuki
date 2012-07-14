@@ -2,7 +2,6 @@
 // ported from TimSort@OpenJDK
 // http://cr.openjdk.java.net/~martin/webrevs/openjdk7/timsort/raw_files/new/src/share/classes/java/util/TimSort.java
 
-import "console.jsx";
 import "test-case.jsx";
 import "mizuki/stable-sort.jsx";
 import "mizuki/utility.jsx";
@@ -229,50 +228,6 @@ class _Test extends TestCase {
 
         this.expect(JSON.stringify(x, null, 2), "x is not changed").toBe(JSON.stringify([30, 20, 10], null, 2));
         this.expect(JSON.stringify(a, null, 2), "a is sorted").toBe(JSON.stringify([10, 20, 30], null, 2));
-    }
-}
-
-class _Main { // for benchmark
-
-    static function main(args : string[]) : void {
-        var n = args.length > 0 ? args[0] as number : 1000000;
-
-        var a = _Test.genArray(n);
-
-        var w = function (n : number, w : int) : string {
-            var s = n as string;
-            while (s.length < w) {
-                s = " " + s;
-            }
-            return s;
-        };
-
-        for (var i = 0; i < 5; ++i) {
-            var u = (a.length >> i) as int;
-            console.log("shuffled 0.." + u as string);
-
-            ListUtil.<number>.shuffleInPlace(a, 0, u);
-            var t0 = Date.now();
-            a = a.sort((x, y) -> x - y);
-            var t1 = Date.now();
-            var base = t1 - t0;
-            console.log("builtin sort: " + w(base, 4)  + "[ms]");
-
-            ListUtil.<number>.shuffleInPlace(a, 0, u);
-            var t0 = Date.now();
-            StableSort.<number>.sortInPlace(a, (x, y) -> x - y);
-            var t1 = Date.now();
-            var e  = t1 - t0;
-            console.log("StableSort!:  " + w(e, 4) + "[ms] (" + w(((base / e) * 100) as int, 3) + "%)");
-
-            ListUtil.<number>.shuffleInPlace(a, 0, u);
-            var t0 = Date.now();
-            a = StableSort.<number>.sort(a, (x, y) -> x - y);
-            var t1 = Date.now();
-            var e  = t1 - t0;
-            console.log("StableSort:   " + w(e, 4) + "[ms] (" + w(((base / e) * 100) as int, 3) + "%)");
-
-        }
     }
 }
 

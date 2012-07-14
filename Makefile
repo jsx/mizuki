@@ -11,3 +11,6 @@ test:
 
 test-release:
 	JSX_OPTS=--release prove
+
+benchmark-sort:
+	jsx --release --add-search-path lib --run benchmark/sort.jsx
