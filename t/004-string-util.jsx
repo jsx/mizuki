@@ -1,5 +1,5 @@
-import "utility.jsx";
 import "test-case.jsx";
+import "mizuki/utility.jsx";
 
 class _Test extends TestCase {
 	function testVisualWidth() : void {
@@ -8,6 +8,7 @@ class _Test extends TestCase {
 		this.expect(StringUtil.visualWidth("ひらがな")).toBe(8);
 		this.expect(StringUtil.visualWidth("カタカナ")).toBe(8);
 		this.expect(StringUtil.visualWidth("ﾊﾝｶｸｶﾀｶﾅ")).toBe(8);
+		this.expect(StringUtil.visualWidth("叱")).toBe(2); // uses surrogate pairs
 		this.expect(StringUtil.visualWidth("１２")).toBe(4);
 		this.expect(StringUtil.visualWidth("ｘｙ")).toBe(4);
 	}
@@ -19,5 +20,21 @@ class _Test extends TestCase {
 
 		this.expect(StringUtil.truncate("代々木 9-9-9 ギャラクシーハイツ 999", 20, "..")).toBe("代々木 9-9-9 ギャ..");
 		this.expect(StringUtil.truncate("代々木 9-9-9 ギャラクシーハイツ 999", 20, "")).toBe("代々木 9-9-9 ギャラ");
+	}
+
+	function testCompare() : void {
+		this.expect(StringUtil.compare("aaa", "bbb")).toBeLT(0);
+		this.expect(StringUtil.compare("bbb", "aaa")).toBeGT(0);
+		this.expect(StringUtil.compare("aaa", "aaa")).toBe(0);
+
+		this.expect(StringUtil.compare("aaa", "AAA")).toBeGT(0);
+	}
+
+	function testCompareIgnoreCase() : void {
+		this.expect(StringUtil.compareIgnoreCase("aaa", "bbb")).toBeLT(0);
+		this.expect(StringUtil.compareIgnoreCase("bbb", "aaa")).toBeGT(0);
+		this.expect(StringUtil.compareIgnoreCase("aaa", "aaa")).toBe(0);
+
+		this.expect(StringUtil.compareIgnoreCase("aaa", "AAA")).toBe(0);
 	}
 }

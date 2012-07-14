@@ -4,7 +4,8 @@
 
 import "console.jsx";
 import "test-case.jsx";
-import "stable-sort.jsx";
+import "mizuki/stable-sort.jsx";
+import "mizuki/utility.jsx";
 
 class _Test extends TestCase {
 
@@ -180,15 +181,6 @@ class _Test extends TestCase {
         this.expect(JSON.stringify(a, null, 2)).toBe(JSON.stringify(x, null, 2));
     }
 
-    static function shuffle(a : number[], begin : int, end : int) : void {
-        for (var i = begin; i < end; ++i) {
-            var j = (Math.random()*i) as int;
-            var t = a[i];
-            a[i]  = a[j];
-            a[j]  = t;
-        }
-    }
-
     function testShuffled() : void {
         var N = 1000;
         var x = _Test.genArray(N).concat(_Test.genArray(N))
@@ -197,7 +189,7 @@ class _Test extends TestCase {
         var a = _Test.genArray(N).concat(_Test.genArray(N));
 
         for (var i = 0; i < 100; ++i) {
-            _Test.shuffle(a, 0, a.length);
+            ListUtil.<number>.shuffleInPlace(a);
             StableSort.<number>.sortInPlace(a, (x, y) -> x - y);
             this.expect(JSON.stringify(a, null, 2)).toBe(JSON.stringify(x, null, 2));
         }
@@ -211,7 +203,7 @@ class _Test extends TestCase {
         var a = _Test.genArray(N).concat(_Test.genArray(N));
 
         for (var i = 0; i < 100; ++i) {
-            _Test.shuffle(a, 0, a.length >> 1);
+            ListUtil.<number>.shuffleInPlace(a, 0, a.length >> 1);
             StableSort.<number>.sortInPlace(a, (x, y) -> x - y);
             this.expect(JSON.stringify(a, null, 2)).toBe(JSON.stringify(x, null, 2));
         }
@@ -225,7 +217,7 @@ class _Test extends TestCase {
         var a = _Test.genArray(N).concat(_Test.genArray(N));
 
         for (var i = 0; i < 100; ++i) {
-            _Test.shuffle(a, 0, a.length >> 1);
+            ListUtil.<number>.shuffleInPlace(a, 0, a.length >> 1);
             StableSort.<number>.sortInPlace(a, (x, y) -> y - x);
             this.expect(JSON.stringify(a, null, 2)).toBe(JSON.stringify(x, null, 2));
         }
@@ -259,21 +251,21 @@ class _Main { // for benchmark
             var u = (a.length >> i) as int;
             console.log("shuffled 0.." + u as string);
 
-            _Test.shuffle(a, 0, u);
+            ListUtil.<number>.shuffleInPlace(a, 0, u);
             var t0 = Date.now();
             a = a.sort((x, y) -> x - y);
             var t1 = Date.now();
             var base = t1 - t0;
             console.log("builtin sort: " + w(base, 4)  + "[ms]");
 
-            _Test.shuffle(a, 0, u);
+            ListUtil.<number>.shuffleInPlace(a, 0, u);
             var t0 = Date.now();
             StableSort.<number>.sortInPlace(a, (x, y) -> x - y);
             var t1 = Date.now();
             var e  = t1 - t0;
             console.log("StableSort!:  " + w(e, 4) + "[ms] (" + w(((base / e) * 100) as int, 3) + "%)");
 
-            _Test.shuffle(a, 0, u);
+            ListUtil.<number>.shuffleInPlace(a, 0, u);
             var t0 = Date.now();
             a = StableSort.<number>.sort(a, (x, y) -> x - y);
             var t1 = Date.now();

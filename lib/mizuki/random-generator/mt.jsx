@@ -71,7 +71,7 @@ SYNOPSIS:
    email: m-mat @ math.sci.hiroshima-u.ac.jp (remove space)
 */
 
-import "random-generator/base.jsx";
+import "./base.jsx";
 
 final class MT implements RandomGenerator {
     // Period parameters

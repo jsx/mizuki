@@ -1,4 +1,4 @@
-import "posix.jsx";
+import "mizuki/posix.jsx";
 import "test-case.jsx";
 
 class _Test extends TestCase {

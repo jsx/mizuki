@@ -1,16 +1,42 @@
-import "./_utility/east-asian-width.jsx";
+import "./detail/east-asian-width.jsx";
 
+//import "./random-generator/base.jsx";
+//import "./random-generator/mt.jsx";
+
+class ListUtil.<T> {
+
+    // Fisher–Yates shuffle
+    static function shuffle(a : T[]) : T[] {
+        var r = a.slice(0);
+        ListUtil.<T>.shuffleInPlace(r);
+        return r;
+    }
+
+    static function shuffleInPlace(a : T[]) : void {
+        ListUtil.<T>.shuffleInPlace(a, 0, a.length);
+    }
+
+    static function shuffleInPlace(a : T[], begin : int, end : int) : void {
+        for (var i = begin; i < end; ++i) {
+            var j = (Math.random() * i) as int;
+            var t = a[i];
+            a[i]  = a[j];
+            a[j]  = t;
+        }
+    }
+
+}
 
 class StringUtil {
+    static function _isSurrogatePair(c : int) : boolean {
+        return 0xD800 <= c && c <= 0xD8FF;
+    }
 
     static function forEach(str : string, cb : function(c : int) : boolean) : void {
-        function _surrogatePair(c : int) : boolean {
-            return 0xD800 <= c && c <= 0xD8FF;
-        }
 
         for (var i = 0; i < str.length; ++i) {
             var c = str.charCodeAt(i);
-            if (_surrogatePair(c)) {
+            if (StringUtil._isSurrogatePair(c)) {
                 c = 0x10000 +
                     ((c & 0x3FF) << 10) | (str.charCodeAt(++i) & 0x3FF);
 
@@ -53,6 +79,22 @@ class StringUtil {
             return true;
         });
         return s + suffix;
+    }
+
+    static function compare(a : string, b : string) : int {
+        if (a < b) {
+            return -1;
+        }
+        else if (a > b) {
+            return 1;
+        }
+        else {
+            return 0;
+        }
+    }
+
+    static function compareIgnoreCase(a : string, b : string) : int {
+        return StringUtil.compare(a.toUpperCase(), b.toUpperCase());
     }
 }
 
