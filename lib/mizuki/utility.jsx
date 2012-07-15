@@ -80,15 +80,7 @@ class StringUtil {
     }
 
     static function compare(a : string, b : string) : int {
-        if (a < b) {
-            return -1;
-        }
-        else if (a > b) {
-            return 1;
-        }
-        else {
-            return 0;
-        }
+        return a.localeCompare(b);
     }
 
     static function compareIgnoreCase(a : string, b : string) : int {
