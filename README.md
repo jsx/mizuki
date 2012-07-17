@@ -15,7 +15,7 @@ SYNOPSIS
 DESCRIPTION
 ====================
 
-Mizuki provides a set of utilities which is not a part of JSX language but inevitable.
+Mizuki provides a set of utilities for [JSX](http://jsx.github.com/), which is not a part of JSX language but inevitable.
 
 TODO
 ====================
