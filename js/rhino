@@ -1,0 +1,14 @@
+#!/usr/bin/env perl
+use strict;
+use warnings;
+use File::Which    qw(which);
+use File::Basename qw(dirname);
+
+my $js = which("rhino");
+
+if (! $js) {
+    warn("js is not found.\n");
+    exit 0;
+}
+
+exec $js, "-f", dirname(__FILE__) . "/nodelike.js", @ARGV;
