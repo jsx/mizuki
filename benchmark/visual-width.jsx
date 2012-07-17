@@ -7,18 +7,18 @@ class _Main {
 		var N = 10000;
 		var s = StringUtil.repeat("[✽こんにちは世界✽]", 100);
 
-		console.time("length");
+		var t0 = Date.now();
 		var c = 0;
 		for (var i = 0; i < N; ++i) {
 			c += s.length;
 		}
-		console.timeEnd("length");
+		console.log("length : " + (Date.now() - t0)  as string + "[ms]");
 
-		console.time("visualWidth");
+		var t0 = Date.now();
 		var c = 0;
 		for (var i = 0; i < N; ++i) {
 			c += StringUtil.visualWidth(s);
 		}
-		console.timeEnd("visualWidth");
+		console.log("visualWidth: " + (Date.now() - t0)  as string + "[ms]");
 	}
 }

@@ -12,8 +12,16 @@ if (typeof console === "undefined") {
 		log: print,
 		info: print,
 		warn: print,
-		error: print
+		error: print,
+
+		time: function (label) {
+			console.time._data[label] = Date.now();
+		},
+		timeEnd: function (label) {
+			console.log(label + ": " + (Date.now() - console.time._data[label]) + "ms");
+		},
 	};
+	console.time._data = {};
 }
 
 if (typeof process === "undefined") {

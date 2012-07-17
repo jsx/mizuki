@@ -1,6 +1,8 @@
 
 DETAIL = lib/mizuki/detail
 
+JSX2JS =  jsx --release --add-search-path lib --output a.jsx.js --executable node
+
 all:
 
 east-asian-width:
@@ -17,13 +19,19 @@ test-release:
 	JSX_OPTS=--release prove
 
 benchmark-sort:
-	jsx --release --add-search-path lib --output a.jsx.js --executable node benchmark/sort.jsx
+	$(JSX2JS) benchmark/sort.js
 	node a.jsx.js
 	js/spidermonkey a.jsx.js
 	js/jscore a.jsx.js
 
 benchmark-mt:
-	jsx --release --add-search-path lib --output a.jsx.js --executable node benchmark/mt-vs-builtin.jsx
+	$(JSX2JS) benchmark/mt-vs-builtin.jsx
+	node a.jsx.js
+	js/spidermonkey a.jsx.js
+	js/jscore a.jsx.js
+
+benchmark-visual-width:
+	$(JSX2JS) benchmark/visual-width.jsx
 	node a.jsx.js
 	js/spidermonkey a.jsx.js
 	js/jscore a.jsx.js
