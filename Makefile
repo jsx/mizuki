@@ -19,12 +19,12 @@ test-release:
 benchmark-sort:
 	jsx --release --add-search-path lib --output a.jsx.js --executable node benchmark/sort.jsx
 	node a.jsx.js
-	if which js ; then js -m -j -f js/nodelike.js a.jsx.js; fi
-	if which nore ; then  nore a.jsx.js ; fi
+	js/spidermonkey a.jsx.js
+	js/jscore a.jsx.js
 
 benchmark-mt:
 	jsx --release --add-search-path lib --output a.jsx.js --executable node benchmark/mt-vs-builtin.jsx
 	node a.jsx.js
-	if which js ; then js -m -j -f js/nodelike.js a.jsx.js; fi
-	if which nore ; then  nore a.jsx.js ; fi
+	js/spidermonkey a.jsx.js
+	js/jscore a.jsx.js
 

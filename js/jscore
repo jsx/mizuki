@@ -1,0 +1,16 @@
+#!/usr/bin/env perl
+use strict;
+use warnings;
+use File::Which    qw(which);
+use File::Basename qw(dirname);
+
+$ENV{PATH} = "../norejs:$ENV{PATH}";
+
+my $js = which("nore");
+
+if (! $js) {
+    warn("nore is not found.\n");
+    exit 0;
+}
+
+exec $js, @ARGV;
