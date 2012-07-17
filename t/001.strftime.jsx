@@ -77,16 +77,17 @@ class _Test extends TestCase {
 	}
 
 	function testVaryByEnv() : void {
-		this.note("c: " + POSIX.strftime(this.date(), "[%c]"));
-		this.note("X: " + POSIX.strftime(this.date(), "[%X]"));
-		this.note("x: " + POSIX.strftime(this.date(), "[%x]"));
-		this.note("Z: " + POSIX.strftime(this.date(), "[%Z]"));
-		this.note("z: " + POSIX.strftime(this.date(), "[%z]"));
 		this.expect(POSIX.strftime(this.date(), "[%c]"), "%c").notToBe("");
 		this.expect(POSIX.strftime(this.date(), "[%X]"), "%X").notToBe("");
 		this.expect(POSIX.strftime(this.date(), "[%x]"), "%x").notToBe("");
 		this.expect(POSIX.strftime(this.date(), "[%Z]"), "%Z").notToBe("");
 		this.expect(POSIX.strftime(this.date(), "[%z]"), "%z").notToBe("");
+
+		this.note("c: " + POSIX.strftime(this.date(), "[%c]"));
+		this.note("X: " + POSIX.strftime(this.date(), "[%X]"));
+		this.note("x: " + POSIX.strftime(this.date(), "[%x]"));
+		this.note("Z: " + POSIX.strftime(this.date(), "[%Z]"));
+		this.note("z: " + POSIX.strftime(this.date(), "[%z]"));
 	}
 
 	// extension, not in POSIX standard
