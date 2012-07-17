@@ -1,7 +1,7 @@
 
 DETAIL = lib/mizuki/detail
 
-JSX2JS =  jsx --release --add-search-path lib --output a.jsx.js --executable node
+JSX2JS = jsx --release --add-search-path lib --output a.jsx.js --executable node
 
 all:
 
@@ -19,7 +19,7 @@ test-release:
 	JSX_OPTS=--release prove
 
 benchmark-sort:
-	$(JSX2JS) benchmark/sort.js
+	$(JSX2JS) benchmark/sort.jsx
 	node a.jsx.js
 	js/spidermonkey a.jsx.js
 	js/jscore a.jsx.js
