@@ -70,6 +70,39 @@ mixin RandomGenerator {
         return 0;
     }
 
+
+    /**
+     * generate a 128-bit random ID
+     * RFC 4211 complaint
+     */
+    function nextUUID() : string {
+        var hex = function (n : int, l : int) : string {
+            var str = n.toString(16);
+            while (str.length < l) {
+                str = "0" + str;
+            }
+            return str;
+        };
+
+        var nextUInt = function (bits : int) : int {
+            assert 0 <= bits && bits <= 32;
+
+            return this.nextInt32() >>> (32 - bits);
+        };
+
+        // 4.1.1. Variant
+        var VARIANT = Number.parseInt("10", 2) << 14;
+
+        // 4.1.3. Version
+        // "The randomly or pseudo-randomly generated version"
+        var VERSION = Number.parseInt("0100", 2) << 12;
+
+        return hex(nextUInt(32), 8)
+            + "-" + hex(nextUInt(16), 4)
+            + "-" + hex(VERSION | nextUInt(12), 4)
+            + "-" + hex(VARIANT | nextUInt(14), 4)
+            + "-" + hex(nextUInt(32), 8) + hex(nextUInt(16), 4);
+    }
 }
 
 
