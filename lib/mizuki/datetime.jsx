@@ -287,6 +287,8 @@ class _DateFormat {
     static function strptime(date : string, fmt: string, locale : _Locale) : Date {
         var r = new Date(0);
 
+        var len = date.length;
+
         for (var i = 0; i < fmt.length; ++i) {
             var c = fmt.charAt(i);
             if (c == "%") {
@@ -305,8 +307,11 @@ class _DateFormat {
                 }
                 date = _DateFormat._parse(r, date, c, locale);
             }
-            else {
+            else if (date.charAt(0) == c) {
                 date = date.slice(1);
+            }
+            else {
+                throw new Error("strptime: unexpected character '" + date.charAt(0) + "'");
             }
         }
         return r;
@@ -315,22 +320,39 @@ class _DateFormat {
     static function _parse(r : Date, date : string, c : string, l : _Locale) : string {
         var match = function (p : RegExp, f : function (x : int) : void) : string {
             var m = /^\d+/.exec(date);
-            if (m) {
-                f(m[0] as int);
-                return date.slice(m[0].length);
+            if (! m) {
+                throw new Error("strptime: unexpected character '" + date.charAt(0) + "'");
             }
-            else {
-                return date.slice(1);
-            }
+
+            f(m[0] as int);
+            return date.slice(m[0].length);
         };
 
         switch (c) {
+        case "A":
+            var m = (new RegExp("^" + l.A.join("|") + "\\b", "i")).exec(date);
+            if (! m) {
+                throw new Error("strptime: unexpected character '" + date.charAt(0) + "'");
+            }
+            return date.slice(m[0].length); // FIXME
+        case "a":
+            var m = (new RegExp("^" + l.a.join("|") + "\\b", "i")).exec(date);
+            if (! m) {
+                throw new Error("strptime: unexpected character '" + date.charAt(0) + "'");
+            }
+            return date.slice(m[0].length); // FIXME
+
+        case "B":
+            return _DateFormat._parseMonth(r, date, l.B);
+        case "b":
+            return _DateFormat._parseMonth(r, date, l.b);
+
         case "Y":
             return match(/^\d+/, (x : int) : void ->  { r.setFullYear(x); });
         case "y":
             return match(/^\d+/, (x : int) : void ->  {
                 x += 1900;
-                if (x >= 70) {
+                if (x < 1970) {
                     x += 100;
                 }
                 r.setFullYear(x);
@@ -345,8 +367,25 @@ class _DateFormat {
             return match(/^\d+/, (x : int) : void -> { r.setMinutes(x); });
         case "S":
             return match(/^\d+/, (x : int) : void -> { r.setSeconds(x); });
+
+        case "Z":
+            var m = /^[^ \t\r\n]+/.exec(date);
+            if (! m) {
+                throw new Error("strptime: unexpected character '" + date.charAt(0) + "'");
+            }
+            return date.slice(m[0].length); // FIXME
         }
         return date.slice(1);
+    }
+
+    static function _parseMonth(r : Date, date : string, names : string[]) : string {
+        var m = (new RegExp("^" + names.join("|") + "\\b", "i")).exec(date);
+        if (! m) {
+            throw new Error("strptime: unexpected character '" + date.charAt(0) + "'");
+        }
+
+        r.setMonth(names.indexOf(_DateFormat._toCamelCase(m[0])));
+        return date.slice(m[0].length);
     }
 
     static function _toCamelCase(s : string) : string {
