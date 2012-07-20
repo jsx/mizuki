@@ -284,8 +284,73 @@ class _DateFormat {
         return s;
     }
 
-    static function strptime(date : string, format : string, locale : _Locale) : Date {
-        return new Date();
+    static function strptime(date : string, fmt: string, locale : _Locale) : Date {
+        var r = new Date(0);
+
+        for (var i = 0; i < fmt.length; ++i) {
+            var c = fmt.charAt(i);
+            if (c == "%") {
+                c = fmt.charAt(++i);
+                // flags (compatibility for strftime())
+                switch (c) {
+                case _DateFormat._NO_PADDING:
+                case _DateFormat._SPACE_PADDING:
+                case _DateFormat._ZERO_PADDING:
+                    c = fmt.charAt(++i);
+                    break;
+                }
+                // field width (compatibility for strftime())
+                while (/^[0-9]/.test(fmt.charAt(i))) {
+                    c = fmt.charAt(++i);
+                }
+                date = _DateFormat._parse(r, date, c, locale);
+            }
+            else {
+                date = date.slice(1);
+            }
+        }
+        return r;
+    }
+
+    static function _parse(r : Date, date : string, c : string, l : _Locale) : string {
+        var match = function (p : RegExp, f : function (x : int) : void) : string {
+            var m = /^\d+/.exec(date);
+            if (m) {
+                f(m[0] as int);
+                return date.slice(m[0].length);
+            }
+            else {
+                return date.slice(1);
+            }
+        };
+
+        switch (c) {
+        case "Y":
+            return match(/^\d+/, (x : int) : void ->  { r.setFullYear(x); });
+        case "y":
+            return match(/^\d+/, (x : int) : void ->  {
+                x += 1900;
+                if (x >= 70) {
+                    x += 100;
+                }
+                r.setFullYear(x);
+            });
+        case "m":
+            return match(/^\d+/, (x : int) : void -> { r.setMonth(x - 1); });
+        case "d":
+            return match(/^\d+/, (x : int) : void ->  { r.setDate(x); });
+        case "H":
+            return match(/^\d+/, (x : int) : void -> { r.setHours(x); });
+        case "M":
+            return match(/^\d+/, (x : int) : void -> { r.setMinutes(x); });
+        case "S":
+            return match(/^\d+/, (x : int) : void -> { r.setSeconds(x); });
+        }
+        return date.slice(1);
+    }
+
+    static function _toCamelCase(s : string) : string {
+        return s.slice(0, 1).toUpperCase() + s.slice(1).toLowerCase();
     }
 }
 
