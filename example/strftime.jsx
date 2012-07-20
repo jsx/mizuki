@@ -1,8 +1,8 @@
-import "../lib/mizuki/posix.jsx";
+import "../lib/mizuki/datetime.jsx";
 
 class _Main {
 	static function main(args : string[]) : void {
-		log POSIX.strftime(new Date, args.join(" ") ?: "%c");
+		log DateTime.strftime(new Date, args.join(" ") ?: "%c");
 	}
 }
 

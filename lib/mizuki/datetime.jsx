@@ -1,27 +1,28 @@
 
 
-class POSIX {
+class DateTime {
+    // interfaces
 
     static function strftime(date : Date, fmt : string) : string {
-        return _DateFormat._strftime(date, fmt, POSIX.currentLocale);
+        return _DateFormat.strftime(date, fmt, _Locale.currentLocale);
     }
 
     static function strftime(date : Date, fmt : string, locale : string) : string {
-        return _DateFormat._strftime(date, fmt, locale);
+        return _DateFormat.strftime(date, fmt, locale);
     }
+
 
     // locale settings
 
-    static var currentLocale = "en";
     static function addLocale(name : string, A : string[], a : string[], B : string[], b : string[]) : void {
         _Locale.locale[name] = new _Locale(name, A, a, B, b);
     }
 
 }
 
-// implementations
-
 class _Locale {
+    static var currentLocale = "en";
+
     static var locale : Map.<_Locale> = {
         en: new _Locale("en",
             [
@@ -64,6 +65,12 @@ class _Locale {
         this.B = B;
         this.b = b;
     }
+
+    static function get(name : string) : _Locale {
+        return _Locale.locale[name]
+            ?: _Locale.locale[_Locale.currentLocale]
+            ?: _Locale.locale["en"];
+    }
 }
 
 class _DateFormat {
@@ -71,10 +78,10 @@ class _DateFormat {
     static const _SPACE_PADDING   = "_";
     static const _ZERO_PADDING    = "0";
 
-    static function _strftime(date : Date, fmt : string, locale : string) : string {
+    static function strftime(date : Date, fmt : string, locale : string) : string {
         var r = "";
-        var loc = _Locale.locale;
-        var l   = loc[locale] ?: loc[POSIX.currentLocale] ?: loc["en"];
+
+        var loc  = _Locale.get(locale);
 
         for (var i = 0; i < fmt.length; ++i) {
             var c = fmt.charAt(i);
@@ -102,7 +109,7 @@ class _DateFormat {
                     width = (width * 10) + fmt.charAt(i) as int;
                     c = fmt.charAt(++i);
                 }
-                r += _DateFormat._format(date, c, padding, width, l);
+                r += _DateFormat._format(date, c, padding, width, loc);
             }
             else {
                 r += c;
