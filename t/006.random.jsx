@@ -3,7 +3,7 @@ import "test-case.jsx";
 
 class _Test extends TestCase {
 	function testUUID() : void {
-		var NameSpace_URL = "6ba7b811-9dad-11d1-80b4-00c04fd430c8"; // RFC 4122
+		var nilUUID = "00000000-0000-0000-0000-000000000000";
 
 		var r0 = new MT(0);
 
@@ -13,8 +13,8 @@ class _Test extends TestCase {
 		var u3 = r0.nextUUID();
 		var u4 = r0.nextUUID();
 
-		this.expect(u0.length).toBe(NameSpace_URL.length);
-		this.expect(u0).notToBe(NameSpace_URL);
+		this.expect(u0.length).toBe(nilUUID.length);
+		this.expect(u0).notToBe(nilUUID);
 
 		this.expect(u0.length).toBe(u1.length);
 		this.expect(u0).notToBe(u1);
