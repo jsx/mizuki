@@ -4,7 +4,7 @@ Mersenne-Twister pseude-random generator ported from mt19937ar.c
 
 SYNOPSIS:
 
-    import "random-generator/mt.jsx";
+    import "random/mt.jsx";
 
     // constructor for Mersenne Twister random generator
     var mt = new MT; // set a seed automatically

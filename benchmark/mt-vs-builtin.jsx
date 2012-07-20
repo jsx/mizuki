@@ -1,5 +1,5 @@
 import "console.jsx";
-import "mizuki/random-generator/mt.jsx";
+import "mizuki/random/mt.jsx";
 
 class _Main {
 	static function main(args : string[]) : void {

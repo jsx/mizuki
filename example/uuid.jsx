@@ -1,4 +1,4 @@
-import "../lib/mizuki/random-generator/mt.jsx";
+import "../lib/mizuki/random/mt.jsx";
 import "console.jsx";
 
 class _Main {

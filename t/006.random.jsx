@@ -1,4 +1,4 @@
-import "mizuki/random-generator/mt.jsx";
+import "mizuki/random/mt.jsx";
 import "test-case.jsx";
 
 class _Test extends TestCase {

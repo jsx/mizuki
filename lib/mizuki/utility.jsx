@@ -1,8 +1,5 @@
 import "./detail/east-asian-width.jsx";
 
-//import "./random-generator/base.jsx";
-//import "./random-generator/mt.jsx";
-
 class ListUtil.<T> {
 
     // Fisher–Yates shuffle
