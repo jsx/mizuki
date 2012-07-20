@@ -20,7 +20,7 @@ Mizuki provides a set of utilities for [JSX](http://jsx.github.com/), which is n
 TODO
 ====================
 
-    RandomGeneraotr.shuffle.<T>(a : T[]) : T[];
+DateTime, strptime(), gettext(), Logger, diff utils
 
 COPYRIGHT AND LICENSE
 ====================
