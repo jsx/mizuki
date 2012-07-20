@@ -73,7 +73,7 @@ mixin RandomGenerator {
 
     /**
      * generate a 128-bit random ID
-     * RFC 4211 complaint
+     * RFC 4122 complaint
      */
     function nextUUID() : string {
         var hex = function (n : int, l : int) : string {
