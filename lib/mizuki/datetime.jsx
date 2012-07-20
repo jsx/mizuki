@@ -325,12 +325,17 @@ class _DateFormat {
         };
 
         switch (c) {
+        case "B":
+            return _DateFormat._parseMonth(r, date, l.B);
+        case "b":
+            return _DateFormat._parseMonth(r, date, l.b);
+
         case "Y":
             return match(/^\d+/, (x : int) : void ->  { r.setFullYear(x); });
         case "y":
             return match(/^\d+/, (x : int) : void ->  {
                 x += 1900;
-                if (x >= 70) {
+                if (x < 1970) {
                     x += 100;
                 }
                 r.setFullYear(x);
@@ -345,6 +350,15 @@ class _DateFormat {
             return match(/^\d+/, (x : int) : void -> { r.setMinutes(x); });
         case "S":
             return match(/^\d+/, (x : int) : void -> { r.setSeconds(x); });
+        }
+        return date.slice(1);
+    }
+
+    static function _parseMonth(r : Date, date : string, names : string[]) : string {
+        var m = (new RegExp("^" + names.join("|") + "\\b", "i")).exec(date);
+        if (m) {
+            r.setMonth(names.indexOf(_DateFormat._toCamelCase(m[0])));
+            return date.slice(m[0].length);
         }
         return date.slice(1);
     }

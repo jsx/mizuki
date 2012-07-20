@@ -32,8 +32,13 @@ class _Test extends TestCase {
 	}
 
 	function testFormat() : void {
+		this.expect(DateTime.strptime("[January]", "[%B]").getMonth(), "%B (1)").toBe(0);
+		this.expect(DateTime.strptime("[february]", "[%B]").getMonth(), "%B (2)").toBe(1);
+		this.expect(DateTime.strptime("[Jan]", "[%b]").getMonth(), "%b (1)").toBe(0);
+		this.expect(DateTime.strptime("[feb]", "[%b]").getMonth(), "%b (2)").toBe(1);
 
 		this.expect(DateTime.strptime("[2012]", "[%Y]").getFullYear(), "%Y").toBe(2012);
-		this.expect(DateTime.strptime("[12]", "[%y]").getFullYear(), "%y").toBe(2012);
+		this.expect(DateTime.strptime("[12]", "[%y]").getFullYear(), "%y (for 20xx)").toBe(2012);
+		this.expect(DateTime.strptime("[99]", "[%y]").getFullYear(), "%y (for 19xx)").toBe(1999);
 	}
 }
