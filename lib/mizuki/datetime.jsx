@@ -4,13 +4,20 @@ class DateTime {
     // interfaces
 
     static function strftime(date : Date, fmt : string) : string {
-        return _DateFormat.strftime(date, fmt, _Locale.currentLocale);
+        return _DateFormat.strftime(date, fmt, _Locale.get());
     }
 
     static function strftime(date : Date, fmt : string, locale : string) : string {
-        return _DateFormat.strftime(date, fmt, locale);
+        return _DateFormat.strftime(date, fmt, _Locale.get(locale));
     }
 
+    static function strptime(date : string, format : string) : Date {
+        return _DateFormat.strptime(date, format, _Locale.get());
+    }
+
+    static function strptime(date : string, format : string, locale : string) : Date {
+        return _DateFormat.strptime(date, format, _Locale.get(locale));
+    }
 
     // locale settings
 
@@ -21,7 +28,7 @@ class DateTime {
 }
 
 class _Locale {
-    static var currentLocale = "en";
+    static var _currentLocale = "en";
 
     static var locale : Map.<_Locale> = {
         en: new _Locale("en",
@@ -66,9 +73,14 @@ class _Locale {
         this.b = b;
     }
 
+    static function get() : _Locale {
+        return _Locale.locale[_Locale._currentLocale]
+            ?: _Locale.locale["en"];
+    }
+
     static function get(name : string) : _Locale {
         return _Locale.locale[name]
-            ?: _Locale.locale[_Locale.currentLocale]
+            ?: _Locale.locale[_Locale._currentLocale]
             ?: _Locale.locale["en"];
     }
 }
@@ -78,10 +90,8 @@ class _DateFormat {
     static const _SPACE_PADDING   = "_";
     static const _ZERO_PADDING    = "0";
 
-    static function strftime(date : Date, fmt : string, locale : string) : string {
+    static function strftime(date : Date, fmt : string, locale : _Locale) : string {
         var r = "";
-
-        var loc  = _Locale.get(locale);
 
         for (var i = 0; i < fmt.length; ++i) {
             var c = fmt.charAt(i);
@@ -109,7 +119,7 @@ class _DateFormat {
                     width = (width * 10) + fmt.charAt(i) as int;
                     c = fmt.charAt(++i);
                 }
-                r += _DateFormat._format(date, c, padding, width, loc);
+                r += _DateFormat._format(date, c, padding, width, locale);
             }
             else {
                 r += c;
@@ -272,6 +282,10 @@ class _DateFormat {
             s = p + s;
         }
         return s;
+    }
+
+    static function strptime(date : string, format : string, locale : _Locale) : Date {
+        return new Date();
     }
 }
 
