@@ -21,6 +21,9 @@ test-tz:
 test-release:
 	JSX_OPTS=--release prove
 
+test-with-jscore:
+	JSX_RUNJS=js/jscore prove
+
 benchmark-sort:
 	$(JSX2JS) benchmark/sort.jsx
 	node a.jsx.js

@@ -108,11 +108,11 @@ class _Test extends TestCase {
 	}
 
 	function testLeapSecond() : void {
-		var a = "[1998-12-31 23:59:60 UTC]";
+		var a = "[Thu Dec 31 23:59:60 GMT 1998]";
 
-		this.expect(DateTime.strptime(a, "[%Y-%m-%d %H:%M:%S %Z]").getTime()).toBe(915148800000);
+		this.expect(DateTime.strptime(a, "[%a %b %d %H:%M:%S %Z %Y]").getTime()).toBe(915148800000);
 
-		var b = "[2012-07-01 08:59:60 UTC]";
-		this.expect(DateTime.strptime(b, "[%Y-%m-%d %H:%M:%S %Z]").getTime()).toBe(1341133200000);
+		var b = "[2012-07-01T08:59:60Z]";
+		this.expect(DateTime.strptime(b, "[%Y-%m-%dT%H:%M:%S%z]").getTime()).toBe(1341133200000);
 	}
 }

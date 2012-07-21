@@ -413,10 +413,12 @@ class _DateFormat {
 
                     return date.slice(m[0].length);
                 }
-                else {
-                    tm.tz = 0;
-                    return date;
+
+                if (date.charAt(0) != "Z") {
+                    throw new Error("strptime: failed to parse '" + date + "'");
                 }
+                tm.tz = 0;
+                return date.slice(1); // skip "Z"
             }());
 
         }
