@@ -23,7 +23,7 @@ class DateTime {
     }
 
     static function setLocale(name : string) : void {
-        _Locale.currentLocale = name;
+        _Locale.currentLocale = name.split(/_/)[0].toLowerCase();
     }
 }
 

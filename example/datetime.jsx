@@ -4,7 +4,9 @@ class _Main {
 	static function main(args : string[]) : void {
 		var d = new Date;
 
-		DateTime.setLocale("ja");
+		if (args.length > 0) {
+			DateTime.setLocale(args[0]);
+		}
 
 		var f = "[%a %b %d %Y %H:%M:%S.%3N GMT%z (%Z)]";
 
