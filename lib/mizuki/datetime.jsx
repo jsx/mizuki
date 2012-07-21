@@ -189,11 +189,11 @@ class _DateFormat {
             return _DateFormat._pad(d.getMonth()+1, w ?: 2, p ?: "0");
         case "N":
             return (function() : string {
-                var nanosecond = (d.getMilliseconds() * 1000 * 1000) as int;
+                var nanoseconds = (d.getMilliseconds() * 1000 * 1000) as int;
                 if (w == 0 || w >= 9) {
-                    return _DateFormat._pad(nanosecond, w ?: 9, p ?: "0");
+                    return _DateFormat._pad(nanoseconds, w ?: 9, p ?: "0");
                 }
-                return _DateFormat._pad((nanosecond / Math.pow(10, 9 - w)) as int, w, p ?: "0");
+                return _DateFormat._pad((nanoseconds / Math.pow(10, 9 - w)) as int, w, p ?: "0");
             }());
         case "n":
             return "\n";
@@ -380,6 +380,12 @@ class _DateFormat {
         case "S":
             return match(/^(?:60|[0-5]?[0-9])/, (x : int) : void -> {
                 tm.seconds = x;
+            });
+
+        case "N": // nanoseconds (%6N is microseconds; %3N is milliseconds)
+            return match(new RegExp("^[0-9]{" + (w ?: 9) as string + "}"), (x : int) : void -> {
+                var unit = Math.pow(10, (w ?: 9) - 3);
+                tm.ms = (x / unit) as int;
             });
 
         case "Z":

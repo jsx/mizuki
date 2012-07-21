@@ -93,7 +93,12 @@ class _Test extends TestCase {
 
 			new Pair("[00]", "[%S]"),
 			new Pair("[01]", "[%S]"),
-			new Pair("[59]", "[%S]")
+			new Pair("[59]", "[%S]"),
+
+			new Pair("[123]",       "[%3N]"),
+			new Pair("[123000]",    "[%6N]"),
+			new Pair("[123000000]", "[%9N]"),
+			new Pair("[123000000]", "[%N]")
 		];
 
 		data.forEach((p) -> {
