@@ -24,6 +24,11 @@ class _Test extends TestCase {
 		this.note(d.toString());
 
 		this.expect(DateTime.strftime(d, f)).toBe(s);
+
+		d = new Date;
+		f = "[%a %b %d %Y %H:%M:%S.%3N GMT%z (%Z)]";
+		s = DateTime.strftime(d, f);
+		this.expect(DateTime.strftime(DateTime.strptime(s, f), f), d.toString()).toBe(s);
 	}
 
 	function testFailure() : void {
