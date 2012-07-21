@@ -1,7 +1,6 @@
 
 
 class DateTime {
-    // interfaces
 
     static function strftime(date : Date, fmt : string) : string {
         return _DateFormat.strftime(date, fmt, _Locale.get());
@@ -18,8 +17,6 @@ class DateTime {
     static function strptime(date : string, format : string, locale : string) : Date {
         return _DateFormat.strptime(date, format, _Locale.get(locale));
     }
-
-    // locale settings
 
     static function addLocale(name : string, A : string[], a : string[], B : string[], b : string[]) : void {
         _Locale.locale[name] = new _Locale(name, A, a, B, b);
@@ -90,14 +87,27 @@ class _DateFormat {
     static const _SPACE_PADDING   = "_";
     static const _ZERO_PADDING    = "0";
 
+    static const CurrentTZOffset = (new Date(0)).getTimezoneOffset();
+
     static function strftime(date : Date, fmt : string, locale : _Locale) : string {
         var r = "";
+
+        _DateFormat._parseFormat(fmt, (isFormat, c, padding, width) -> {
+            r += isFormat
+                ? _DateFormat._format(date, c, padding, width, locale)
+                : c;
+        });
+
+        return r;
+    }
+
+    static function _parseFormat(fmt : string, cb : (boolean, string, string, number) -> void) : void {
 
         for (var i = 0; i < fmt.length; ++i) {
             var c = fmt.charAt(i);
             if (c == "%") {
                 c = fmt.charAt(++i);
-                // flags
+
                 var padding = "";
                 switch (c) {
                 case _DateFormat._NO_PADDING:
@@ -113,19 +123,18 @@ class _DateFormat {
                     c = fmt.charAt(++i);
                     break;
                 }
-                // field width
+
                 var width = 0;
                 while (/^[0-9]/.test(fmt.charAt(i))) {
                     width = (width * 10) + fmt.charAt(i) as int;
                     c = fmt.charAt(++i);
                 }
-                r += _DateFormat._format(date, c, padding, width, locale);
+                cb(true, c, padding, width);
             }
             else {
-                r += c;
+                cb(false, c, "", 0);
             }
         }
-        return r;
     }
 
     static function _format(d: Date, c: string, p : string, w : int, l : _Locale) : string {
@@ -285,112 +294,156 @@ class _DateFormat {
     }
 
     static function strptime(date : string, fmt: string, locale : _Locale) : Date {
-        var r = new Date(0);
+        var tm = new _Tm;
 
-        var len = date.length;
-
-        for (var i = 0; i < fmt.length; ++i) {
-            var c = fmt.charAt(i);
-            if (c == "%") {
-                c = fmt.charAt(++i);
-                // flags (compatibility for strftime())
-                switch (c) {
-                case _DateFormat._NO_PADDING:
-                case _DateFormat._SPACE_PADDING:
-                case _DateFormat._ZERO_PADDING:
-                    c = fmt.charAt(++i);
-                    break;
-                }
-                // field width (compatibility for strftime())
-                while (/^[0-9]/.test(fmt.charAt(i))) {
-                    c = fmt.charAt(++i);
-                }
-                date = _DateFormat._parse(r, date, c, locale);
-            }
-            else if (date.charAt(0) == c) {
-                date = date.slice(1);
+        _DateFormat._parseFormat(fmt, (isFormat, c, padding, width) -> {
+            if (isFormat) {
+                date = _DateFormat._parse(tm, date, c, padding, width, locale);
             }
             else {
-                throw new Error("strptime: unexpected character '" + date.charAt(0) + "'");
+                if (date.charAt(0) == c) {
+                    date = date.slice(1);
+                }
+                else {
+                    throw new Error("strptime: expect '" + c + "' for '" + date + "'");
+                }
             }
+        });
+        if (date != "") {
+            throw new Error("strptime: failed to parse '" + date + "'");
         }
-        return r;
+        return new Date(Date.UTC(
+                tm.year, tm.month, tm.date,
+                tm.hours, tm.minutes, tm.seconds, tm.ms) + (tm.tz * 60 * 1000));
     }
 
-    static function _parse(r : Date, date : string, c : string, l : _Locale) : string {
+    static function _parse(tm : _Tm, date : string, c : string, p : string, w : number, l : _Locale) : string {
         var match = function (p : RegExp, f : function (x : int) : void) : string {
-            var m = /^\d+/.exec(date);
+            var m = p.exec(date);
             if (! m) {
-                throw new Error("strptime: unexpected character '" + date.charAt(0) + "'");
+                throw new Error("strptime: failed to parse '" + date + "'");
             }
 
             f(m[0] as int);
             return date.slice(m[0].length);
         };
 
+        date = date.replace(/^[ \t]+/, "");
+
         switch (c) {
         case "A":
-            var m = (new RegExp("^" + l.A.join("|") + "\\b", "i")).exec(date);
+            var m = (new RegExp("^" + l.A.join("|"), "i")).exec(date);
             if (! m) {
-                throw new Error("strptime: unexpected character '" + date.charAt(0) + "'");
+                throw new Error("strptime: failed to parse '" + date + "'");
             }
             return date.slice(m[0].length); // FIXME
         case "a":
-            var m = (new RegExp("^" + l.a.join("|") + "\\b", "i")).exec(date);
+            var m = (new RegExp("^" + l.a.join("|"), "i")).exec(date);
             if (! m) {
-                throw new Error("strptime: unexpected character '" + date.charAt(0) + "'");
+                throw new Error("strptime: failed to parse '" + date + "'");
             }
             return date.slice(m[0].length); // FIXME
 
         case "B":
-            return _DateFormat._parseMonth(r, date, l.B);
+            return _DateFormat._parseMonth(tm, date, l.B);
         case "b":
-            return _DateFormat._parseMonth(r, date, l.b);
+            return _DateFormat._parseMonth(tm, date, l.b);
 
         case "Y":
-            return match(/^\d+/, (x : int) : void ->  { r.setFullYear(x); });
+            return match(/^\d{4}/, (x : int) : void ->  {
+                tm.year = x;
+            });
         case "y":
-            return match(/^\d+/, (x : int) : void ->  {
+            return match(/^\d{2}/, (x : int) : void ->  {
                 x += 1900;
                 if (x < 1970) {
                     x += 100;
                 }
-                r.setFullYear(x);
+                tm.year = x;
             });
         case "m":
-            return match(/^\d+/, (x : int) : void -> { r.setMonth(x - 1); });
+            return match(/^(?:1[0-2]|0?[1-9])/, (x : int) : void -> {
+                tm.month = x - 1;
+            });
         case "d":
-            return match(/^\d+/, (x : int) : void ->  { r.setDate(x); });
+            return match(/^(?:[12][0-9]|3[01]|0?[1-9])/, (x : int) : void -> {
+                tm.date = x;
+            });
         case "H":
-            return match(/^\d+/, (x : int) : void -> { r.setHours(x); });
+            return match(/^(?:2[0-4]|[0-1]?[0-9])/, (x : int) : void -> {
+                tm.hours = x;
+            });
         case "M":
-            return match(/^\d+/, (x : int) : void -> { r.setMinutes(x); });
+            return match(/^(?:[0-5]?[0-9])/, (x : int) : void -> {
+                tm.minutes = x;
+            });
         case "S":
-            return match(/^\d+/, (x : int) : void -> { r.setSeconds(x); });
+            return match(/^(?:60|[0-5]?[0-9])/, (x : int) : void -> {
+                tm.seconds = x;
+            });
 
         case "Z":
-            var m = /^[^ \t\r\n]+/.exec(date);
+            var m = /^\w+/.exec(date);
             if (! m) {
-                throw new Error("strptime: unexpected character '" + date.charAt(0) + "'");
+                throw new Error("strptime: failed to parse '" + date.charAt(0) + "'");
             }
-            return date.slice(m[0].length); // FIXME
+            tm.tzName = m[0];
+            if (/^(?:UTC|GMT)$/i.test(tm.tzName)) {
+                tm.tz = 0;
+            }
+            return date.slice(m[0].length);
+        case "z": // timezone offset "Z" | "+hh:mm" | "+hhmm" | "+hh"
+            return (function () : string {
+                var m = /^([+-])(2[0-4]|[0-1][0-9])(?:[:]?([0-5][0-9]))?/.exec(date);
+                if (m) {
+                    tm.tz = (m[2] as int) * 60;
+                    if (m[3] != null) {
+                        tm.tz += m[3] as int;
+                    }
+
+                    if (m[1] == "+") {
+                        tm.tz = -tm.tz;
+                    }
+
+                    return date.slice(m[0].length);
+                }
+                else {
+                    tm.tz = 0;
+                    return date;
+                }
+            }());
+
         }
         return date.slice(1);
     }
 
-    static function _parseMonth(r : Date, date : string, names : string[]) : string {
-        var m = (new RegExp("^" + names.join("|") + "\\b", "i")).exec(date);
+    static function _parseMonth(tm : _Tm, date : string, names : string[]) : string {
+        var m = (new RegExp("^" + names.join("|"), "i")).exec(date);
         if (! m) {
-            throw new Error("strptime: unexpected character '" + date.charAt(0) + "'");
+            throw new Error("strptime: failed to parse '" + date.charAt(0) + "'");
         }
 
-        r.setMonth(names.indexOf(_DateFormat._toCamelCase(m[0])));
+        tm.month = names.indexOf(_DateFormat._toCamelCase(m[0]));
         return date.slice(m[0].length);
     }
 
     static function _toCamelCase(s : string) : string {
         return s.slice(0, 1).toUpperCase() + s.slice(1).toLowerCase();
     }
+}
+
+class _Tm {
+    var year    = 0;
+    var month   = 0;
+    var date    = 1;
+    var hours   = 0;
+    var minutes = 0;
+    var seconds = 0;
+    var ms      = 0;
+
+    var tz      = _DateFormat.CurrentTZOffset;
+    var tzName  = "";
+    var wday    = 0; // day of week
 }
 
 // vim: set expandtab:

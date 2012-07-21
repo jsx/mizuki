@@ -10,10 +10,13 @@ east-asian-width:
 	perl tool/east-asian-width.pl > $(DETAIL)/east-asian-width.jsx
 	jsx $(DETAIL)/east-asian-width.jsx > /dev/null # syntax check
 
-test-all: test test-release
+test-all: test test-tz test-release
 
 test:
 	prove
+
+test-tz:
+	TZ=GMT-0 prove
 
 test-release:
 	JSX_OPTS=--release prove

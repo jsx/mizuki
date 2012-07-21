@@ -1,21 +1,21 @@
 import "mizuki/datetime.jsx";
 import "test-case.jsx";
 
-class _Test extends TestCase {
-	var year  = 2013;
-	var month =    4;
-	var day   =    2;
-	var hour  =    6;
-	var min   =    8;
-	var sec   =    9;
-	var ms    =   77;
+class Pair {
+	var str : string;
+	var fmt : string;
 
-	var _date : Date = null;
-
-	function date() : Date {
-		return this._date ?: (this._date = new Date(this.year, this.month, this.day, this.hour, this.min, this.sec, this.ms));
+	function constructor(str : string, fmt : string) {
+		this.str = str;
+		this.fmt = fmt;
 	}
 
+	override function toString() : string {
+		return "(" + this.str + ", " + this.fmt + ")";
+	}
+}
+
+class _Test extends TestCase {
 	function testSomke() : void {
 		var s = "2013/04/02 06:08:09";
 		var f = "%Y/%m/%d %H:%M:%S";
@@ -27,26 +27,32 @@ class _Test extends TestCase {
 	}
 
 	function testFailure() : void {
-		try {
-			DateTime.strptime("2012", "[%Y]");
-			this.fail("should not reached");
-		}
-		catch (e : Error) {
-			this.expect(e, e.toString()).notToBe(null);
-		}
+		var data = [
+			new Pair("[20121]", "[%Y]"),
+			new Pair("[201]",   "[%Y]"),
+			new Pair("[0]",  "[%m]"),
+			new Pair("[13]", "[%m]"),
+			new Pair("[0]",  "[%d]"),
+			new Pair("[32]", "[%d]"),
+			new Pair("[25]", "[%H]"),
+			new Pair("[60]", "[%M]"),
+			new Pair("[61]", "[%S]")
+		];
 
-		try {
-			DateTime.strptime("[2012]", "%Y");
-			this.fail("should not reached");
-		}
-		catch (e : Error) {
-			this.expect(e, e.toString()).notToBe(null);
-		}
+		data.forEach((p) -> {
+			try {
+				DateTime.strptime(p.str, p.fmt);
+				this.fail("should not reached for " + p.toString());
+			}
+			catch (e : Error) {
+				this.expect(e, p.toString() + " => " + e.toString()).notToBe(null);
+			}
+		});
 	}
 
 	function testLocale() : void {
-		var s = "Sat Jul 21 00:52:33 JST 2012";
-		var f = "%a %b %d %H:%M:%S %Z %Y";
+		var s = "Sat Jul 21 00:52:33 2012";
+		var f = "%a %b %d %H:%M:%S %Y";
 		this.expect(DateTime.strftime(DateTime.strptime(s, f), f), f).toBe(s);
 
 
@@ -57,16 +63,51 @@ class _Test extends TestCase {
 	}
 
 	function testFormat() : void {
-		this.expect(DateTime.strptime("[January]", "[%B]").getMonth(), "%B (1)").toBe(0);
-		this.expect(DateTime.strptime("[february]", "[%B]").getMonth(), "%B (2)").toBe(1);
-		this.expect(DateTime.strptime("[Jan]", "[%b]").getMonth(), "%b (1)").toBe(0);
-		this.expect(DateTime.strptime("[feb]", "[%b]").getMonth(), "%b (2)").toBe(1);
+		var data = [
+			new Pair("[2012]", "[%Y]"),
+			new Pair("[1970]", "[%Y]"),
+			new Pair("[2060]", "[%Y]"),
 
-		this.expect(DateTime.strptime("[2012]", "[%Y]").getFullYear(), "%Y").toBe(2012);
-		this.expect(DateTime.strptime("[12]", "[%y]").getFullYear(), "%y (for 20xx)").toBe(2012);
-		this.expect(DateTime.strptime("[99]", "[%y]").getFullYear(), "%y (for 19xx)").toBe(1999);
+			new Pair("[12]",  "[%y]"),
+			new Pair("[95]",  "[%y]"),
 
-		this.expect(DateTime.strptime("[6]", "[%m]").getMonth(), "%m").toBe(5);
-		this.expect(DateTime.strptime("[5]", "[%d]").getDate(), "%d").toBe(5);
+			new Pair("[01]", "[%m]"),
+			new Pair("[10]", "[%m]"),
+			new Pair("[12]", "[%m]"),
+
+			new Pair("[01]", "[%d]"),
+			new Pair("[10]", "[%d]"),
+			new Pair("[20]", "[%d]"),
+			new Pair("[30]", "[%d]"),
+			new Pair("[31]", "[%d]"),
+
+			new Pair("[00]", "[%H]"),
+			new Pair("[01]", "[%H]"),
+			new Pair("[10]", "[%H]"),
+			new Pair("[20]", "[%H]"),
+			new Pair("[23]", "[%H]"),
+
+			new Pair("[00]", "[%M]"),
+			new Pair("[01]", "[%M]"),
+			new Pair("[59]", "[%M]"),
+
+			new Pair("[00]", "[%S]"),
+			new Pair("[01]", "[%S]"),
+			new Pair("[59]", "[%S]")
+		];
+
+		data.forEach((p) -> {
+			var d = DateTime.strptime(p.str, p.fmt);
+			this.expect(DateTime.strftime(d, p.fmt), p.toString()).toBe(p.str);
+		});
+	}
+
+	function testLeapSecond() : void {
+		var a = "[1998-12-31 23:59:60 UTC]";
+
+		this.expect(DateTime.strptime(a, "[%Y-%m-%d %H:%M:%S %Z]").getTime()).toBe(915148800000);
+
+		var b = "[2012-07-01 08:59:60 UTC]";
+		this.expect(DateTime.strptime(b, "[%Y-%m-%d %H:%M:%S %Z]").getTime()).toBe(1341133200000);
 	}
 }
