@@ -22,10 +22,13 @@ class DateTime {
         _Locale.locale[name] = new _Locale(name, A, a, B, b);
     }
 
+    static function setLocale(name : string) : void {
+        _Locale.currentLocale = name;
+    }
 }
 
 class _Locale {
-    static var _currentLocale = "en";
+    static var currentLocale = "en";
 
     static var locale : Map.<_Locale> = {
         en: new _Locale("en",
@@ -71,14 +74,12 @@ class _Locale {
     }
 
     static function get() : _Locale {
-        return _Locale.locale[_Locale._currentLocale]
+        return _Locale.locale[_Locale.currentLocale]
             ?: _Locale.locale["en"];
     }
 
     static function get(name : string) : _Locale {
-        return _Locale.locale[name]
-            ?: _Locale.locale[_Locale._currentLocale]
-            ?: _Locale.locale["en"];
+        return _Locale.locale[name] ?: _Locale.get();
     }
 }
 
