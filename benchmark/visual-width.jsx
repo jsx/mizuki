@@ -1,30 +1,30 @@
 
-import "console.jsx";
+import "../lib/mizuki/benchmark.jsx";
 import "../lib/mizuki/utility.jsx";
 
 class _Main {
-
-	static function timeit(block : function():void) : number {
-		var N = 10000;
-
-		var t0 = Date.now();
-		for (var i = 0; i < N; ++i) {
-			block();
-		}
-		return Date.now() - t0;
-	}
-
-
-
 	static function main(args : string[]) : void {
-		var N = 10000;
-		var s = StringUtil.repeat("[✽こんにちは世界✽]", 100);
+		var n = (args.length > 0 ? args[0] as int : 100);
 
-		var c = 0;
-		var elapsed = _Main.timeit( () -> {
-			c += StringUtil.visualWidth(s);
+		var b = new Benchmark();
+		b.enter("Benchmark for StringUtil.visualWidth()");
+
+		var texts = [
+			"Hello, world! Wonrderful!",
+			" [  ✽こんにちは世界✽  ]",
+			"Здравствуйте!"
+		];
+
+		texts.forEach( (text) -> {
+			var s =  StringUtil.repeat(text, n);
+			var c = 0;
+			b.timeit("visualWidth for " + text, () -> {
+				c = StringUtil.visualWidth(s);
+			});
+			b.log("(visual width: " + c as string + ";"
+				+ " length: " + s.length as string + ")");
 		});
-		console.log(c as string);
-		console.log("visualWidth: " + elapsed  as string + "[ms]");
+
+		b.leave();
 	}
 }

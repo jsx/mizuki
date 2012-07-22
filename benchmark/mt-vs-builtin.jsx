@@ -1,36 +1,44 @@
-import "console.jsx";
 import "mizuki/random/mt.jsx";
+import "mizuki/benchmark.jsx";
 
 class _Main {
 	static function main(args : string[]) : void {
 		var N = 10 * 1000 * 1000;
 
-		console.log("generate " + N as string + " of numbers\n");
+		var b = new Benchmark();
+		b.enter("generate " + N as string + " of random numbers");
 
 		var sum = 0;
-		var t0 = Date.now();
-		for(var i = 0; i < N; i++) {
-			sum += Math.random();
-		}
-		console.log(sum);
-		console.log("Math.random() : " + (Date.now() - t0) as string + " ms");
+
+		b.timeit("Math.random()   ", () -> {
+			sum = 0;
+			for(var i = 0; i < N; i++) {
+				sum += Math.random();
+			}
+		});
+		b.log("(value : " + sum as string + ")");
 
 		var mt = new MT(42);
-		var sum = 0;
-		var t0 = Date.now();
-		for(var i = 0; i < N; i++) {
-			sum += mt.nextReal32();
-		}
-		console.log(sum);
-		console.log("MT#nextReal32() : " + (Date.now() - t0) as string + " ms");
-		var mt = new MT(42);
-		var sum = 0;
-		var t0 = Date.now();
-		for(var i = 0; i < N; i++) {
-			sum += mt.nextReal();
-		}
-		console.log(sum);
-		console.log("MT#nextReal() : " + (Date.now() - t0) as string + " ms");
 
+		b.timeit("MT#nextReal32() ", () -> {
+			sum = 0;
+			for(var i = 0; i < N; i++) {
+				sum += mt.nextReal32();
+			}
+		});
+		b.log("(value : " + sum as string + ")");
+
+		var mt = new MT(42);
+
+		b.timeit("MT#nextReal()   ", () -> {
+			sum = 0;
+			for(var i = 0; i < N; i++) {
+				sum += mt.nextReal();
+			}
+		});
+		b.log("(value : " + sum as string + ")");
+
+		b.leave();
 	}
+
 }
