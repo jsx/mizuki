@@ -14,7 +14,7 @@ class _Main {
     static function main(args : string[]) : void {
         var n = args.length > 0 ? args[0] as number : 1000000;
 
-        var a = _Main.genArray(n);
+        var a = ListUtil.<number>.make(n, (i) -> (i+1) * 10 + 0.5);
 
         var w = function (n : number, w : int) : string {
             var s = n as string;
@@ -24,9 +24,9 @@ class _Main {
             return s;
         };
 
-        for (var i = 0; i < 5; ++i) {
+        for (var i = 0; i < 4; ++i) {
             var u = (a.length >> i) as int;
-            console.log("shuffled 0.." + u as string);
+            console.log("shuffled " + (u / n * 100) as string + "% of the array");
 
             ListUtil.<number>.shuffleInPlace(a, 0, u);
             var t0 = Date.now();

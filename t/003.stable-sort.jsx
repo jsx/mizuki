@@ -72,11 +72,7 @@ class _Test extends TestCase {
     }
 
     static function genArray(n : int) : number[] {
-        var a = new number[](n);
-        for (var i = 0; i < n; ++i) {
-            a[i] = (i+1) * 10;
-        }
-        return a;
+        return ListUtil.<number>.make(n, (i) -> (i+1) * 10);
     }
 
     function testN31() : void {
