@@ -22,6 +22,14 @@ class ListUtil.<T> {
         }
     }
 
+    static function make(n : int, maker : (int) -> T) : T[] {
+        var a = new T[](n);
+        for (var i = 0; i < n; ++i) {
+            a[i] = maker(i);
+        }
+        return a;
+    }
+
 }
 
 class StringUtil {
