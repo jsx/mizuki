@@ -64,9 +64,9 @@ class StableSort.<T> {
 
     // back-end
 
-    static const MIN_MERGE = 32;
+    static const MIN_MERGE  = 32;
     static const MIN_GALLOP = 7;
-    static const INITIAL_TMP_STORAGE_LENGTH = 256;
+    static const INITIAL_TMP_LENGTH = 256;
 
     var a : T[];
     var c : (Nullable.<T>, Nullable.<T>) -> int;
@@ -76,18 +76,16 @@ class StableSort.<T> {
 
     var stackSize = 0;
     var runBase : int[];
-    var runLen : int[];
+    var runLen  : int[];
 
     function constructor(a : T[], c : (Nullable.<T>, Nullable.<T>) -> int) {
         this.a = a;
         this.c = c;
 
         var len = a.length;
-        var initLen = len < 2 * StableSort.<T>.INITIAL_TMP_STORAGE_LENGTH
-            ? len >>> 1
-            : StableSort.<T>.INITIAL_TMP_STORAGE_LENGTH;
 
-        this.tmp = new Array.<T>(initLen);
+        var initLen = Math.min(len >>> 1, StableSort.<T>.INITIAL_TMP_LENGTH);
+        this.tmp = new T[](initLen);
 
         var stackLen =
               len <    120 ?  5
