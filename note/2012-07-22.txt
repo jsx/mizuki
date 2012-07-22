@@ -1,0 +1,111 @@
+uname --kernel-name --kernel-release --hardware-platform
+Darwin 11.4.0 MacBookAir4,2
+jsx --version
+0.0.1
+node --version
+v0.8.3
+jsx --release --add-search-path lib --output a.jsx.js --executable node benchmark/sort.jsx
+node a.jsx.js
+Sorting 1000000 of floating point numbers
+  shuffled 100% of the array
+    builtin sort:    462[ms]
+    StableSort! :    655[ms] ( 70%)
+    StableSort  :   1010[ms] ( 45%)
+  shuffled 50% of the array
+    builtin sort:    864[ms]
+    StableSort! :    521[ms] (165%)
+    StableSort  :    531[ms] (162%)
+  shuffled 25% of the array
+    builtin sort:    778[ms]
+    StableSort! :    259[ms] (300%)
+    StableSort  :    301[ms] (258%)
+  shuffled 12.5% of the array
+    builtin sort:    938[ms]
+    StableSort! :    199[ms] (470%)
+    StableSort  :    217[ms] (430%)
+js/spidermonkey a.jsx.js
+Sorting 1000000 of floating point numbers
+  shuffled 100% of the array
+    builtin sort:   1088[ms]
+    StableSort! :   1258[ms] ( 86%)
+    StableSort  :   1307[ms] ( 83%)
+  shuffled 50% of the array
+    builtin sort:    567[ms]
+    StableSort! :    643[ms] ( 88%)
+    StableSort  :    650[ms] ( 87%)
+  shuffled 25% of the array
+    builtin sort:    317[ms]
+    StableSort! :    318[ms] ( 99%)
+    StableSort  :    326[ms] ( 97%)
+  shuffled 12.5% of the array
+    builtin sort:    200[ms]
+    StableSort! :    171[ms] (117%)
+    StableSort  :    177[ms] (113%)
+js/jscore a.jsx.js
+Sorting 1000000 of floating point numbers
+  shuffled 100% of the array
+    builtin sort:   1073[ms]
+    StableSort! :    477[ms] (224%)
+    StableSort  :    554[ms] (193%)
+  shuffled 50% of the array
+    builtin sort:    812[ms]
+    StableSort! :    275[ms] (294%)
+    StableSort  :    298[ms] (272%)
+  shuffled 25% of the array
+    builtin sort:    707[ms]
+    StableSort! :    137[ms] (516%)
+    StableSort  :    167[ms] (422%)
+  shuffled 12.5% of the array
+    builtin sort:    673[ms]
+    StableSort! :     67[ms] (1000%)
+    StableSort  :    103[ms] (648%)
+jsx --release --add-search-path lib --output a.jsx.js --executable node benchmark/mt-vs-builtin.jsx
+node a.jsx.js
+generate 10000000 of random numbers
+  Math.random()   :    148[ms]
+  (value : 5001189.909752528)
+  MT#nextReal32() :   1753[ms] (8.4%)
+  (value : 4999788.070460474)
+  MT#nextReal()   :   3379[ms] (4.3%)
+  (value : 4999924.80383602)
+js/spidermonkey a.jsx.js
+generate 10000000 of random numbers
+  Math.random()   :    294[ms]
+  (value : 4998752.195389205)
+  MT#nextReal32() :   2336[ms] ( 12%)
+  (value : 4999788.070460474)
+  MT#nextReal()   :   5108[ms] (5.7%)
+  (value : 4999924.80383602)
+js/jscore a.jsx.js
+generate 10000000 of random numbers
+  Math.random()   :    166[ms]
+  (value : 5000937.643571473)
+  MT#nextReal32() :   1633[ms] ( 10%)
+  (value : 4999788.070460474)
+  MT#nextReal()   :   3024[ms] (5.5%)
+  (value : 4999924.80383602)
+jsx --release --add-search-path lib --output a.jsx.js --executable node benchmark/visual-width.jsx
+node a.jsx.js
+Benchmark for StringUtil.visualWidth()
+  visualWidth for Hello, world! Wonrderful!: 1.8036[ms]
+  (visual width: 2500; length: 2500)
+  visualWidth for  [  ✽こんにちは世界✽  ]: 0.7054[ms] (255%)
+  (visual width: 2500; length: 1600)
+  visualWidth for Здравствуйте!: 0.5287[ms] (341%)
+  (visual width: 2500; length: 1300)
+js/spidermonkey a.jsx.js
+Benchmark for StringUtil.visualWidth()
+  visualWidth for Hello, world! Wonrderful!: 2.5470[ms]
+  (visual width: 2500; length: 2500)
+  visualWidth for  [  ✽こんにちは世界✽  ]: 3.1809[ms] ( 80%)
+  (visual width: 3800; length: 3400)
+  visualWidth for Здравствуйте!: 1.5779[ms] (161%)
+  (visual width: 3700; length: 2500)
+js/jscore a.jsx.js
+Benchmark for StringUtil.visualWidth()
+  visualWidth for Hello, world! Wonrderful!: 7.8818[ms]
+  (visual width: 2500; length: 2500)
+  visualWidth for  [  ✽こんにちは世界✽  ]: 2.9674[ms] (265%)
+  (visual width: 2500; length: 1600)
+  visualWidth for Здравствуйте!: 2.0140[ms] (391%)
+  (visual width: 2500; length: 1300)

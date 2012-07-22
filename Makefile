@@ -45,3 +45,14 @@ benchmark-visual-width:
 	js/spidermonkey a.jsx.js
 	js/jscore a.jsx.js
 
+benchmark-all: print-version benchmark-sort benchmark-mt benchmark-visual-width
+
+print-version:
+	uname --kernel-name --kernel-release --hardware-platform
+	jsx --version
+	node --version
+
+note:
+	make benchmark-all | tee `perl -MTime::Piece -e 'print( localtime()->strftime("note/%Y-%m-%d.txt") )'`
+
+.PHONY: note
