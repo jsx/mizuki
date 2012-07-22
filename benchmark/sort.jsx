@@ -1,6 +1,6 @@
-import "mizuki/stable-sort.jsx";
-import "mizuki/utility.jsx";
-import "mizuki/benchmark.jsx";
+import "../lib/mizuki/stable-sort.jsx";
+import "../lib/mizuki/utility.jsx";
+import "../lib/mizuki/benchmark.jsx";
 
 class _Main {
     static function main(args : string[]) : void {

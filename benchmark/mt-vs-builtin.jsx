@@ -1,5 +1,5 @@
-import "mizuki/random/mt.jsx";
-import "mizuki/benchmark.jsx";
+import "../lib/mizuki/random/mt.jsx";
+import "../lib/mizuki/benchmark.jsx";
 
 class _Main {
 	static function main(args : string[]) : void {
