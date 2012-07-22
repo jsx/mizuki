@@ -1,6 +1,10 @@
-// stable sort implementation
-// ported from TimSort@OpenJDK
-// http://cr.openjdk.java.net/~martin/webrevs/openjdk7/timsort/raw_files/new/src/share/classes/java/util/TimSort.java
+/**
+ * Stable Sort Implementation with timsort
+ *
+ * @see http://svn.python.org/projects/python/trunk/Objects/listsort.txt description by the author
+ * @see http://code.google.com/p/timsort/source/browse/trunk/timsort.c C port
+ * @see http://cr.openjdk.java.net/~martin/webrevs/openjdk7/timsort/raw_files/new/src/share/classes/java/util/TimSort.java Java port
+ */
 
 class StableSort.<T> {
     // front-end
