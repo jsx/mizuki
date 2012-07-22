@@ -2,7 +2,7 @@ language: node_js
 before_install:
     - git clone git://github.com/jsx/JSX.git
 script:
-    - PATH="JSX/bin:$PATH" make test-all
+    - PATH="JSX/bin:$PATH" make test-all JOBS=1
 node_js:
     - 0.6
     - 0.8

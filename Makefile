@@ -1,8 +1,10 @@
 
+JOBS  := 2
+PROVE :=prove --jobs=$(JOBS)
+
 DETAIL = lib/mizuki/detail
 
 JSX2JS = jsx --release --add-search-path lib --output a.jsx.js --executable node
-
 all:
 
 east-asian-width:
@@ -13,16 +15,17 @@ east-asian-width:
 test-all: test test-tz test-release
 
 test:
-	prove
+	$(PROVE)
+
 
 test-tz:
-	TZ=GMT-0 prove
+	TZ=GMT-0 $(PROVE)
 
 test-release:
-	JSX_OPTS=--release prove
+	JSX_OPTS=--release $(PROVE)
 
 test-with-jscore:
-	JSX_RUNJS=js/jscore prove
+	JSX_RUNJS=js/jscore $(PROVE)
 
 benchmark-sort:
 	$(JSX2JS) benchmark/sort.jsx
