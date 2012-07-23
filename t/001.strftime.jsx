@@ -30,6 +30,7 @@ class _Test extends TestCase {
 
 		this.expect(DateTime.strftime(d, "[%A]", "en")).toBe("[Thursday]");
 		this.expect(DateTime.strftime(d, "[%A]", "ja")).toBe("[木曜日]");
+		this.expect(DateTime.strftime(d, "[%A]", "ja_JP.utf8")).toBe("[木曜日]");
 		this.expect(DateTime.strftime(d, "[%A]", "NA"), "undefined locale is fallback to en").toBe("[Thursday]");
 	}
 

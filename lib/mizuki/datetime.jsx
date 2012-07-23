@@ -19,11 +19,11 @@ class DateTime {
     }
 
     static function addLocale(name : string, A : string[], a : string[], B : string[], b : string[]) : void {
-        _Locale.locale[name] = new _Locale(name, A, a, B, b);
+        _Locale.register(name, new _Locale(name, A, a, B, b));
     }
 
     static function setLocale(name : string) : void {
-        _Locale.currentLocale = name.split(/_/)[0].toLowerCase();
+        _Locale.setCurrentLocale(name);
     }
 }
 
@@ -73,13 +73,25 @@ class _Locale {
         this.b = b;
     }
 
+    static function normalize(name : string) : string {
+        return name.split(/_/)[0].toLowerCase();
+    }
+
     static function get() : _Locale {
         return _Locale.locale[_Locale.currentLocale]
             ?: _Locale.locale["en"];
     }
 
     static function get(name : string) : _Locale {
-        return _Locale.locale[name] ?: _Locale.get();
+        return _Locale.locale[_Locale.normalize(name)] ?: _Locale.get();
+    }
+
+    static function register(name : string, locale : _Locale) : void {
+        _Locale.locale[_Locale.normalize(name)] = locale;
+    }
+
+    static function setCurrentLocale(name : string) : void {
+        _Locale.currentLocale = _Locale.normalize(name);
     }
 }
 
