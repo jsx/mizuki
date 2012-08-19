@@ -1,0 +1,112 @@
+make benchmark-all | tee `perl -MTime::Piece -e 'print( localtime()->strftime("note/%Y-%m-%d.txt") )'`
+uname --kernel-name --kernel-release --hardware-platform
+Darwin 11.4.0 MacBookAir4,2
+jsx --version
+0.0.1
+node --version
+v0.8.6
+jsx --release --add-search-path lib --output a.jsx.js --executable node benchmark/sort.jsx
+node a.jsx.js
+Sorting 1000000 of floating point numbers
+  shuffled 100% of the array
+    builtin sort:    517[ms]
+    StableSort! :    651[ms] ( 79%)
+    StableSort  :   1078[ms] ( 48%)
+  shuffled 50% of the array
+    builtin sort:   1024[ms]
+    StableSort! :    527[ms] (194%)
+    StableSort  :    554[ms] (184%)
+  shuffled 25% of the array
+    builtin sort:    985[ms]
+    StableSort! :    263[ms] (374%)
+    StableSort  :    314[ms] (313%)
+  shuffled 12.5% of the array
+    builtin sort:   1053[ms]
+    StableSort! :    195[ms] (540%)
+    StableSort  :    223[ms] (470%)
+js/spidermonkey a.jsx.js
+Sorting 1000000 of floating point numbers
+  shuffled 100% of the array
+    builtin sort:   1042[ms]
+    StableSort! :   1399[ms] ( 74%)
+    StableSort  :   1515[ms] ( 68%)
+  shuffled 50% of the array
+    builtin sort:    548[ms]
+    StableSort! :    708[ms] ( 77%)
+    StableSort  :    716[ms] ( 76%)
+  shuffled 25% of the array
+    builtin sort:    323[ms]
+    StableSort! :    353[ms] ( 91%)
+    StableSort  :    419[ms] ( 77%)
+  shuffled 12.5% of the array
+    builtin sort:    199[ms]
+    StableSort! :    187[ms] (106%)
+    StableSort  :    196[ms] (101%)
+js/jscore a.jsx.js
+Sorting 1000000 of floating point numbers
+  shuffled 100% of the array
+    builtin sort:    267[ms]
+    StableSort! :    498[ms] ( 53%)
+    StableSort  :    647[ms] ( 41%)
+  shuffled 50% of the array
+    builtin sort:    142[ms]
+    StableSort! :    277[ms] ( 51%)
+    StableSort  :    327[ms] ( 43%)
+  shuffled 25% of the array
+    builtin sort:     84[ms]
+    StableSort! :    131[ms] ( 64%)
+    StableSort  :    164[ms] ( 51%)
+  shuffled 12.5% of the array
+    builtin sort:     56[ms]
+    StableSort! :     74[ms] ( 76%)
+    StableSort  :    106[ms] ( 53%)
+jsx --release --add-search-path lib --output a.jsx.js --executable node benchmark/mt-vs-builtin.jsx
+node a.jsx.js
+generate 10000000 of random numbers
+  Math.random()   :    141[ms]
+  (value : 5000701.302161781)
+  MT#nextReal32() :   1769[ms] (7.9%)
+  (value : 4999788.070460474)
+  MT#nextReal()   :   3413[ms] (4.1%)
+  (value : 4999924.80383602)
+js/spidermonkey a.jsx.js
+generate 10000000 of random numbers
+  Math.random()   :    292[ms]
+  (value : 5000250.948840491)
+  MT#nextReal32() :   2364[ms] ( 12%)
+  (value : 4999788.070460474)
+  MT#nextReal()   :   5100[ms] (5.7%)
+  (value : 4999924.80383602)
+js/jscore a.jsx.js
+generate 10000000 of random numbers
+  Math.random()   :    163[ms]
+  (value : 5001178.278568605)
+  MT#nextReal32() :   1629[ms] ( 10%)
+  (value : 4999788.070460474)
+  MT#nextReal()   :   3054[ms] (5.3%)
+  (value : 4999924.80383602)
+jsx --release --add-search-path lib --output a.jsx.js --executable node benchmark/visual-width.jsx
+node a.jsx.js
+Benchmark for StringUtil.visualWidth()
+  visualWidth for Hello, world! Wonrderful!: 1.7671[ms]
+  (visual width: 2500; length: 2500)
+  visualWidth for  [  ✽こんにちは世界✽  ]: 0.7064[ms] (250%)
+  (visual width: 2500; length: 1600)
+  visualWidth for Здравствуйте!: 0.5240[ms] (337%)
+  (visual width: 2500; length: 1300)
+js/spidermonkey a.jsx.js
+Benchmark for StringUtil.visualWidth()
+  visualWidth for Hello, world! Wonrderful!: 2.5798[ms]
+  (visual width: 2500; length: 2500)
+  visualWidth for  [  ✽こんにちは世界✽  ]: 3.0990[ms] ( 83%)
+  (visual width: 3800; length: 3400)
+  visualWidth for Здравствуйте!: 1.6006[ms] (161%)
+  (visual width: 3700; length: 2500)
+js/jscore a.jsx.js
+Benchmark for StringUtil.visualWidth()
+  visualWidth for Hello, world! Wonrderful!: 7.5984[ms]
+  (visual width: 2500; length: 2500)
+  visualWidth for  [  ✽こんにちは世界✽  ]: 3.0518[ms] (248%)
+  (visual width: 2500; length: 1600)
+  visualWidth for Здравствуйте!: 2.0470[ms] (371%)
+  (visual width: 2500; length: 1300)

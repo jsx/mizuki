@@ -53,6 +53,6 @@ print-version:
 	node --version
 
 note:
-	make benchmark-all | tee `perl -MTime::Piece -e 'print( localtime()->strftime("note/%Y-%m-%d.txt") )'`
+	make benchmark-all | tee `perl -MTime::Piece -e 'print( localtime()->strftime("note/%Y-%m-%d.txt") )'` note/latest.txt
 
 .PHONY: note
