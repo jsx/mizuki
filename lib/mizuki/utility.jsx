@@ -37,6 +37,9 @@ class StringUtil {
         return 0xD800 <= c && c <= 0xD8FF;
     }
 
+    /**
+      * Repeats string for each character, considering surrogate pairs.
+      */
     static function forEach(str : string, cb : function(c : int) : boolean) : void {
 
         for (var i = 0; i < str.length; ++i) {
@@ -53,7 +56,8 @@ class StringUtil {
     }
 
     /**
-      * calculates the width of a string
+      * Calculates the width of a string.
+      *
       * @see http://www.unicode.org/reports/tr11/
       */
     static function visualWidth(str : string) : int {
@@ -66,6 +70,13 @@ class StringUtil {
         return width;
     }
 
+    /**
+      * Truncates string by a visual width.
+      * e.g. <code>StringUtil.truncate("foobarbaz", 6, "...")</code> produces
+      * <code>"foo..."</code>.
+      *
+      * @see http://www.unicode.org/reports/tr11/
+      */
     static function truncate(str : string, maxWidth : int, suffix : string) : string {
         if (StringUtil.visualWidth(str) <= maxWidth) {
             return str;

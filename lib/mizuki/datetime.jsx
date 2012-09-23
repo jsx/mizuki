@@ -1,15 +1,34 @@
 
-
+/**
+ * Set of DateTime formatting utilities
+ */
 class DateTime {
-
-    static function strftime(date : Date, fmt : string) : string {
-        return _DateFormat.strftime(date, fmt, _Locale.get());
+    /**
+      * POSIX compatible <code>strftime()</code>.
+      * e.g. <code>DateTime.strftime(new Date, "%Y-%m-%d %H:%M:%S.%3N")</code>
+      * returns, for example, <code>2012-09-23 22:02:55.863</code>.
+      *
+      * @param date Date instance to be formatted
+      * @param format formatting parameter
+      * @see   strftime(3)
+      */
+    static function strftime(date : Date, format : string) : string {
+        return _DateFormat.strftime(date, format, _Locale.get());
     }
 
-    static function strftime(date : Date, fmt : string, locale : string) : string {
-        return _DateFormat.strftime(date, fmt, _Locale.get(locale));
+    static function strftime(date : Date, format : string, locale : string) : string {
+        return _DateFormat.strftime(date, format, _Locale.get(locale));
     }
 
+    /**
+      * POSIX compatible <code>strptime()</code>.
+      * A string made by <code>strftime()</code> should be parsed by
+      * <code>strptime()</code> with the same format parameter.
+      *
+      * @param date string representation of a date/time
+      * @param format format parameter
+      * @see   strptime(3)
+      */
     static function strptime(date : string, format : string) : Date {
         return _DateFormat.strptime(date, format, _Locale.get());
     }

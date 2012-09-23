@@ -1,7 +1,8 @@
-/**
+/***
+ * Mersenne-Twister pseude-random generator ported from mt19937ar.c
+ */
 
-Mersenne-Twister pseude-random generator ported from mt19937ar.c
-
+/*
 SYNOPSIS:
 
     import "random/mt.jsx";
@@ -73,6 +74,9 @@ SYNOPSIS:
 
 import "./base.jsx";
 
+/**
+ * The Mersenne Twister implementation.
+ */
 final class MT implements RandomGenerator {
     // Period parameters
     static const _N = 624;
