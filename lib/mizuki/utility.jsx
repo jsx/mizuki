@@ -1,6 +1,15 @@
 import "./detail/east-asian-width.jsx";
 
-class ListUtil.<T> {
+final class ListUtil.<T> {
+
+    /**
+     * Swaps <code>a[i]</code> and <code>a[j]</code>
+     */
+    static function swap(a : T[], i : int, j : int) : void {
+        var t = a[i];
+        a[i]  = a[j];
+        a[j]  = t;
+    }
 
     // Fisher–Yates shuffle
     static function shuffle(a : T[]) : T[] {
@@ -16,9 +25,7 @@ class ListUtil.<T> {
     static function shuffleInPlace(a : T[], begin : int, end : int) : void {
         for (var i = begin; i < end; ++i) {
             var j = (Math.random() * i) as int;
-            var t = a[i];
-            a[i]  = a[j];
-            a[j]  = t;
+            ListUtil.<T>.swap(a, i, j);
         }
     }
 
@@ -32,7 +39,7 @@ class ListUtil.<T> {
 
 }
 
-class StringUtil {
+final class StringUtil {
     static function _isSurrogatePair(c : int) : boolean {
         return 0xD800 <= c && c <= 0xD8FF;
     }
