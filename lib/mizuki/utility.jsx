@@ -2,6 +2,10 @@ import "./detail/east-asian-width.jsx";
 
 final class ListUtil.<T> {
 
+    static function copy(a : T[]) : T[] {
+        return a.slice(0);
+    }
+
     /**
      * Swaps <code>a[i]</code> and <code>a[j]</code>
      */
@@ -13,7 +17,7 @@ final class ListUtil.<T> {
 
     // Fisher–Yates shuffle
     static function shuffle(a : T[]) : T[] {
-        var r = a.slice(0);
+        var r = ListUtil.<T>.copy(a);
         ListUtil.<T>.shuffleInPlace(r);
         return r;
     }
@@ -29,6 +33,21 @@ final class ListUtil.<T> {
         }
     }
 
+    static function reverseInPlace(a : T[]) : void {
+        ListUtil.<T>.reverseInPlace(a, 0, a.length);
+    }
+
+    static function reverseInPlace(a : T[], begin : int, end : int) : void {
+        assert begin >= 0;
+        assert begin <= end;
+        assert end <= a.length;
+
+        --end;
+        while (begin < end) {
+            ListUtil.<T>.swap(a, begin++, end--);
+        }
+    }
+
     static function make(n : int, maker : (int) -> T) : T[] {
         var a = new T[](n);
         for (var i = 0; i < n; ++i) {
@@ -39,8 +58,13 @@ final class ListUtil.<T> {
 
     static function zip(a : T[], b : T[]) : T[][] {
         assert a.length == b.length;
+        return ListUtil.<T>.zip(a, b, 0, a.length);
+    }
+
+    static function zip(a : T[], b : T[], begin : int, end : int) : T[][] {
+        assert a.length == b.length;
         var r = new T[][];
-        for (var i = 0; i < a.length; ++i) {
+        for (var i = begin; i < end; ++i) {
             r[i] = [ a[i], b[i] ];
         }
         return r;

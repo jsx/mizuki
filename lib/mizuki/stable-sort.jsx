@@ -6,6 +6,8 @@
  * @see http://cr.openjdk.java.net/~martin/webrevs/openjdk7/timsort/raw_files/new/src/share/classes/java/util/TimSort.java Java port
  */
 
+import "./utility.jsx";
+
 class StableSort.<T> {
     // front-end
 
@@ -14,7 +16,7 @@ class StableSort.<T> {
     }
 
     static function sort(a : T[], begin : int, end : int, cmp : (Nullable.<T>, Nullable.<T>) -> int) : T[] {
-        var r = a.slice(0);
+        var r = ListUtil.<T>.copy(a);
         StableSort.<T>.sortInPlace(r, begin, end, cmp);
         return r;
 
@@ -161,7 +163,7 @@ class StableSort.<T> {
             while (runEnd < end && cmp(a[runEnd], a[runEnd - 1]) < 0) {
                 ++runEnd;
             }
-            StableSort.<T>._reverseRange(a, begin, runEnd);
+            ListUtil.<T>.reverseInPlace(a, begin, runEnd);
         }
         else {
             while (runEnd < end && cmp(a[runEnd], a[runEnd - 1]) >= 0) {
@@ -169,19 +171,6 @@ class StableSort.<T> {
             }
         }
         return runEnd - begin;
-    }
-
-    static function _reverseRange(a : T[], begin : int , end : int) : void {
-        assert begin >= 0;
-        assert begin <= end;
-        assert end <= a.length;
-
-        --end;
-        while (begin < end) {
-            var tmp    = a[begin];
-            a[begin++] = a[end];
-            a[end--]    = tmp;
-        }
     }
 
     static function _minRunLength(n : int) : int {

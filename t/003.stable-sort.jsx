@@ -3,8 +3,8 @@
 // http://cr.openjdk.java.net/~martin/webrevs/openjdk7/timsort/raw_files/new/src/share/classes/java/util/TimSort.java
 
 import "test-case.jsx";
-import "mizuki/stable-sort.jsx";
-import "mizuki/utility.jsx";
+import "../lib/mizuki/stable-sort.jsx";
+import "../lib/mizuki/utility.jsx";
 
 class _Test extends TestCase {
 
@@ -83,11 +83,11 @@ class _Test extends TestCase {
             return a - b;
         };
 
-        StableSort.<number>._reverseRange(a, 0, a.length);
+        ListUtil.<number>.reverseInPlace(a);
         StableSort.<number>.sortInPlace(a, c);
         this.expect(JSON.stringify(a)).toBe(JSON.stringify(x));
 
-        StableSort.<number>._reverseRange(a, 0, 20);
+        ListUtil.<number>.reverseInPlace(a, 0, 20);
         StableSort.<number>.sortInPlace(a, c);
         this.expect(JSON.stringify(a)).toBe(JSON.stringify(x));
     }
@@ -97,13 +97,13 @@ class _Test extends TestCase {
 
         var a = _Test.genArray(32);
 
-        StableSort.<number>._reverseRange(a, 0, a.length);
+        ListUtil.<number>.reverseInPlace(a);
         StableSort.<number>.sortInPlace(a, (x, y) -> x - y);
         this.expect(JSON.stringify(a)).toBe(JSON.stringify(x));
 
-        StableSort.<number>._reverseRange(a,  0, 20);
-        StableSort.<number>._reverseRange(a,  5, 25);
-        StableSort.<number>._reverseRange(a, 10, 30);
+        ListUtil.<number>.reverseInPlace(a,  0, 20);
+        ListUtil.<number>.reverseInPlace(a,  5, 25);
+        ListUtil.<number>.reverseInPlace(a, 10, 30);
         StableSort.<number>.sortInPlace(a, (x, y) -> x - y);
         this.expect(JSON.stringify(a)).toBe(JSON.stringify(x));
     }
@@ -116,13 +116,13 @@ class _Test extends TestCase {
 
         var a = _Test.genArray(N).concat(_Test.genArray(N));
 
-        StableSort.<number>._reverseRange(a, 0, a.length);
+        ListUtil.<number>.reverseInPlace(a, 0, a.length);
         StableSort.<number>.sortInPlace(a, (x, y) -> x - y);
         this.expect(JSON.stringify(a)).toBe(JSON.stringify(x));
 
-        StableSort.<number>._reverseRange(a,  0, 20);
-        StableSort.<number>._reverseRange(a,  5, 25);
-        StableSort.<number>._reverseRange(a, 10, 30);
+        ListUtil.<number>.reverseInPlace(a,  0, 20);
+        ListUtil.<number>.reverseInPlace(a,  5, 25);
+        ListUtil.<number>.reverseInPlace(a, 10, 30);
         StableSort.<number>.sortInPlace(a, (x, y) -> x - y);
         this.expect(JSON.stringify(a)).toBe(JSON.stringify(x));
     }
@@ -139,13 +139,13 @@ class _Test extends TestCase {
         this.expect(JSON.stringify(a)).toBe(JSON.stringify(x));
 
         // for reversed array
-        StableSort.<number>._reverseRange(a, 0, a.length);
+        ListUtil.<number>.reverseInPlace(a);
         StableSort.<number>.sortInPlace(a, (x, y) -> x - y);
         this.expect(JSON.stringify(a)).toBe(JSON.stringify(x));
 
-        // for shuffuled array
-        StableSort.<number>._reverseRange(a, 100, 120);
-        StableSort.<number>._reverseRange(a, 110, 130);
+        // for partially shuffuled array
+        ListUtil.<number>.reverseInPlace(a, 100, 120);
+        ListUtil.<number>.reverseInPlace(a, 110, 130);
         StableSort.<number>.sortInPlace(a, (x, y) -> x - y);
         this.expect(JSON.stringify(a, null, 2)).toBe(JSON.stringify(x, null, 2));
     }
@@ -163,15 +163,15 @@ class _Test extends TestCase {
         this.expect(JSON.stringify(a)).toBe(JSON.stringify(x));
 
         // for reversed array
-        StableSort.<number>._reverseRange(a, 0, a.length);
+        ListUtil.<number>.reverseInPlace(a, 0, a.length);
         StableSort.<number>.sortInPlace(a, (x, y) -> x - y);
         this.expect(JSON.stringify(a)).toBe(JSON.stringify(x));
 
         // for shuffuled array
-        StableSort.<number>._reverseRange(a,   0,  20);
-        StableSort.<number>._reverseRange(a,  10,  30);
-        StableSort.<number>._reverseRange(a, 100, 120);
-        StableSort.<number>._reverseRange(a, 110, 130);
+        ListUtil.<number>.reverseInPlace(a,   0,  20);
+        ListUtil.<number>.reverseInPlace(a,  10,  30);
+        ListUtil.<number>.reverseInPlace(a, 100, 120);
+        ListUtil.<number>.reverseInPlace(a, 110, 130);
         StableSort.<number>.sortInPlace(a, (x, y) -> x - y);
         this.expect(JSON.stringify(a, null, 2)).toBe(JSON.stringify(x, null, 2));
     }
