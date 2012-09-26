@@ -37,6 +37,14 @@ final class ListUtil.<T> {
         return a;
     }
 
+    static function zip(a : T[], b : T[]) : T[][] {
+        assert a.length == b.length;
+        var r = new T[][];
+        for (var i = 0; i < a.length; ++i) {
+            r[i] = [ a[i], b[i] ];
+        }
+        return r;
+    }
 }
 
 final class StringUtil {

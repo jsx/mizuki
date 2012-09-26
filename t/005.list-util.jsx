@@ -1,5 +1,5 @@
 import "test-case.jsx";
-import "mizuki/utility.jsx";
+import "../lib/mizuki/utility.jsx";
 
 class _Test extends TestCase {
 	function testShuffle() : void {
@@ -20,5 +20,10 @@ class _Test extends TestCase {
 
 		var b = ListUtil.<string>.make(5, (i) -> i as string);
 		this.expect(JSON.stringify(b)).toBe(JSON.stringify(["0", "1", "2", "3", "4"]));
+	}
+
+	function testZip() : void {
+		var a = ListUtil.<number>.zip([1, 2, 3], [10, 20, 30]);
+		this.expect(JSON.stringify(a)).toBe(JSON.stringify([ [1, 10], [2, 20], [3, 30] ]));
 	}
 }
