@@ -1,5 +1,5 @@
 import "test-case.jsx";
-import "mizuki/utility.jsx";
+import "../lib/mizuki/utility.jsx";
 
 class _Test extends TestCase {
 	function testVisualWidth() : void {
@@ -42,5 +42,12 @@ class _Test extends TestCase {
 		this.expect(StringUtil.repeat("a", 3)).toBe("aaa");
 		this.expect(StringUtil.repeat("a", 0)).toBe("");
 		this.expect(StringUtil.repeat("ab", 2)).toBe("abab");
+	}
+
+	function testByteLength() : void {
+		this.expect(StringUtil.byteLength("hoge")).toBe(4);
+		this.expect(StringUtil.byteLength("あ")).toBe(3);
+		this.expect(StringUtil.byteLength("叱")).toBe(3); // uses surrogate pairs
+		this.expect(StringUtil.byteLength("#$%/")).toBe(4);
 	}
 }

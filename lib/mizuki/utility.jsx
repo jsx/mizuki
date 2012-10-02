@@ -72,6 +72,16 @@ final class ListUtil.<T> {
 }
 
 final class StringUtil {
+    static function byteLength(str : string) : int {
+        var count = 0;
+        var u = String.encodeURIComponent(str);
+        var s = u.replace(/%\w\w/g, (s) -> {
+            count++;
+            return "";
+        });
+        return s.length + count;
+    }
+
     static function _isSurrogatePair(c : int) : boolean {
         return 0xD800 <= c && c <= 0xD8FF;
     }
