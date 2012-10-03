@@ -69,6 +69,25 @@ final class ListUtil.<T> {
         }
         return r;
     }
+
+}
+
+final class Enumerable.<C, E> {
+    var _c : C;
+
+    static function from(collection : C) : Enumerable.<C, E> {
+        return new Enumerable.<C, E>(collection);
+    }
+
+    function constructor(c : C) {
+        this._c = c;
+    }
+
+    function forEach(cb : function(:Nullable.<E>):void) : void {
+        for (var i = 0, length = this._c.length; i < length; ++i) {
+            cb(this._c[i]);
+        }
+    }
 }
 
 final class StringUtil {
