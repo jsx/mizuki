@@ -49,26 +49,48 @@ final class ListUtil.<T> {
         }
     }
 
+    /**
+     * Sorts an array and return a sorted copy of the array.
+     * This sort is stable.
+     */
     static function sort(a : T[], cmp : (Nullable.<T>, Nullable.<T>) -> int) : T[] {
         var r = ListUtil.<T>.copy(a);
         StableSort.<T>.sortInPlace(r, 0, r.length, cmp);
         return r;
     }
 
+    /**
+     * Sorts a range of an array and return a sorted copy of the array.
+     * This sort is stable.
+     */
     static function sort(a : T[], begin : int, end : int, cmp : (Nullable.<T>, Nullable.<T>) -> int) : T[] {
         var r = ListUtil.<T>.copy(a);
         StableSort.<T>.sortInPlace(r, begin, end, cmp);
         return r;
     }
 
+    /**
+     * Sorts an array in place.
+     * This sort is stable.
+     */
     static function sortInPlace(a : T[], cmp : (Nullable.<T>, Nullable.<T>) -> int) : void {
         StableSort.<T>.sortInPlace(a, 0, a.length, cmp);
     }
 
+    /**
+     * Sorts a range of an an array in place.
+     * This sort is stable.
+     */
     static function sortInPlace(a : T[], begin : int, end : int, cmp :  (Nullable.<T>, Nullable.<T>) -> int) : void {
         StableSort.<T>.sortInPlace(a, begin, end, cmp);
     }
 
+    /**
+     * Makes an array of the specified number of items.
+     *
+     * @param n the number of items
+     * @param maker called with the index and expected to make an item
+     */
     static function make(n : int, maker : (int) -> T) : T[] {
         var a = new T[](n);
         for (var i = 0; i < n; ++i) {
