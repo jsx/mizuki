@@ -7,10 +7,10 @@ SYNOPSIS
 ====================
 
     import "random-generator/mt.jsx";
-    import "stable-sort.jsx";
-    import "posix.jsx";
+    import "utility.jsx";
+    import "datetime.jsx";
 
-    log POSIX.strftime(new Date(), "%Y-%m-%d %H:%M:%S");
+    log DateTime.strftime(new Date(), "%Y-%m-%d %H:%M:%S");
 
 DESCRIPTION
 ====================
@@ -20,7 +20,7 @@ Mizuki provides a set of utilities for [JSX](http://jsx.github.com/), which is n
 TODO
 ====================
 
-DateTime, strptime(), gettext(), Logger, diff utils
+DateTime, gettext(), Logger, diff utils
 
 COPYRIGHT AND LICENSE
 ====================
