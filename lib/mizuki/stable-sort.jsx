@@ -42,32 +42,38 @@ class StableSort.<T> {
             return;
         }
 
-        var s = new StableSort.<T>(a, cmp);
+        var context = new StableSort.<T>(a, cmp);
+        context._runSort(begin, end);
+    }
+
+    function _runSort(begin : int, end : int) : void {
+        var nRemaining = end - begin;
+
         var minRun = StableSort.<T>._minRunLength(nRemaining);
         do {
-            var runLen = StableSort.<T>._countRunAndMakeAscending(a, begin, end, cmp);
+            var runLen = StableSort.<T>._countRunAndMakeAscending(this.a, begin, end, this.c);
             if (runLen < minRun) {
-                var force = nRemaining <= minRun ? nRemaining : minRun;
-                StableSort.<T>._binarySort(a, begin, begin + force, begin + runLen, cmp);
+                var force = Math.min(nRemaining, minRun);
+                StableSort.<T>._binarySort(this.a, begin, begin + force, begin + runLen, this.c);
                 runLen = force;
             }
 
-            s._pushRun(begin, runLen);
-            s._mergeCollapse();
+            this._pushRun(begin, runLen);
+            this._mergeCollapse();
 
             begin      += runLen;
             nRemaining -= runLen;
         } while (nRemaining != 0);
 
         assert begin == end;
-        s._mergeForceCollapse();
-        assert s.stackSize == 1;
+        this._mergeForceCollapse();
+        assert this.stackSize == 1;
     }
 
     // back-end
 
-    static const MIN_MERGE  = 32;
-    static const MIN_GALLOP = 7;
+    static const MIN_MERGE  = 64;
+    static const MIN_GALLOP = 11;
     static const INITIAL_TMP_LENGTH = 256;
 
     var a : T[];
