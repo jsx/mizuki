@@ -1,4 +1,3 @@
-import "../lib/mizuki/stable-sort.jsx";
 import "../lib/mizuki/utility.jsx";
 import "../lib/mizuki/benchmark.jsx";
 
@@ -24,13 +23,13 @@ class _Main {
             b.timeit("StableSort! ", function() : void {
                 ListUtil.<number>.shuffleInPlace(a, 0, u);
             }, function() : void {
-                StableSort.<number>.sortInPlace(a, (x, y) -> x - y);
+                ListUtil.<number>.sortInPlace(a, (x, y) -> x - y);
             });
 
             b.timeit("StableSort  ", function() : void {
                 ListUtil.<number>.shuffleInPlace(a, 0, u);
             }, function() : void {
-                a = StableSort.<number>.sort(a, (x, y) -> x - y);
+                a = ListUtil.<number>.sort(a, (x, y) -> x - y);
             });
 
             b.leave();

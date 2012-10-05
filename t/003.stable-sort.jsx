@@ -3,7 +3,7 @@
 // http://cr.openjdk.java.net/~martin/webrevs/openjdk7/timsort/raw_files/new/src/share/classes/java/util/TimSort.java
 
 import "test-case.jsx";
-import "../lib/mizuki/stable-sort.jsx";
+import "../lib/mizuki/detail/stable-sort.jsx";
 import "../lib/mizuki/utility.jsx";
 
 class Pair.<K,V> {
@@ -50,7 +50,7 @@ class _Test extends TestCase {
     function testSmoke() : void {
         var a = ["aaa", "ccc", "bbb"];
 
-        var r = StableSort.<string>.sort(a, function (x, y) {
+        var r = ListUtil.<string>.sort(a, function (x, y) {
             if (x < y) {
                 return -1;
             }
@@ -66,7 +66,7 @@ class _Test extends TestCase {
         this.expect(JSON.stringify(r), "sort")
             .toBe(JSON.stringify(["aaa", "bbb", "ccc"]));
 
-        r = StableSort.<string>.sort(a, function (x, y) {
+        r = ListUtil.<string>.sort(a, function (x, y) {
             if (x < y) {
                 return  1;
             }
@@ -94,11 +94,11 @@ class _Test extends TestCase {
         };
 
         ListUtil.<number>.reverseInPlace(a);
-        StableSort.<number>.sortInPlace(a, c);
+        ListUtil.<number>.sortInPlace(a, c);
         this.expect(JSON.stringify(a)).toBe(JSON.stringify(x));
 
         ListUtil.<number>.reverseInPlace(a, 0, 20);
-        StableSort.<number>.sortInPlace(a, c);
+        ListUtil.<number>.sortInPlace(a, c);
         this.expect(JSON.stringify(a)).toBe(JSON.stringify(x));
     }
 
@@ -108,13 +108,13 @@ class _Test extends TestCase {
         var a = _Test.genArray(32);
 
         ListUtil.<number>.reverseInPlace(a);
-        StableSort.<number>.sortInPlace(a, (x, y) -> x - y);
+        ListUtil.<number>.sortInPlace(a, (x, y) -> x - y);
         this.expect(JSON.stringify(a)).toBe(JSON.stringify(x));
 
         ListUtil.<number>.reverseInPlace(a,  0, 20);
         ListUtil.<number>.reverseInPlace(a,  5, 25);
         ListUtil.<number>.reverseInPlace(a, 10, 30);
-        StableSort.<number>.sortInPlace(a, (x, y) -> x - y);
+        ListUtil.<number>.sortInPlace(a, (x, y) -> x - y);
         this.expect(JSON.stringify(a)).toBe(JSON.stringify(x));
     }
 
@@ -127,13 +127,13 @@ class _Test extends TestCase {
         var a = _Test.genArray(N).concat(_Test.genArray(N));
 
         ListUtil.<number>.reverseInPlace(a, 0, a.length);
-        StableSort.<number>.sortInPlace(a, (x, y) -> x - y);
+        ListUtil.<number>.sortInPlace(a, (x, y) -> x - y);
         this.expect(JSON.stringify(a)).toBe(JSON.stringify(x));
 
         ListUtil.<number>.reverseInPlace(a,  0, 20);
         ListUtil.<number>.reverseInPlace(a,  5, 25);
         ListUtil.<number>.reverseInPlace(a, 10, 30);
-        StableSort.<number>.sortInPlace(a, (x, y) -> x - y);
+        ListUtil.<number>.sortInPlace(a, (x, y) -> x - y);
         this.expect(JSON.stringify(a)).toBe(JSON.stringify(x));
     }
 
@@ -145,18 +145,18 @@ class _Test extends TestCase {
         var a = _Test.genArray(N);
 
         // for sorted array
-        StableSort.<number>.sortInPlace(a, (x, y) -> x - y);
+        ListUtil.<number>.sortInPlace(a, (x, y) -> x - y);
         this.expect(JSON.stringify(a)).toBe(JSON.stringify(x));
 
         // for reversed array
         ListUtil.<number>.reverseInPlace(a);
-        StableSort.<number>.sortInPlace(a, (x, y) -> x - y);
+        ListUtil.<number>.sortInPlace(a, (x, y) -> x - y);
         this.expect(JSON.stringify(a)).toBe(JSON.stringify(x));
 
         // for partially shuffuled array
         ListUtil.<number>.reverseInPlace(a, 100, 120);
         ListUtil.<number>.reverseInPlace(a, 110, 130);
-        StableSort.<number>.sortInPlace(a, (x, y) -> x - y);
+        ListUtil.<number>.sortInPlace(a, (x, y) -> x - y);
         this.expect(JSON.stringify(a, null, 2)).toBe(JSON.stringify(x, null, 2));
     }
 
@@ -169,12 +169,12 @@ class _Test extends TestCase {
         var a = _Test.genArray(N).concat(_Test.genArray(N));
 
         // for sorted array
-        StableSort.<number>.sortInPlace(a, (x, y) -> x - y);
+        ListUtil.<number>.sortInPlace(a, (x, y) -> x - y);
         this.expect(JSON.stringify(a)).toBe(JSON.stringify(x));
 
         // for reversed array
         ListUtil.<number>.reverseInPlace(a, 0, a.length);
-        StableSort.<number>.sortInPlace(a, (x, y) -> x - y);
+        ListUtil.<number>.sortInPlace(a, (x, y) -> x - y);
         this.expect(JSON.stringify(a)).toBe(JSON.stringify(x));
 
         // for shuffuled array
@@ -182,7 +182,7 @@ class _Test extends TestCase {
         ListUtil.<number>.reverseInPlace(a,  10,  30);
         ListUtil.<number>.reverseInPlace(a, 100, 120);
         ListUtil.<number>.reverseInPlace(a, 110, 130);
-        StableSort.<number>.sortInPlace(a, (x, y) -> x - y);
+        ListUtil.<number>.sortInPlace(a, (x, y) -> x - y);
         this.expect(JSON.stringify(a, null, 2)).toBe(JSON.stringify(x, null, 2));
     }
 
@@ -195,7 +195,7 @@ class _Test extends TestCase {
 
         for (var i = 0; i < 100; ++i) {
             ListUtil.<number>.shuffleInPlace(a);
-            StableSort.<number>.sortInPlace(a, (x, y) -> x - y);
+            ListUtil.<number>.sortInPlace(a, (x, y) -> x - y);
             this.expect(JSON.stringify(a, null, 2)).toBe(JSON.stringify(x, null, 2));
         }
     }
@@ -209,7 +209,7 @@ class _Test extends TestCase {
 
         for (var i = 0; i < 100; ++i) {
             ListUtil.<number>.shuffleInPlace(a, 0, a.length >> 1);
-            StableSort.<number>.sortInPlace(a, (x, y) -> x - y);
+            ListUtil.<number>.sortInPlace(a, (x, y) -> x - y);
             this.expect(JSON.stringify(a, null, 2)).toBe(JSON.stringify(x, null, 2));
         }
     }
@@ -223,14 +223,14 @@ class _Test extends TestCase {
 
         for (var i = 0; i < 100; ++i) {
             ListUtil.<number>.shuffleInPlace(a, 0, a.length >> 1);
-            StableSort.<number>.sortInPlace(a, (x, y) -> y - x);
+            ListUtil.<number>.sortInPlace(a, (x, y) -> y - x);
             this.expect(JSON.stringify(a, null, 2)).toBe(JSON.stringify(x, null, 2));
         }
     }
 
     function testCopied() : void {
         var x = _Test.genArray(3).reverse();
-        var a = StableSort.<number>.sort(x, (x, y) -> x - y);
+        var a = ListUtil.<number>.sort(x, (x, y) -> x - y);
 
         this.expect(JSON.stringify(x, null, 2), "x is not changed").toBe(JSON.stringify([30, 20, 10], null, 2));
         this.expect(JSON.stringify(a, null, 2), "a is sorted").toBe(JSON.stringify([10, 20, 30], null, 2));
@@ -249,7 +249,7 @@ class _Test extends TestCase {
             new Pair.<int, int>(10, 120)
         ];
 
-        StableSort.<Pair.<int,int>>.sortInPlace(a, (a,b) -> {
+        ListUtil.<Pair.<int,int>>.sortInPlace(a, (a,b) -> {
             return a.key - b.key; // sort by key
         });
 
@@ -267,7 +267,7 @@ class _Test extends TestCase {
             return new Pair.<int, int>((Math.random() * 11) as int, i);
         });
 
-        StableSort.<Pair.<int,int>>.sortInPlace(a, (a,b) -> {
+        ListUtil.<Pair.<int,int>>.sortInPlace(a, (a,b) -> {
             return a.key - b.key; // sort by key
         });
 

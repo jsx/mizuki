@@ -6,25 +6,9 @@
  * @see http://cr.openjdk.java.net/~martin/webrevs/openjdk7/timsort/raw_files/new/src/share/classes/java/util/TimSort.java Java port
  */
 
-import "./utility.jsx";
+import "./../utility.jsx";
 
 class StableSort.<T> {
-    // front-end
-
-    static function sort(a : T[], cmp : (Nullable.<T>, Nullable.<T>) -> int) : T[] {
-        return StableSort.<T>.sort(a, 0, a.length, cmp);
-    }
-
-    static function sort(a : T[], begin : int, end : int, cmp : (Nullable.<T>, Nullable.<T>) -> int) : T[] {
-        var r = ListUtil.<T>.copy(a);
-        StableSort.<T>.sortInPlace(r, begin, end, cmp);
-        return r;
-
-    }
-
-    static function sortInPlace(a : T[], cmp : (Nullable.<T>, Nullable.<T>) -> int) : void {
-        StableSort.<T>.sortInPlace(a, 0, a.length, cmp);
-    }
 
     static function sortInPlace(a : T[], begin : int, end : int, cmp :  (Nullable.<T>, Nullable.<T>) -> int) : void {
         assert begin <= end;

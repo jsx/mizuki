@@ -1,4 +1,5 @@
 import "./detail/east-asian-width.jsx";
+import "./detail/stable-sort.jsx";
 
 final class ListUtil.<T> {
 
@@ -46,6 +47,26 @@ final class ListUtil.<T> {
         while (begin < end) {
             ListUtil.<T>.swap(a, begin++, end--);
         }
+    }
+
+    static function sort(a : T[], cmp : (Nullable.<T>, Nullable.<T>) -> int) : T[] {
+        var r = ListUtil.<T>.copy(a);
+        StableSort.<T>.sortInPlace(r, 0, r.length, cmp);
+        return r;
+    }
+
+    static function sort(a : T[], begin : int, end : int, cmp : (Nullable.<T>, Nullable.<T>) -> int) : T[] {
+        var r = ListUtil.<T>.copy(a);
+        StableSort.<T>.sortInPlace(r, begin, end, cmp);
+        return r;
+    }
+
+    static function sortInPlace(a : T[], cmp : (Nullable.<T>, Nullable.<T>) -> int) : void {
+        StableSort.<T>.sortInPlace(a, 0, a.length, cmp);
+    }
+
+    static function sortInPlace(a : T[], begin : int, end : int, cmp :  (Nullable.<T>, Nullable.<T>) -> int) : void {
+        StableSort.<T>.sortInPlace(a, begin, end, cmp);
     }
 
     static function make(n : int, maker : (int) -> T) : T[] {
