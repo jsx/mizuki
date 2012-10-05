@@ -83,27 +83,16 @@ class StableSort.<T> {
     var tmp : T[];
 
     var stackSize = 0;
-    var runBase : int[];
-    var runLen  : int[];
+    var runBase = new int[];
+    var runLen  = new int[];
 
     function constructor(a : T[], c : (Nullable.<T>, Nullable.<T>) -> int) {
         this.a = a;
         this.c = c;
 
-        var len = a.length;
-
-        var initLen = Math.min(len >>> 1, StableSort.<T>.INITIAL_TMP_LENGTH);
+        var initLen = Math.min(a.length >>> 1, StableSort.<T>.INITIAL_TMP_LENGTH);
         this.tmp = new T[](initLen);
-
-        var stackLen =
-              len <    120 ?  5
-            : len <   1542 ? 10
-            : len < 119151 ? 19
-            :                40;
-        this.runBase = new int[](stackLen);
-        this.runLen  = new int[](stackLen);
     }
-
 
     static function _mid(a : int, b : int) : int {
         return a + ((b - a) >>> 1);
@@ -360,8 +349,8 @@ class StableSort.<T> {
         assert len2 > 0;
         assert base1 + len1 == base2;
 
-        var a = this.a;
-        var tmp = this._ensureCapacity(len1);
+        var a   = this.a;
+        var tmp = this.tmp;
         StableSort.<T>._copy(a, base1, tmp, 0, len1);
 
         var cursor1 = 0;
@@ -463,8 +452,8 @@ class StableSort.<T> {
         assert len2 > 0;
         assert base1 + len1 == base2;
 
-        var a = this.a;
-        var tmp = this._ensureCapacity(len2);
+        var a   = this.a;
+        var tmp = this.tmp;
         StableSort.<T>._copy(a, base2, tmp, 0, len2);
 
         var cursor1 = base1 + len1 - 1;
@@ -566,12 +555,6 @@ class StableSort.<T> {
         }
     } // End of _mergeHi()
 
-    function _ensureCapacity(minCapacity : int) : T[] {
-        if (this.tmp.length < minCapacity) {
-            this.tmp.length = minCapacity;
-        }
-        return this.tmp;
-    }
 }
 
 // set vim: expandtab:
