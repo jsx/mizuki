@@ -304,20 +304,9 @@ class StableSort.<T> {
             ofs     = hint - tmp;
         }
         assert -1 <= lastOfs && lastOfs < ofs && ofs <= len;
-
         ++lastOfs;
-        while (lastOfs < ofs) {
-            var mid = StableSort.<T>._mid(lastOfs, ofs);
-
-            if (cmp(a[base + mid], key) < 0) {
-                lastOfs = mid + 1;
-            }
-            else {
-                ofs = mid;
-            }
-        }
-        assert lastOfs == ofs;
-        return ofs;
+        return StableSort.<T>._lowerBound(a, lastOfs+base, ofs+base, key,
+                (a, b)->  cmp(a, b) ?: 1) - base;
     }
 
     static function _gallopRight(key : T, a : T[], base : int, len : int, hint : int, cmp : (Nullable.<T>, Nullable.<T>) -> int) : int {
