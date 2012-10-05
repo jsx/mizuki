@@ -103,6 +103,24 @@ class StableSort.<T> {
         return a + ((b - a) >>> 1);
     }
 
+    static function _lowerBound(a : T[], begin : int, end : int, value : Nullable.<T>, cmp : (Nullable.<T>, Nullable.<T>)->int) : int {
+        var left  = begin;
+        var right = end;
+        assert left <= right;
+
+        while (left < right) {
+            var mid = StableSort.<T>._mid(left, right);
+            if (cmp(a[mid], value) <= 0) {
+                left = mid + 1;
+            }
+            else {
+                right = mid;
+            }
+        }
+        assert left == right;
+        return left;
+    }
+
     static function _binarySort(a : T[], begin : int, end : int, start : int, cmp : (Nullable.<T>, Nullable.<T>) -> int) : void {
         assert begin <= start;
         assert start <= end;
@@ -113,24 +131,9 @@ class StableSort.<T> {
 
         for (; start < end; ++start) {
             var pivot = a[start];
-
-            var left  = begin;
-            var right = start;
-            assert left <= right;
-
-            while (left < right) {
-                var mid = StableSort.<T>._mid(left, right);
-                if (cmp(pivot, a[mid]) < 0) {
-                    right = mid;
-                }
-                else {
-                    left = mid + 1;
-                }
-            }
-            assert left == right;
-
-            StableSort.<T>._copyBackward(a, left, a, left + 1, start - left);
-            a[left] = pivot;
+            var pos   = StableSort.<T>._lowerBound(a, begin, start, pivot, cmp);
+            StableSort.<T>._copyBackward(a, pos, a, pos + 1, start - pos);
+            a[pos] = pivot;
         }
     }
 
@@ -306,7 +309,7 @@ class StableSort.<T> {
         while (lastOfs < ofs) {
             var mid = StableSort.<T>._mid(lastOfs, ofs);
 
-            if (cmp(key, a[base + mid]) > 0) {
+            if (cmp(a[base + mid], key) < 0) {
                 lastOfs = mid + 1;
             }
             else {
@@ -354,18 +357,7 @@ class StableSort.<T> {
         assert -1 <= lastOfs && lastOfs < ofs && ofs <= len;
 
         ++lastOfs;
-        while (lastOfs < ofs) {
-            var mid = StableSort.<T>._mid(lastOfs, ofs);
-
-            if (cmp(key, a[base + mid]) >= 0) {
-                lastOfs = mid + 1;
-            }
-            else {
-                ofs = mid;
-            }
-        }
-        assert lastOfs == ofs;
-        return ofs;
+        return StableSort.<T>._lowerBound(a, lastOfs+base, ofs+base, key, cmp) - base;
     }
 
     function _mergeLo(base1 : int, len1 : int, base2 : int, len2 : int) : void {
