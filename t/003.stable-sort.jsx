@@ -6,6 +6,16 @@ import "test-case.jsx";
 import "../lib/mizuki/stable-sort.jsx";
 import "../lib/mizuki/utility.jsx";
 
+class Pair.<K,V> {
+    var key   : K;
+    var value : V;
+
+    function constructor(k : K, v : V) {
+        this.key   = k;
+        this.value = v;
+    }
+}
+
 class _Test extends TestCase {
 
     function testUtils() : void {
@@ -224,6 +234,50 @@ class _Test extends TestCase {
 
         this.expect(JSON.stringify(x, null, 2), "x is not changed").toBe(JSON.stringify([30, 20, 10], null, 2));
         this.expect(JSON.stringify(a, null, 2), "a is sorted").toBe(JSON.stringify([10, 20, 30], null, 2));
+    }
+
+    function testStabilityForSmallArray() : void {
+        var a = [
+            new Pair.<int, int>(30, 100),
+            new Pair.<int, int>(30, 110),
+            new Pair.<int, int>(30, 120),
+            new Pair.<int, int>(20, 100),
+            new Pair.<int, int>(20, 110),
+            new Pair.<int, int>(20, 120),
+            new Pair.<int, int>(10, 100),
+            new Pair.<int, int>(10, 110),
+            new Pair.<int, int>(10, 120)
+        ];
+
+        StableSort.<Pair.<int,int>>.sortInPlace(a, (a,b) -> {
+            return a.key - b.key; // sort by key
+        });
+
+        a.reduce((previous, current) -> {
+            if (previous.key == current.key) {
+                this.expect(previous.value).toBeLE(current.value);
+            }
+
+            return current;
+        });
+    }
+
+    function testStabilityForLargeArray() : void {
+        var a = ListUtil.<Pair.<int, int>>.make(1000, function (i) {
+            return new Pair.<int, int>((Math.random() * 11) as int, i);
+        });
+
+        StableSort.<Pair.<int,int>>.sortInPlace(a, (a,b) -> {
+            return a.key - b.key; // sort by key
+        });
+
+        a.reduce((previous, current) -> {
+            if (previous.key == current.key) {
+                this.expect(previous.value, "key:" + previous.key as string).toBeLE(current.value);
+            }
+
+            return current;
+        });
     }
 }
 
