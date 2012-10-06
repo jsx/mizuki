@@ -135,7 +135,7 @@ final class Enumerable.<C, E> {
 
 final class StringUtil {
     static function forEachByte(str : string, cb : function (:int):boolean) : void {
-        StringUtil.forEach(str, (c) -> {
+        StringUtil.forEachChar(str, (c) -> {
             if (c < 0x80) { // 1 byte
                 return cb(c);
             }
@@ -174,7 +174,7 @@ final class StringUtil {
       * Repeats string for each character, considering surrogate pairs.
       * The loop will be finished if the callback returns false.
       */
-    static function forEach(str : string, cb : function(c : int) : boolean) : void {
+    static function forEachChar(str : string, cb : function(c : int) : boolean) : void {
 
         for (var i = 0; i < str.length; ++i) {
             var c = str.charCodeAt(i);
@@ -191,7 +191,7 @@ final class StringUtil {
 
     static function charLength(str : string) : int {
         var count : int = 0;
-        StringUtil.forEach(str, (c) -> {
+        StringUtil.forEachChar(str, (c) -> {
             ++count;
             return true;
         });
@@ -205,7 +205,7 @@ final class StringUtil {
       */
     static function visualWidth(str : string) : int {
         var width : int = 0;
-        StringUtil.forEach(str, (c) -> {
+        StringUtil.forEachChar(str, (c) -> {
             width += EastAsianWidth.isFullWidth(c) ? 2 : 1;
             return true;
         });
@@ -226,7 +226,7 @@ final class StringUtil {
 
         var s = "";
         var width = StringUtil.visualWidth(suffix);
-        StringUtil.forEach(str, (c) -> {
+        StringUtil.forEachChar(str, (c) -> {
             width += EastAsianWidth.isFullWidth(c) ? 2 : 1;
             if (width > maxWidth) {
                 return false;
