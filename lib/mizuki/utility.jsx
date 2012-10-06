@@ -179,9 +179,19 @@ final class Enumerable.<C, E> {
         this._c = c;
     }
 
-    function forEach(cb : function(:Nullable.<E>):void) : void {
+    function forEach(cb : function(:Nullable.<E>):boolean) : void {
         for (var i = 0, length = this._c.length; i < length; ++i) {
-            cb(this._c[i]);
+            if (! cb(this._c[i])) {
+                break;
+            }
+        }
+    }
+
+    function forEach(cb : function(:Nullable.<E>, :int):boolean) : void {
+        for (var i = 0, length = this._c.length; i < length; ++i) {
+            if (! cb(this._c[i], i)) {
+                break;
+            }
         }
     }
 }

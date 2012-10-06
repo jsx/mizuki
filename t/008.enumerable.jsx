@@ -8,7 +8,7 @@ class _Test extends TestCase {
 		var nodeList = dom.document.querySelectorAll(".foo");
 
 		Enumerable.<NodeList, Node>.from(nodeList).forEach((item) -> {
-			log item;
+			return true;
 		});
 	}
 
@@ -17,9 +17,19 @@ class _Test extends TestCase {
 
 		Enumerable.<number[], number>.from([1, 2, 3]).forEach((item) -> {
 			result.push(item as string);
+			return true;
 		});
 
 		this.expect(JSON.stringify(result)).toBe(JSON.stringify(["1", "2", "3"]));
+
+		result = new Array.<string>;
+
+		Enumerable.<number[], number>.from([1, 2, 3]).forEach((item, index) -> {
+			result.push(index as string);
+			return true;
+		});
+
+		this.expect(JSON.stringify(result)).toBe(JSON.stringify(["0", "1", "2"]));
 	}
 
 }
