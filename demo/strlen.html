@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8" />
+    <title>Demo for StringUtil.*length()</title>
+    <script src="strlen.jsx.js"></script>
+    <style>
+      table {
+        border: 1px solid gray;
+        width: 400px;
+      }
+      tr, td {
+        border: 1px solid gray;
+      }
+
+      td.method {
+        text-align: center;
+      }
+
+      td.value {
+        padding-right: 10px;
+        text-align: right;
+      }
+
+      #input {
+        width: 320px;
+      }
+    </style>
+  </head>
+  <body>
+    <form>
+      <label>Input:</label>
+      <input id="input" placeholder="こんにちは世界" />
+      <table>
+        <tr><th>Name</th><th>Value</th></tr>
+        <tr><td class="method">length</td><td class="value" id="length">0</td></tr>
+        <tr><td class="method">charLength</td><td class="value" id="charLength">0</td></tr>
+        <tr><td class="method">byteLength</td><td class="value" id="byteLength">0</td></tr>
+        <tr><td class="method">visualWidth</td><td class="value" id="visualWidth">0</td></tr>
+      </table>
+    </form>
+  </body>
+</html>
