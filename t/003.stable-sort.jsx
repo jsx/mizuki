@@ -22,30 +22,7 @@ class _Test extends TestCase {
         this.expect(StableSort.<variant>._mid(0, 5), "_mid").toBe(2);
         this.expect(StableSort.<variant>._mid(1, 6)).toBe(3);
         this.expect(StableSort.<variant>._mid(1, 0xFFFFFFFF)).toBe(2147483648);
-
-        var a = [
-            1,
-            2, // srcPos
-            3, // destPos
-            4,
-            5
-        ];
-        StableSort.<number>._copyBackward(a, 1, a, 2, 2);
-        this.expect(JSON.stringify(a), "_copyBackward").
-            toBe(JSON.stringify([1, 2, 2, 3, 5]));
-
-        a = [
-            1,
-            2, // destPos
-            3, // srcPos
-            4,
-            5
-        ];
-        StableSort.<number>._copy(a, 2, a, 1, 2);
-        this.expect(JSON.stringify(a), "_copy").
-            toBe(JSON.stringify([1, 3, 4, 4, 5]));
     }
-
 
     function testSmoke() : void {
         var a = ["aaa", "ccc", "bbb"];

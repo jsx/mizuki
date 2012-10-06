@@ -3,8 +3,25 @@ import "./detail/stable-sort.jsx";
 
 final class ListUtil.<T> {
 
-    static function copy(a : T[]) : T[] {
+    static function clone(a : T[]) : T[] {
         return a.slice(0);
+    }
+
+    static function copyForward(src : T[], srcPos : int, dest : T[], destPos : int, count : int) : void {
+        assert src != dest || srcPos >= destPos;
+        var end = destPos + count;
+        while (destPos < end) {
+            dest[destPos++] = src[srcPos++];
+        }
+    }
+
+    static function copyBackward(src : T[], srcPos : int, dest : T[], destPos : int, count : int) : void {
+        assert src != dest || srcPos <= destPos;
+        var s = srcPos  + count;
+        var d = destPos + count;
+        while (d > destPos) {
+            dest[--d] = src[--s];
+        }
     }
 
     /**
@@ -18,7 +35,7 @@ final class ListUtil.<T> {
 
     // Fisher-Yates shuffle
     static function shuffle(a : T[]) : T[] {
-        var r = ListUtil.<T>.copy(a);
+        var r = ListUtil.<T>.clone(a);
         ListUtil.<T>.shuffleInPlace(r);
         return r;
     }
@@ -54,7 +71,7 @@ final class ListUtil.<T> {
      * This sort is stable.
      */
     static function sort(a : T[], cmp : (Nullable.<T>, Nullable.<T>) -> int) : T[] {
-        var r = ListUtil.<T>.copy(a);
+        var r = ListUtil.<T>.clone(a);
         StableSort.<T>.sortInPlace(r, 0, r.length, cmp);
         return r;
     }
@@ -64,7 +81,7 @@ final class ListUtil.<T> {
      * This sort is stable.
      */
     static function sort(a : T[], begin : int, end : int, cmp : (Nullable.<T>, Nullable.<T>) -> int) : T[] {
-        var r = ListUtil.<T>.copy(a);
+        var r = ListUtil.<T>.clone(a);
         StableSort.<T>.sortInPlace(r, begin, end, cmp);
         return r;
     }
