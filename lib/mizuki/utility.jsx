@@ -224,4 +224,26 @@ final class StringUtil {
 
 }
 
+final class NumberUtil {
+    static function format(n : number, precision : int) : string {
+        return NumberUtil.format(n, precision, 0);
+    }
+
+    static function format(n : number, precision : int, width : int) : string {
+        var i = n as int;
+
+        var s = i as string;
+
+        if (precision > 0) {
+            var prefixLength = 2; /* "0.length" */
+            var f = ((n - i) as string).slice(prefixLength, prefixLength+precision);
+            f += StringUtil.repeat("0", precision - f.length);
+            s += "." + f;
+        }
+
+        return StringUtil.repeat(" ", width - s.length) + s;
+    }
+
+}
+
 // vim: set expandtab:
