@@ -16,7 +16,7 @@ final class ListUtil.<T> {
         a[j]  = t;
     }
 
-    // Fisher–Yates shuffle
+    // Fisher-Yates shuffle
     static function shuffle(a : T[]) : T[] {
         var r = ListUtil.<T>.copy(a);
         ListUtil.<T>.shuffleInPlace(r);
