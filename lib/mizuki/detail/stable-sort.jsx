@@ -80,28 +80,6 @@ class StableSort.<T> {
         this.tmp = new T[](initLen);
     }
 
-    static function _mid(a : int, b : int) : int {
-        return a + ((b - a) >>> 1);
-    }
-
-    static function _lowerBound(a : T[], begin : int, end : int, value : Nullable.<T>, cmp : (Nullable.<T>, Nullable.<T>)->int) : int {
-        var left  = begin;
-        var right = end;
-        assert left <= right;
-
-        while (left < right) {
-            var mid = StableSort.<T>._mid(left, right);
-            if (cmp(a[mid], value) <= 0) {
-                left = mid + 1;
-            }
-            else {
-                right = mid;
-            }
-        }
-        assert left == right;
-        return left;
-    }
-
     static function _binarySort(a : T[], begin : int, end : int, start : int, cmp : (Nullable.<T>, Nullable.<T>) -> int) : void {
         assert begin <= start;
         assert start <= end;
@@ -112,7 +90,7 @@ class StableSort.<T> {
 
         for (; start < end; ++start) {
             var pivot = a[start];
-            var pos   = StableSort.<T>._lowerBound(a, begin, start, pivot, cmp);
+            var pos   = ListUtil.<T>.lowerBound(a, begin, start, pivot, cmp);
             ListUtil.<T>.copyBackward(a, pos, a, pos + 1, start - pos);
             a[pos] = pivot;
         }
@@ -269,7 +247,7 @@ class StableSort.<T> {
         }
         assert -1 <= lastOfs && lastOfs < ofs && ofs <= len;
         ++lastOfs;
-        return StableSort.<T>._lowerBound(a, lastOfs+base, ofs+base, key,
+        return ListUtil.<T>.lowerBound(a, lastOfs+base, ofs+base, key,
                 (a, b)->  cmp(a, b) ?: 1) - base;
     }
 
@@ -310,7 +288,7 @@ class StableSort.<T> {
         assert -1 <= lastOfs && lastOfs < ofs && ofs <= len;
 
         ++lastOfs;
-        return StableSort.<T>._lowerBound(a, lastOfs+base, ofs+base, key, cmp) - base;
+        return ListUtil.<T>.lowerBound(a, lastOfs+base, ofs+base, key, cmp) - base;
     }
 
     function _mergeLo(base1 : int, len1 : int, base2 : int, len2 : int) : void {

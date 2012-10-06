@@ -1,9 +1,5 @@
-// stable sort implementation
-// ported from TimSort@OpenJDK
-// http://cr.openjdk.java.net/~martin/webrevs/openjdk7/timsort/raw_files/new/src/share/classes/java/util/TimSort.java
 
 import "test-case.jsx";
-import "../lib/mizuki/detail/stable-sort.jsx";
 import "../lib/mizuki/utility.jsx";
 
 class Pair.<K,V> {
@@ -17,12 +13,6 @@ class Pair.<K,V> {
 }
 
 class _Test extends TestCase {
-
-    function testUtils() : void {
-        this.expect(StableSort.<variant>._mid(0, 5), "_mid").toBe(2);
-        this.expect(StableSort.<variant>._mid(1, 6)).toBe(3);
-        this.expect(StableSort.<variant>._mid(1, 0xFFFFFFFF)).toBe(2147483648);
-    }
 
     function testSmoke() : void {
         var a = ["aaa", "ccc", "bbb"];
