@@ -12,7 +12,7 @@ SYNOPSIS
 
     var r = new MT();
     log r.nextInt32();
-    log r.nextUUID();
+    log r.nextUUID(); // RFC-4122 complaint UUID
 
     // utilities for list, strings and numbers
 

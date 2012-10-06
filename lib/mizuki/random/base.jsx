@@ -1,12 +1,11 @@
 /**
-    Abstract Random Generator
-*/
+ *  Abstract Random Generator
+ */
 
 mixin RandomGenerator {
 
     /**
-     * generates an unsecure random seed
-     *
+     * Generates a random seed. Note that this is not secure.
      */
     function generateSeed() : int {
         var UINT32_MAX = 0xffffffff;
@@ -17,16 +16,16 @@ mixin RandomGenerator {
     }
 
     /**
-     * generates a random number on [0,0xffffffff]-interval
-     * alias to nextInt32()
+     * Generates a random number on [0,0xffffffff]-interval.
+     * Alias to nextInt32().
      */
      function nextInt() : number {
         return this.nextInt32();
      }
 
     /**
-     * generates a random number on [0,1) with 53-bit resolution
-     * alias to nextReal53()
+     * Generates a random number on [0,1) with 53-bit resolution.
+     * Alias to nextReal53().
      */
     function nextReal() : number {
         return this.nextReal53();
@@ -34,20 +33,20 @@ mixin RandomGenerator {
 
 
     /**
-     * generates a random number on [0,0xffffffff]-interval
+     * Generates a random number on [0,0xffffffff]-interval.
      */
     abstract function nextInt32() : number;
 
 
     /**
-     * generates a random number on [0,1)-real-interval
+     * Generates a random number on [0,1)-real-interval.
      */
     function nextReal32() : number {
         return this.nextInt32() * (1.0/4294967296.0); // devided by 2^32
     }
 
     /**
-     * generates a random number on [0,1) with 53-bit resolution
+     * Generates a random number on [0,1) with 53-bit resolution.
      */
     function nextReal53() : number {
         var a = this.nextInt32() >>> 5;
@@ -57,51 +56,55 @@ mixin RandomGenerator {
 
 
     /**
-     * generate a random number according to the standard normal distribution
+     * Generates a random number according to the standard normal distribution (not yet implemented).
      */
     function nextNormal() : number {
         return this.nextNormal(0, 1);
     }
 
     /**
-     * generate a random number according to a normal distribution
+     * Generate a random number according to a normal distribution (not yet implemented).
      */
     function nextNormal(mean : number, deviation : number) : number {
         return 0;
     }
 
+    function _hex(n : int, width : int) : string {
+        var str = n.toString(16);
+        while (str.length < width) {
+            str = "0" + str;
+        }
+        return str;
+    }
+
+    function _nextUInt(bits : int) : int {
+        assert 0 <= bits && bits <= 32;
+        return this.nextInt32() >>> (32 - bits);
+    }
 
     /**
-     * generate a 128-bit random ID
-     * RFC 4122 complaint
+     * Generates a 128-bit random string complaint version 4 of RFC 4122 UUID.
+     * (random part is 122 bits).
      */
     function nextUUID() : string {
-        var hex = function (n : int, l : int) : string {
-            var str = n.toString(16);
-            while (str.length < l) {
-                str = "0" + str;
-            }
-            return str;
-        };
-
-        var nextUInt = function (bits : int) : int {
-            assert 0 <= bits && bits <= 32;
-
-            return this.nextInt32() >>> (32 - bits);
-        };
-
         // 4.1.1. Variant
-        var VARIANT = Number.parseInt("10", 2) << 14;
+        var VARIANT = 2; // 0b10 ("specified in this document")
 
         // 4.1.3. Version
-        // "The randomly or pseudo-randomly generated version"
-        var VERSION = Number.parseInt("0100", 2) << 12;
+        var VERSION = 4; // 0b100 ("The randomly or pseudo-randomly generated")
 
-        return hex(nextUInt(32), 8)
-            + "-" + hex(nextUInt(16), 4)
-            + "-" + hex(VERSION | nextUInt(12), 4)
-            + "-" + hex(VARIANT | nextUInt(14), 4)
-            + "-" + hex(nextUInt(32), 8) + hex(nextUInt(16), 4);
+        var r0 = this._nextUInt(32);
+        var r1 = this._nextUInt(16);
+        var r2 = this._nextUInt(12) | (VERSION << 12);
+        var r3 = this._nextUInt(14) | (VARIANT << 14);
+        var r4 = this._nextUInt(32);
+        var r5 = this._nextUInt(16);
+
+        return this._hex(r0, 8)
+            + "-" + this._hex(r1, 4)
+            + "-" + this._hex(r2, 4)
+            + "-" + this._hex(r3, 4)
+            + "-" + this._hex(r4, 8) + this._hex(r5, 4);
     }
 }
 

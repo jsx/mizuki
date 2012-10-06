@@ -1,4 +1,4 @@
-import "mizuki/random/mt.jsx";
+import "../lib/mizuki/random/mt.jsx";
 import "test-case.jsx";
 
 class _Test extends TestCase {
@@ -12,6 +12,8 @@ class _Test extends TestCase {
 		var u2 = r0.nextUUID();
 		var u3 = r0.nextUUID();
 		var u4 = r0.nextUUID();
+
+		this.expect(u0).toBe("8c7f0aac-97c4-4b71-b608-9a4eb343dba2");
 
 		this.expect(u0.length).toBe(nilUUID.length);
 		this.expect(u0).notToBe(nilUUID);
