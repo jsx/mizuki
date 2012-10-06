@@ -22,24 +22,11 @@ class Benchmark {
 
 
     function w(n : number, w : int) : string {
-        var i = n as int;
-        var f = n - i;
-
         if (n >= 10.0) { // for large number
-            var s = (n as int) as string;
-            while (s.length < w) {
-                s = " " + s;
-            }
-            return s;
+            return NumberUtil.format(n, 0, w);
         }
         else { // for fraction number
-            var fs = f as string;
-            var p = 2;
-            var s = i as string + "." + fs.charAt(p);
-            while (s.length < w) {
-                s += fs.charAt(++p) ?: "0";
-            }
-            return s;
+            return NumberUtil.format(n, w - 2);
         }
     }
 
