@@ -160,7 +160,7 @@ final class StringUtil {
     static function byteLength(str : string) : int {
         var count = 0;
         StringUtil.forEachByte(str, (b) -> {
-            count++;
+            ++count;
             return true;
         });
         return count;
@@ -189,6 +189,15 @@ final class StringUtil {
         }
     }
 
+    static function charLength(str : string) : int {
+        var count : int = 0;
+        StringUtil.forEach(str, (c) -> {
+            ++count;
+            return true;
+        });
+        return count;
+    }
+
     /**
       * Calculates the width of a string.
       *
@@ -198,7 +207,6 @@ final class StringUtil {
         var width : int = 0;
         StringUtil.forEach(str, (c) -> {
             width += EastAsianWidth.isFullWidth(c) ? 2 : 1;
-
             return true;
         });
         return width;

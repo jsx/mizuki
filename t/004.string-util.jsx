@@ -51,4 +51,10 @@ class _Test extends TestCase {
 		this.expect(StringUtil.byteLength("あ𠮟#$%/"), "mixed").toBe(11);
 	}
 
+	function testCharLength() : void {
+		this.expect(StringUtil.charLength("hoge"), "ascii").toBe(4);
+		this.expect(StringUtil.charLength("あ"), "hiragana").toBe(1);
+		this.expect(StringUtil.charLength("𠮟"), "surrogate pairs").toBe(1);
+		this.expect(StringUtil.charLength("あ𠮟#$%/"), "mixed").toBe(6);
+	}
 }
