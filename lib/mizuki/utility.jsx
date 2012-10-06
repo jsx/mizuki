@@ -179,6 +179,15 @@ final class Enumerable.<C, E> {
         this._c = c;
     }
 
+    function toArray() : Array.<E> {
+        var a = new Array.<E>;
+        this.forEach((item) -> {
+            a.push(item);
+            return true;
+        });
+        return a;
+    }
+
     function forEach(cb : function(:Nullable.<E>):boolean) : void {
         for (var i = 0, length = this._c.length; i < length; ++i) {
             if (! cb(this._c[i])) {

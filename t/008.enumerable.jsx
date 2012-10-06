@@ -32,4 +32,9 @@ class _Test extends TestCase {
 		this.expect(JSON.stringify(result)).toBe(JSON.stringify(["0", "1", "2"]));
 	}
 
+	function testToArray() : void {
+		var result = Enumerable.<number[], number>.from([1, 2, 3]).toArray();
+		this.expect(JSON.stringify(result)).toBe(JSON.stringify([1, 2, 3]));
+	}
+
 }
