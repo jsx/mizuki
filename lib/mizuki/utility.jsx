@@ -24,6 +24,9 @@ final class ListUtil.<T> {
         }
     }
 
+    /*
+     * Binary search for lower bound. Equivalent to <code>a.indexOf(value)</code>, but the array must be sorted.
+     */
     static function lowerBound(a : T[], begin : int, end : int, value : Nullable.<T>, cmp : (Nullable.<T>, Nullable.<T>)->int) : int {
         var left  = begin;
         var right = end;
@@ -42,6 +45,9 @@ final class ListUtil.<T> {
         return left;
     }
 
+    /*
+     * Binary search for upper bound. Equivalent to <code>a.lastIndexOf(value)+1</code>, but the array must be sorted.
+     */
     static function upperBound(a : T[], begin : int, end : int, value : Nullable.<T>, cmp : (Nullable.<T>, Nullable.<T>)->int) : int {
         var left  = begin;
         var right = end;
