@@ -1,16 +1,31 @@
 mizuki [![Build Status](https://secure.travis-ci.org/gfx/mizuki.png)](http://travis-ci.org/gfx/mizuki)
 ====================
 
-Set of class libraries for JSX
+Set of utility libraries for JSX
 
 SYNOPSIS
 ====================
 
-    import "random-generator/mt.jsx";
+    // pseudo random generator
+
+   import "random-generator/mt.jsx";
+
+    var r = new MT();
+    log r.nextInt32();
+    log r.nextUUID();
+
+    // utilities for list, strings and numbers
+
     import "utility.jsx";
-    import "datetime.jsx";
+    log ListUtil.sort([...], compareFunction); // stable sort
+    log StringUtil.visualWidth("hello");
+    log StringUtil.byteLength("hello");
+    log NumberUtil.format(3.1415, 2); // "3.14"
+
+    // date/time format
 
     log DateTime.strftime(new Date(), "%Y-%m-%d %H:%M:%S");
+    log DateTime.strptime("2012-12-01", "%Y-%m-%d %H:%M:%S");
 
 DESCRIPTION
 ====================

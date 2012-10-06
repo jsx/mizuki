@@ -1,5 +1,7 @@
-/**
- * Stable Sort Implementation with timsort
+/***
+ * Stable Sort Implementation with TimSort
+ *
+ * TimSort is the algorithm used in Python and it has spred to other systems.
  *
  * @see http://svn.python.org/projects/python/trunk/Objects/listsort.txt description by the author
  * @see http://code.google.com/p/timsort/source/browse/trunk/timsort.c C port
