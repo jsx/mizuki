@@ -134,14 +134,36 @@ final class Enumerable.<C, E> {
 }
 
 final class StringUtil {
+    static function forEachByte(str : string, cb : function (:int):boolean) : void {
+        StringUtil.forEach(str, (c) -> {
+            if (c < 0x80) { // 1 byte
+                return cb(c);
+            }
+            else if (c < 0x0800) { // 2 bytes
+                return cb( (c >>>  6)          | 0xC0)
+                    && cb( (c          & 0x3F) | 0x80);
+            }
+            else if (c < 0x10000) { // 3 bytes
+                return cb(  (c >>> 12)         | 0xE0)
+                    && cb( ((c >>>  6) & 0x3F) | 0x80)
+                    && cb( ( c         & 0x3F) | 0x80);
+            }
+            else { // 4 bytes
+                return cb(  (c >>> 18)         | 0xF0)
+                    && cb( ((c >>> 12) & 0x3F) | 0x80)
+                    && cb( ((c >>>  6) & 0x3F) | 0x80)
+                    && cb( ( c         & 0x3F) | 0x80);
+            }
+        });
+    }
+
     static function byteLength(str : string) : int {
         var count = 0;
-        var u = String.encodeURIComponent(str);
-        var s = u.replace(/%\w\w/g, (s) -> {
+        StringUtil.forEachByte(str, (b) -> {
             count++;
-            return "";
+            return true;
         });
-        return s.length + count;
+        return count;
     }
 
     static function _isSurrogatePair(c : int) : boolean {
@@ -150,6 +172,7 @@ final class StringUtil {
 
     /**
       * Repeats string for each character, considering surrogate pairs.
+      * The loop will be finished if the callback returns false.
       */
     static function forEach(str : string, cb : function(c : int) : boolean) : void {
 

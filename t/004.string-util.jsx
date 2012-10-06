@@ -8,7 +8,7 @@ class _Test extends TestCase {
 		this.expect(StringUtil.visualWidth("ひらがな")).toBe(8);
 		this.expect(StringUtil.visualWidth("カタカナ")).toBe(8);
 		this.expect(StringUtil.visualWidth("ﾊﾝｶｸｶﾀｶﾅ")).toBe(8);
-		this.expect(StringUtil.visualWidth("叱")).toBe(2); // uses surrogate pairs
+		this.expect(StringUtil.visualWidth("𠮟")).toBe(2); // uses surrogate pairs
 		this.expect(StringUtil.visualWidth("１２")).toBe(4);
 		this.expect(StringUtil.visualWidth("ｘｙ")).toBe(4);
 	}
@@ -45,9 +45,10 @@ class _Test extends TestCase {
 	}
 
 	function testByteLength() : void {
-		this.expect(StringUtil.byteLength("hoge")).toBe(4);
-		this.expect(StringUtil.byteLength("あ")).toBe(3);
-		this.expect(StringUtil.byteLength("叱")).toBe(3); // uses surrogate pairs
-		this.expect(StringUtil.byteLength("#$%/")).toBe(4);
+		this.expect(StringUtil.byteLength("hoge"), "ascii").toBe(4);
+		this.expect(StringUtil.byteLength("あ"), "hiragana").toBe(3);
+		this.expect(StringUtil.byteLength("𠮟"), "surrogate pairs").toBe(4);
+		this.expect(StringUtil.byteLength("あ𠮟#$%/"), "mixed").toBe(11);
 	}
+
 }
