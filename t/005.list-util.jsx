@@ -29,6 +29,34 @@ class _Test extends TestCase {
             toBe(JSON.stringify([1, 2, 2, 3, 5]));
     }
 
+    static function numCmp(a : Nullable.<number>, b : Nullable.<number>) : int {
+        return a - b;
+    }
+
+    function testLowerBound() : void {
+        var a = [10, 20, 20, 30, 30, 30, 40];
+
+        [10, 20, 30, 40].forEach((item) -> {
+            var index = ListUtil.<number>.lowerBound(a, 0, a.length, item, _Test.numCmp);
+            this.expect(index, "lowerBound for " + item as string).toBe(a.indexOf(item));
+        });
+
+        this.expect(ListUtil.<number>.lowerBound(a, 0, a.length, 0, _Test.numCmp), "for less than the first item").toBe(0);
+        this.expect(ListUtil.<number>.lowerBound(a, 0, a.length, 50, _Test.numCmp), "for grater than the last item").toBe(a.length);
+    }
+
+    function testUpperBound() : void {
+        var a = [10, 20, 20, 30, 30, 30, 40];
+
+        [10, 20, 30, 40].forEach((item) -> {
+            var index = ListUtil.<number>.upperBound(a, 0, a.length, item, _Test.numCmp);
+            this.expect(index, "upperBound for " + item as string).toBe(a.lastIndexOf(item)+1);
+        });
+
+        this.expect(ListUtil.<number>.upperBound(a, 0, a.length, 0, _Test.numCmp), "for less than the first item").toBe(0);
+        this.expect(ListUtil.<number>.upperBound(a, 0, a.length, 50, _Test.numCmp), "for grater than the last item").toBe(a.length);
+    }
+
     function testShuffle() : void {
         var a = [1, 2, 3];
 

@@ -90,7 +90,7 @@ class StableSort.<T> {
 
         for (; start < end; ++start) {
             var pivot = a[start];
-            var pos   = ListUtil.<T>.lowerBound(a, begin, start, pivot, cmp);
+            var pos   = ListUtil.<T>.upperBound(a, begin, start, pivot, cmp);
             ListUtil.<T>.copyBackward(a, pos, a, pos + 1, start - pos);
             a[pos] = pivot;
         }
@@ -247,8 +247,7 @@ class StableSort.<T> {
         }
         assert -1 <= lastOfs && lastOfs < ofs && ofs <= len;
         ++lastOfs;
-        return ListUtil.<T>.lowerBound(a, lastOfs+base, ofs+base, key,
-                (a, b)->  cmp(a, b) ?: 1) - base;
+        return ListUtil.<T>.lowerBound(a, lastOfs+base, ofs+base, key, cmp) - base;
     }
 
     static function _gallopRight(key : T, a : T[], base : int, len : int, hint : int, cmp : (Nullable.<T>, Nullable.<T>) -> int) : int {
@@ -288,7 +287,7 @@ class StableSort.<T> {
         assert -1 <= lastOfs && lastOfs < ofs && ofs <= len;
 
         ++lastOfs;
-        return ListUtil.<T>.lowerBound(a, lastOfs+base, ofs+base, key, cmp) - base;
+        return ListUtil.<T>.upperBound(a, lastOfs+base, ofs+base, key, cmp) - base;
     }
 
     function _mergeLo(base1 : int, len1 : int, base2 : int, len2 : int) : void {

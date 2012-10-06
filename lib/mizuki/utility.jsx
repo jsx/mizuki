@@ -31,6 +31,24 @@ final class ListUtil.<T> {
 
         while (left < right) {
             var mid = left + ((right - left) >>> 1); // (a+b)/2 causes overflow
+            if (cmp(a[mid], value) < 0) {
+                left = mid + 1;
+            }
+            else {
+                right = mid;
+            }
+        }
+        assert left == right;
+        return left;
+    }
+
+    static function upperBound(a : T[], begin : int, end : int, value : Nullable.<T>, cmp : (Nullable.<T>, Nullable.<T>)->int) : int {
+        var left  = begin;
+        var right = end;
+        assert left <= right;
+
+        while (left < right) {
+            var mid = left + ((right - left) >>> 1); // (a+b)/2 causes overflow
             if (cmp(a[mid], value) <= 0) {
                 left = mid + 1;
             }
