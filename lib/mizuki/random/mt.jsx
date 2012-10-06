@@ -27,6 +27,8 @@ SYNOPSIS:
     // with 32-bit resolution, which is faster than nextReal()
     log mt.nextReal32();
 
+    // get an RFC-4122-complaint UUID
+    log mt.nextUUID();
  */
 
 /*
