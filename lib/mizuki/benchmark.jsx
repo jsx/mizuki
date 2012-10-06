@@ -2,12 +2,27 @@ import "console.jsx";
 
 import "./utility.jsx";
 
+/**
+ * Manages benchmark sessions.
+ *
+ * @see <code>benchmark/*.jsx</code> in the distribution.
+ */
 class Benchmark {
     function log(message : string) : void {
         console.log(StringUtil.repeat(" ", 2 * this.level) + message);
     }
 
     var level = 0;
+
+    function session(title : string, block : ()->void) : void {
+        try {
+            this.enter(title);
+            block();
+        }
+        finally {
+            this.leave();
+        }
+    }
 
     function enter(title : string) : void {
         this.log(title);
