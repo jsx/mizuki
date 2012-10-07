@@ -20,7 +20,7 @@ class _Test extends TestCase {
 			return true;
 		});
 
-		this.expect(JSON.stringify(result)).toBe(JSON.stringify(["1", "2", "3"]));
+		this.expect(result).toBe(["1", "2", "3"]);
 
 		result = new Array.<string>;
 
@@ -29,12 +29,12 @@ class _Test extends TestCase {
 			return true;
 		});
 
-		this.expect(JSON.stringify(result)).toBe(JSON.stringify(["0", "1", "2"]));
+		this.expect(result).toBe(["0", "1", "2"]);
 	}
 
 	function testToArray() : void {
 		var result = Enumerable.<number[], number>.from([1, 2, 3]).toArray();
-		this.expect(JSON.stringify(result)).toBe(JSON.stringify([1, 2, 3]));
+		this.expect(result).toEqual([1, 2, 3]);
 	}
 
 }

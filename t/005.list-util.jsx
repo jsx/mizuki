@@ -12,8 +12,7 @@ class _Test extends TestCase {
             5
         ];
         ListUtil.<number>.copyForward(a, 2, a, 1, 2);
-        this.expect(JSON.stringify(a), "copyForward").
-            toBe(JSON.stringify([1, 3, 4, 4, 5]));
+        this.expect(a).toEqual([1, 3, 4, 4, 5]);
     }
 
 	function testCopyBackward() : void {
@@ -25,8 +24,8 @@ class _Test extends TestCase {
             5
         ];
         ListUtil.<number>.copyBackward(a, 1, a, 2, 2);
-        this.expect(JSON.stringify(a), "copyBackward").
-            toBe(JSON.stringify([1, 2, 2, 3, 5]));
+        this.expect(a, "copyBackward").
+            toEqual([1, 2, 2, 3, 5]);
     }
 
     static function numCmp(a : Nullable.<number>, b : Nullable.<number>) : int {
@@ -71,15 +70,25 @@ class _Test extends TestCase {
 
     function testMaker() : void {
         var a = ListUtil.<number>.make(5, (i) -> i + 1);
-        this.expect(JSON.stringify(a)).toBe(JSON.stringify([1, 2, 3, 4, 5]));
+        this.expect(a).toEqual([1, 2, 3, 4, 5]);
 
         var b = ListUtil.<string>.make(5, (i) -> i as string);
-        this.expect(JSON.stringify(b)).toBe(JSON.stringify(["0", "1", "2", "3", "4"]));
+        this.expect(b).toEqual(["0", "1", "2", "3", "4"]);
     }
 
     function testZip() : void {
         var a = ListUtil.<number>.zip([1, 2, 3], [10, 20, 30]);
-        this.expect(JSON.stringify(a)).toBe(JSON.stringify([ [1, 10], [2, 20], [3, 30] ]));
+        this.expect(a).toEqual([ [1, 10], [2, 20], [3, 30] ] : Array.<variant>);
+    }
+
+    function testEquals() : void {
+        var a = [10, 20, 30];
+
+        this.expect(ListUtil.<number>.equals(a, a)).toBe(true);
+        this.expect(ListUtil.<number>.equals(a, [10,20,30])).toBe(true);
+
+        this.expect(ListUtil.<number>.equals(a, []:number[])).toBe(false);
+        this.expect(ListUtil.<number>.equals(a, [10,20,31])).toBe(false);
     }
 }
 

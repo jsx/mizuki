@@ -24,6 +24,25 @@ final class ListUtil.<T> {
         }
     }
 
+    static function equals(a : T[], b : T[]) : boolean {
+        return ListUtil.<T>.equals(a, b, (x, y) -> x == y);
+    }
+
+    static function equals(a : T[], b : T[], equalsFunction : (Nullable.<T>, Nullable.<T>)->boolean) : boolean {
+        if (a == b) {
+            return true;
+        }
+        if (a.length != b.length) {
+            return false;
+        }
+        for (var i = 0; i < a.length; ++i) {
+            if (! equalsFunction(a[i], b[i])) {
+                return false;
+            }
+        }
+        return true;
+    }
+
     /*
      * Binary search for lower bound. Equivalent to <code>a.indexOf(value)</code>, but the array must be sorted.
      */

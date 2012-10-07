@@ -28,10 +28,9 @@ class _Test extends TestCase {
                 return 0;
             }
         });
-        this.expect(JSON.stringify(a), "sort() doesn't change the original array")
-            .toBe(JSON.stringify(["aaa", "ccc", "bbb"]));
-        this.expect(JSON.stringify(r), "sort")
-            .toBe(JSON.stringify(["aaa", "bbb", "ccc"]));
+        this.expect(a, "sort() doesn't change the original array")
+            .toEqual(["aaa", "ccc", "bbb"]);
+        this.expect(r, "sort").toEqual(["aaa", "bbb", "ccc"]);
 
         r = ListUtil.<string>.sort(a, function (x, y) {
             if (x < y) {
@@ -44,8 +43,7 @@ class _Test extends TestCase {
                 return 0;
             }
         });
-        this.expect(JSON.stringify(r), "reversed sort")
-            .toBe(JSON.stringify(["ccc", "bbb", "aaa"]));
+        this.expect(r, "reversed sort").toEqual(["ccc", "bbb", "aaa"]);
     }
 
     static function genArray(n : int) : number[] {
@@ -62,11 +60,11 @@ class _Test extends TestCase {
 
         ListUtil.<number>.reverseInPlace(a);
         ListUtil.<number>.sortInPlace(a, c);
-        this.expect(JSON.stringify(a)).toBe(JSON.stringify(x));
+        this.expect(a).toEqual(x);
 
         ListUtil.<number>.reverseInPlace(a, 0, 20);
         ListUtil.<number>.sortInPlace(a, c);
-        this.expect(JSON.stringify(a)).toBe(JSON.stringify(x));
+        this.expect(a).toEqual(x);
     }
 
     function testN32() : void {
@@ -76,13 +74,13 @@ class _Test extends TestCase {
 
         ListUtil.<number>.reverseInPlace(a);
         ListUtil.<number>.sortInPlace(a, (x, y) -> x - y);
-        this.expect(JSON.stringify(a)).toBe(JSON.stringify(x));
+        this.expect(a).toEqual(x);
 
         ListUtil.<number>.reverseInPlace(a,  0, 20);
         ListUtil.<number>.reverseInPlace(a,  5, 25);
         ListUtil.<number>.reverseInPlace(a, 10, 30);
         ListUtil.<number>.sortInPlace(a, (x, y) -> x - y);
-        this.expect(JSON.stringify(a)).toBe(JSON.stringify(x));
+        this.expect(a).toEqual(x);
     }
 
     function testN32_x2() : void {
@@ -95,13 +93,13 @@ class _Test extends TestCase {
 
         ListUtil.<number>.reverseInPlace(a, 0, a.length);
         ListUtil.<number>.sortInPlace(a, (x, y) -> x - y);
-        this.expect(JSON.stringify(a)).toBe(JSON.stringify(x));
+        this.expect(a).toEqual(x);
 
         ListUtil.<number>.reverseInPlace(a,  0, 20);
         ListUtil.<number>.reverseInPlace(a,  5, 25);
         ListUtil.<number>.reverseInPlace(a, 10, 30);
         ListUtil.<number>.sortInPlace(a, (x, y) -> x - y);
-        this.expect(JSON.stringify(a)).toBe(JSON.stringify(x));
+        this.expect(a).toEqual(x);
     }
 
     function testN200() : void {
@@ -113,18 +111,18 @@ class _Test extends TestCase {
 
         // for sorted array
         ListUtil.<number>.sortInPlace(a, (x, y) -> x - y);
-        this.expect(JSON.stringify(a)).toBe(JSON.stringify(x));
+        this.expect(a).toEqual(x);
 
         // for reversed array
         ListUtil.<number>.reverseInPlace(a);
         ListUtil.<number>.sortInPlace(a, (x, y) -> x - y);
-        this.expect(JSON.stringify(a)).toBe(JSON.stringify(x));
+        this.expect(a).toEqual(x);
 
         // for partially shuffuled array
         ListUtil.<number>.reverseInPlace(a, 100, 120);
         ListUtil.<number>.reverseInPlace(a, 110, 130);
         ListUtil.<number>.sortInPlace(a, (x, y) -> x - y);
-        this.expect(JSON.stringify(a, null, 2)).toBe(JSON.stringify(x, null, 2));
+        this.expect(a).toEqual(x);
     }
 
     function testN500_x2() : void {
@@ -137,12 +135,12 @@ class _Test extends TestCase {
 
         // for sorted array
         ListUtil.<number>.sortInPlace(a, (x, y) -> x - y);
-        this.expect(JSON.stringify(a)).toBe(JSON.stringify(x));
+        this.expect(a).toEqual(x);
 
         // for reversed array
         ListUtil.<number>.reverseInPlace(a, 0, a.length);
         ListUtil.<number>.sortInPlace(a, (x, y) -> x - y);
-        this.expect(JSON.stringify(a)).toBe(JSON.stringify(x));
+        this.expect(a).toEqual(x);
 
         // for shuffuled array
         ListUtil.<number>.reverseInPlace(a,   0,  20);
@@ -150,7 +148,7 @@ class _Test extends TestCase {
         ListUtil.<number>.reverseInPlace(a, 100, 120);
         ListUtil.<number>.reverseInPlace(a, 110, 130);
         ListUtil.<number>.sortInPlace(a, (x, y) -> x - y);
-        this.expect(JSON.stringify(a, null, 2)).toBe(JSON.stringify(x, null, 2));
+        this.expect(a).toEqual(x);
     }
 
     function testShuffled() : void {
@@ -163,7 +161,7 @@ class _Test extends TestCase {
         for (var i = 0; i < 100; ++i) {
             ListUtil.<number>.shuffleInPlace(a);
             ListUtil.<number>.sortInPlace(a, (x, y) -> x - y);
-            this.expect(JSON.stringify(a, null, 2)).toBe(JSON.stringify(x, null, 2));
+            this.expect(a).toEqual(x);
         }
     }
 
@@ -177,7 +175,7 @@ class _Test extends TestCase {
         for (var i = 0; i < 100; ++i) {
             ListUtil.<number>.shuffleInPlace(a, 0, a.length >> 1);
             ListUtil.<number>.sortInPlace(a, (x, y) -> x - y);
-            this.expect(JSON.stringify(a, null, 2)).toBe(JSON.stringify(x, null, 2));
+            this.expect(a).toEqual(x);
         }
     }
 
@@ -191,16 +189,16 @@ class _Test extends TestCase {
         for (var i = 0; i < 100; ++i) {
             ListUtil.<number>.shuffleInPlace(a, 0, a.length >> 1);
             ListUtil.<number>.sortInPlace(a, (x, y) -> y - x);
-            this.expect(JSON.stringify(a, null, 2)).toBe(JSON.stringify(x, null, 2));
+            this.expect(a).toEqual(x);
         }
     }
 
     function testCopied() : void {
-        var x = _Test.genArray(3).reverse();
+        var x = [30, 20, 10];
         var a = ListUtil.<number>.sort(x, (x, y) -> x - y);
 
-        this.expect(JSON.stringify(x, null, 2), "x is not changed").toBe(JSON.stringify([30, 20, 10], null, 2));
-        this.expect(JSON.stringify(a, null, 2), "a is sorted").toBe(JSON.stringify([10, 20, 30], null, 2));
+        this.expect(a, "a is sorted").toEqual([10, 20, 30]);
+        this.expect(x, "x is not changed").toEqual([30, 20, 10]);
     }
 
     function testStabilityForSmallArray() : void {
