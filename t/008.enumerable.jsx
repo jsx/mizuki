@@ -20,7 +20,7 @@ class _Test extends TestCase {
 			return true;
 		});
 
-		this.expect(result).toBe(["1", "2", "3"]);
+		this.expect(result).toEqual(["1", "2", "3"]);
 
 		result = new Array.<string>;
 
@@ -29,7 +29,7 @@ class _Test extends TestCase {
 			return true;
 		});
 
-		this.expect(result).toBe(["0", "1", "2"]);
+		this.expect(result).toEqual(["0", "1", "2"]);
 	}
 
 	function testToArray() : void {
