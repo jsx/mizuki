@@ -9,8 +9,9 @@ class _Main {
         }
 
         var f = "[%a %b %d %Y %H:%M:%S.%3N GMT%z (%Z)]";
-
         var s = DateTime.strftime(d, f);
+
+        log "format:   " + f;
         log "strftime: " + s;
         log "strptime: " + DateTime.strftime(DateTime.strptime(s, f), f);
     }

@@ -1,7 +1,7 @@
 mizuki [![Build Status](https://secure.travis-ci.org/gfx/mizuki.png)](http://travis-ci.org/gfx/mizuki)
 ====================
 
-Set of utility libraries for JSX
+Set of basic utilities for JSX
 
 SYNOPSIS
 ====================
@@ -10,11 +10,11 @@ SYNOPSIS
 
    import "random-generator/mt.jsx";
 
-    var r = new MT();
+    var r = new MT(); // Mersenne Twister generator
     log r.nextInt32();
     log r.nextUUID(); // RFC-4122 complaint UUID
 
-    // utilities for list, strings and numbers
+    // utilities for arrays, strings and numbers
 
     import "utility.jsx";
 
@@ -28,8 +28,8 @@ SYNOPSIS
 
     // date/time format
 
-    log DateTime.strftime(new Date(), "%Y-%m-%d %H:%M:%S");
-    log DateTime.strptime("2012-12-01", "%Y-%m-%d %H:%M:%S");
+    log DateTime.strftime(new Date(),   "%Y-%m-%d %H:%M:%S.%3N");
+    log DateTime.strptime("2012-12-01", "%Y-%m-%d %H:%M:%S.%3N");
 
 DESCRIPTION
 ====================
