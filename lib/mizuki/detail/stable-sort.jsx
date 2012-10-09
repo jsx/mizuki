@@ -90,8 +90,8 @@ class StableSort.<T> {
 
         for (; start < end; ++start) {
             var pivot = a[start];
-            var pos   = ListUtil.<T>.upperBound(a, begin, start, pivot, cmp);
-            ListUtil.<T>.copyBackward(a, pos, a, pos + 1, start - pos);
+            var pos   = ArrayUtil.<T>.upperBound(a, begin, start, pivot, cmp);
+            ArrayUtil.<T>.copyBackward(a, pos, a, pos + 1, start - pos);
             a[pos] = pivot;
         }
     }
@@ -108,7 +108,7 @@ class StableSort.<T> {
             while (runEnd < end && cmp(a[runEnd], a[runEnd - 1]) < 0) {
                 ++runEnd;
             }
-            ListUtil.<T>.reverseInPlace(a, begin, runEnd);
+            ArrayUtil.<T>.reverseInPlace(a, begin, runEnd);
         }
         else {
             while (runEnd < end && cmp(a[runEnd], a[runEnd - 1]) >= 0) {
@@ -247,7 +247,7 @@ class StableSort.<T> {
         }
         assert -1 <= lastOfs && lastOfs < ofs && ofs <= len;
         ++lastOfs;
-        return ListUtil.<T>.lowerBound(a, lastOfs+base, ofs+base, key, cmp) - base;
+        return ArrayUtil.<T>.lowerBound(a, lastOfs+base, ofs+base, key, cmp) - base;
     }
 
     static function _gallopRight(key : T, a : T[], base : int, len : int, hint : int, cmp : (Nullable.<T>, Nullable.<T>) -> int) : int {
@@ -287,7 +287,7 @@ class StableSort.<T> {
         assert -1 <= lastOfs && lastOfs < ofs && ofs <= len;
 
         ++lastOfs;
-        return ListUtil.<T>.upperBound(a, lastOfs+base, ofs+base, key, cmp) - base;
+        return ArrayUtil.<T>.upperBound(a, lastOfs+base, ofs+base, key, cmp) - base;
     }
 
     function _mergeLo(base1 : int, len1 : int, base2 : int, len2 : int) : void {
@@ -297,7 +297,7 @@ class StableSort.<T> {
 
         var a   = this.a;
         var tmp = this.tmp;
-        ListUtil.<T>.copyForward(a, base1, tmp, 0, len1);
+        ArrayUtil.<T>.copyForward(a, base1, tmp, 0, len1);
 
         var cursor1 = 0;
         var cursor2 = base2;
@@ -305,11 +305,11 @@ class StableSort.<T> {
 
         a[dest++] = a[cursor2++];
         if (--len2 == 0) {
-            ListUtil.<T>.copyForward(tmp, cursor1, a, dest, len1);
+            ArrayUtil.<T>.copyForward(tmp, cursor1, a, dest, len1);
             return;
         }
         if (len1 == 1) {
-            ListUtil.<T>.copyForward(a, cursor2, a, dest, len2);
+            ArrayUtil.<T>.copyForward(a, cursor2, a, dest, len2);
             a[dest + len2] = tmp[cursor1];
             return;
         }
@@ -345,7 +345,7 @@ class StableSort.<T> {
                 assert len1 > 1 && len2 > 0;
                 count1 = StableSort.<T>._gallopRight(a[cursor2], tmp, cursor1, len1, 0, cmp);
                 if (count1 != 0) {
-                    ListUtil.<T>.copyBackward(tmp, cursor1, a, dest, count1);
+                    ArrayUtil.<T>.copyBackward(tmp, cursor1, a, dest, count1);
                     dest    += count1;
                     cursor1 += count1;
                     len1    -= count1;
@@ -360,7 +360,7 @@ class StableSort.<T> {
 
                 count2 = StableSort.<T>._gallopLeft(tmp[cursor1], a, cursor2, len2, 0, cmp);
                 if (count2 != 0) {
-                    ListUtil.<T>.copyForward(a, cursor2, a, dest, count2);
+                    ArrayUtil.<T>.copyForward(a, cursor2, a, dest, count2);
                     dest    += count2;
                     cursor2 += count2;
                     len2    -= count2;
@@ -383,13 +383,13 @@ class StableSort.<T> {
 
         if (len1 == 1) {
             assert len2 > 0;
-            ListUtil.<T>.copyForward(a, cursor2, a, dest, len2);
+            ArrayUtil.<T>.copyForward(a, cursor2, a, dest, len2);
             a[dest + len2] = tmp[cursor1];
         }
         else {
             assert len2 == 0;
             assert len1 > 1;
-            ListUtil.<T>.copyForward(tmp, cursor1, a, dest, len1);
+            ArrayUtil.<T>.copyForward(tmp, cursor1, a, dest, len1);
         }
     } // End of _mergeLo()
 
@@ -400,7 +400,7 @@ class StableSort.<T> {
 
         var a   = this.a;
         var tmp = this.tmp;
-        ListUtil.<T>.copyForward(a, base2, tmp, 0, len2);
+        ArrayUtil.<T>.copyForward(a, base2, tmp, 0, len2);
 
         var cursor1 = base1 + len1 - 1;
         var cursor2 = len2 - 1;
@@ -408,13 +408,13 @@ class StableSort.<T> {
 
         a[dest--] = a[cursor1--];
         if (--len1 == 0) {
-            ListUtil.<T>.copyForward(tmp, 0, a, dest - (len2 - 1), len2);
+            ArrayUtil.<T>.copyForward(tmp, 0, a, dest - (len2 - 1), len2);
             return;
         }
         if (len2 == 1) {
             dest    -= len1;
             cursor1 -= len1;
-            ListUtil.<T>.copyBackward(a, cursor1 + 1, a, dest + 1, len1);
+            ArrayUtil.<T>.copyBackward(a, cursor1 + 1, a, dest + 1, len1);
             a[dest ] = tmp[cursor2];
             return;
         }
@@ -453,7 +453,7 @@ class StableSort.<T> {
                     dest    -= count1;
                     cursor1 -= count1;
                     len1    -= count1;
-                    ListUtil.<T>.copyBackward(a, cursor1 + 1, a, dest + 1, count1);
+                    ArrayUtil.<T>.copyBackward(a, cursor1 + 1, a, dest + 1, count1);
                     if (len1 == 0) {
                         break outer;
                     }
@@ -469,7 +469,7 @@ class StableSort.<T> {
                     dest    -= count2;
                     cursor2 -= count2;
                     len2    -= count2;
-                    ListUtil.<T>.copyForward(tmp, cursor2 + 1, a, dest + 1, count2);
+                    ArrayUtil.<T>.copyForward(tmp, cursor2 + 1, a, dest + 1, count2);
                     if (len2 <= 1) {
                         break outer;
                     }
@@ -491,13 +491,13 @@ class StableSort.<T> {
             assert len1 > 0;
             dest    -= len1;
             cursor1 -= len1;
-            ListUtil.<T>.copyBackward(a, cursor1 + 1, a, dest + 1, len1);
+            ArrayUtil.<T>.copyBackward(a, cursor1 + 1, a, dest + 1, len1);
             a[dest] = tmp[cursor2];
         }
         else {
             assert len1 == 0;
             assert len2 > 0;
-            ListUtil.<T>.copyForward(tmp, 0, a, dest - (len2 - 1), len2);
+            ArrayUtil.<T>.copyForward(tmp, 0, a, dest - (len2 - 1), len2);
         }
     } // End of _mergeHi()
 

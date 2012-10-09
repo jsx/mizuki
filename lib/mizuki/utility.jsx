@@ -1,7 +1,7 @@
 import "./detail/east-asian-width.jsx";
 import "./detail/stable-sort.jsx";
 
-final class ListUtil.<T> {
+final class ArrayUtil.<T> {
 
     static function clone(a : T[]) : T[] {
         return a.slice(0);
@@ -25,7 +25,7 @@ final class ListUtil.<T> {
     }
 
     static function equals(a : T[], b : T[]) : boolean {
-        return ListUtil.<T>.equals(a, b, (x, y) -> x == y);
+        return ArrayUtil.<T>.equals(a, b, (x, y) -> x == y);
     }
 
     static function equals(a : T[], b : T[], equalsFunction : (Nullable.<T>, Nullable.<T>)->boolean) : boolean {
@@ -96,24 +96,24 @@ final class ListUtil.<T> {
 
     // Fisher-Yates shuffle
     static function shuffle(a : T[]) : T[] {
-        var r = ListUtil.<T>.clone(a);
-        ListUtil.<T>.shuffleInPlace(r);
+        var r = ArrayUtil.<T>.clone(a);
+        ArrayUtil.<T>.shuffleInPlace(r);
         return r;
     }
 
     static function shuffleInPlace(a : T[]) : void {
-        ListUtil.<T>.shuffleInPlace(a, 0, a.length);
+        ArrayUtil.<T>.shuffleInPlace(a, 0, a.length);
     }
 
     static function shuffleInPlace(a : T[], begin : int, end : int) : void {
         for (var i = begin; i < end; ++i) {
             var j = (Math.random() * i) as int;
-            ListUtil.<T>.swap(a, i, j);
+            ArrayUtil.<T>.swap(a, i, j);
         }
     }
 
     static function reverseInPlace(a : T[]) : void {
-        ListUtil.<T>.reverseInPlace(a, 0, a.length);
+        ArrayUtil.<T>.reverseInPlace(a, 0, a.length);
     }
 
     static function reverseInPlace(a : T[], begin : int, end : int) : void {
@@ -123,7 +123,7 @@ final class ListUtil.<T> {
 
         --end;
         while (begin < end) {
-            ListUtil.<T>.swap(a, begin++, end--);
+            ArrayUtil.<T>.swap(a, begin++, end--);
         }
     }
 
@@ -132,7 +132,7 @@ final class ListUtil.<T> {
      * This sort is stable.
      */
     static function sort(a : T[], cmp : (Nullable.<T>, Nullable.<T>) -> int) : T[] {
-        var r = ListUtil.<T>.clone(a);
+        var r = ArrayUtil.<T>.clone(a);
         StableSort.<T>.sortInPlace(r, 0, r.length, cmp);
         return r;
     }
@@ -142,7 +142,7 @@ final class ListUtil.<T> {
      * This sort is stable.
      */
     static function sort(a : T[], begin : int, end : int, cmp : (Nullable.<T>, Nullable.<T>) -> int) : T[] {
-        var r = ListUtil.<T>.clone(a);
+        var r = ArrayUtil.<T>.clone(a);
         StableSort.<T>.sortInPlace(r, begin, end, cmp);
         return r;
     }
@@ -179,7 +179,7 @@ final class ListUtil.<T> {
 
     static function zip(a : T[], b : T[]) : T[][] {
         assert a.length == b.length;
-        return ListUtil.<T>.zip(a, b, 0, a.length);
+        return ArrayUtil.<T>.zip(a, b, 0, a.length);
     }
 
     static function zip(a : T[], b : T[], begin : int, end : int) : T[][] {

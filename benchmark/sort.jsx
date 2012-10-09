@@ -8,28 +8,28 @@ class _Main {
         var b = new Benchmark();
         b.enter("Sorting " + n as string + " of floating point numbers");
 
-        var a = ListUtil.<number>.make(n, (i) -> (i+1) * 10 + 0.5);
+        var a = ArrayUtil.<number>.make(n, (i) -> (i+1) * 10 + 0.5);
 
         for (var i = 0; i < 4; ++i) {
             var u = (a.length >> i) as int;
             b.enter("shuffled " + (u / n * 100) as string + "% of the array");
 
             b.timeit("builtin sort", function() : void {
-                ListUtil.<number>.shuffleInPlace(a, 0, u);
+                ArrayUtil.<number>.shuffleInPlace(a, 0, u);
             }, function() : void {
                 a = a.sort((x, y) -> x - y);
             });
 
             b.timeit("StableSort! ", function() : void {
-                ListUtil.<number>.shuffleInPlace(a, 0, u);
+                ArrayUtil.<number>.shuffleInPlace(a, 0, u);
             }, function() : void {
-                ListUtil.<number>.sortInPlace(a, (x, y) -> x - y);
+                ArrayUtil.<number>.sortInPlace(a, (x, y) -> x - y);
             });
 
             b.timeit("StableSort  ", function() : void {
-                ListUtil.<number>.shuffleInPlace(a, 0, u);
+                ArrayUtil.<number>.shuffleInPlace(a, 0, u);
             }, function() : void {
-                a = ListUtil.<number>.sort(a, (x, y) -> x - y);
+                a = ArrayUtil.<number>.sort(a, (x, y) -> x - y);
             });
 
             b.leave();

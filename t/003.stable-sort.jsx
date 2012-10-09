@@ -17,7 +17,7 @@ class _Test extends TestCase {
     function testSmoke() : void {
         var a = ["aaa", "ccc", "bbb"];
 
-        var r = ListUtil.<string>.sort(a, function (x, y) {
+        var r = ArrayUtil.<string>.sort(a, function (x, y) {
             if (x < y) {
                 return -1;
             }
@@ -32,7 +32,7 @@ class _Test extends TestCase {
             .toEqual(["aaa", "ccc", "bbb"]);
         this.expect(r, "sort").toEqual(["aaa", "bbb", "ccc"]);
 
-        r = ListUtil.<string>.sort(a, function (x, y) {
+        r = ArrayUtil.<string>.sort(a, function (x, y) {
             if (x < y) {
                 return  1;
             }
@@ -47,7 +47,7 @@ class _Test extends TestCase {
     }
 
     static function genArray(n : int) : number[] {
-        return ListUtil.<number>.make(n, (i) -> (i+1) * 10);
+        return ArrayUtil.<number>.make(n, (i) -> (i+1) * 10);
     }
 
     function testN31() : void {
@@ -58,12 +58,12 @@ class _Test extends TestCase {
             return a - b;
         };
 
-        ListUtil.<number>.reverseInPlace(a);
-        ListUtil.<number>.sortInPlace(a, c);
+        ArrayUtil.<number>.reverseInPlace(a);
+        ArrayUtil.<number>.sortInPlace(a, c);
         this.expect(a).toEqual(x);
 
-        ListUtil.<number>.reverseInPlace(a, 0, 20);
-        ListUtil.<number>.sortInPlace(a, c);
+        ArrayUtil.<number>.reverseInPlace(a, 0, 20);
+        ArrayUtil.<number>.sortInPlace(a, c);
         this.expect(a).toEqual(x);
     }
 
@@ -72,14 +72,14 @@ class _Test extends TestCase {
 
         var a = _Test.genArray(32);
 
-        ListUtil.<number>.reverseInPlace(a);
-        ListUtil.<number>.sortInPlace(a, (x, y) -> x - y);
+        ArrayUtil.<number>.reverseInPlace(a);
+        ArrayUtil.<number>.sortInPlace(a, (x, y) -> x - y);
         this.expect(a).toEqual(x);
 
-        ListUtil.<number>.reverseInPlace(a,  0, 20);
-        ListUtil.<number>.reverseInPlace(a,  5, 25);
-        ListUtil.<number>.reverseInPlace(a, 10, 30);
-        ListUtil.<number>.sortInPlace(a, (x, y) -> x - y);
+        ArrayUtil.<number>.reverseInPlace(a,  0, 20);
+        ArrayUtil.<number>.reverseInPlace(a,  5, 25);
+        ArrayUtil.<number>.reverseInPlace(a, 10, 30);
+        ArrayUtil.<number>.sortInPlace(a, (x, y) -> x - y);
         this.expect(a).toEqual(x);
     }
 
@@ -91,14 +91,14 @@ class _Test extends TestCase {
 
         var a = _Test.genArray(N).concat(_Test.genArray(N));
 
-        ListUtil.<number>.reverseInPlace(a, 0, a.length);
-        ListUtil.<number>.sortInPlace(a, (x, y) -> x - y);
+        ArrayUtil.<number>.reverseInPlace(a, 0, a.length);
+        ArrayUtil.<number>.sortInPlace(a, (x, y) -> x - y);
         this.expect(a).toEqual(x);
 
-        ListUtil.<number>.reverseInPlace(a,  0, 20);
-        ListUtil.<number>.reverseInPlace(a,  5, 25);
-        ListUtil.<number>.reverseInPlace(a, 10, 30);
-        ListUtil.<number>.sortInPlace(a, (x, y) -> x - y);
+        ArrayUtil.<number>.reverseInPlace(a,  0, 20);
+        ArrayUtil.<number>.reverseInPlace(a,  5, 25);
+        ArrayUtil.<number>.reverseInPlace(a, 10, 30);
+        ArrayUtil.<number>.sortInPlace(a, (x, y) -> x - y);
         this.expect(a).toEqual(x);
     }
 
@@ -110,18 +110,18 @@ class _Test extends TestCase {
         var a = _Test.genArray(N);
 
         // for sorted array
-        ListUtil.<number>.sortInPlace(a, (x, y) -> x - y);
+        ArrayUtil.<number>.sortInPlace(a, (x, y) -> x - y);
         this.expect(a).toEqual(x);
 
         // for reversed array
-        ListUtil.<number>.reverseInPlace(a);
-        ListUtil.<number>.sortInPlace(a, (x, y) -> x - y);
+        ArrayUtil.<number>.reverseInPlace(a);
+        ArrayUtil.<number>.sortInPlace(a, (x, y) -> x - y);
         this.expect(a).toEqual(x);
 
         // for partially shuffuled array
-        ListUtil.<number>.reverseInPlace(a, 100, 120);
-        ListUtil.<number>.reverseInPlace(a, 110, 130);
-        ListUtil.<number>.sortInPlace(a, (x, y) -> x - y);
+        ArrayUtil.<number>.reverseInPlace(a, 100, 120);
+        ArrayUtil.<number>.reverseInPlace(a, 110, 130);
+        ArrayUtil.<number>.sortInPlace(a, (x, y) -> x - y);
         this.expect(a).toEqual(x);
     }
 
@@ -134,20 +134,20 @@ class _Test extends TestCase {
         var a = _Test.genArray(N).concat(_Test.genArray(N));
 
         // for sorted array
-        ListUtil.<number>.sortInPlace(a, (x, y) -> x - y);
+        ArrayUtil.<number>.sortInPlace(a, (x, y) -> x - y);
         this.expect(a).toEqual(x);
 
         // for reversed array
-        ListUtil.<number>.reverseInPlace(a, 0, a.length);
-        ListUtil.<number>.sortInPlace(a, (x, y) -> x - y);
+        ArrayUtil.<number>.reverseInPlace(a, 0, a.length);
+        ArrayUtil.<number>.sortInPlace(a, (x, y) -> x - y);
         this.expect(a).toEqual(x);
 
         // for shuffuled array
-        ListUtil.<number>.reverseInPlace(a,   0,  20);
-        ListUtil.<number>.reverseInPlace(a,  10,  30);
-        ListUtil.<number>.reverseInPlace(a, 100, 120);
-        ListUtil.<number>.reverseInPlace(a, 110, 130);
-        ListUtil.<number>.sortInPlace(a, (x, y) -> x - y);
+        ArrayUtil.<number>.reverseInPlace(a,   0,  20);
+        ArrayUtil.<number>.reverseInPlace(a,  10,  30);
+        ArrayUtil.<number>.reverseInPlace(a, 100, 120);
+        ArrayUtil.<number>.reverseInPlace(a, 110, 130);
+        ArrayUtil.<number>.sortInPlace(a, (x, y) -> x - y);
         this.expect(a).toEqual(x);
     }
 
@@ -159,8 +159,8 @@ class _Test extends TestCase {
         var a = _Test.genArray(N).concat(_Test.genArray(N));
 
         for (var i = 0; i < 100; ++i) {
-            ListUtil.<number>.shuffleInPlace(a);
-            ListUtil.<number>.sortInPlace(a, (x, y) -> x - y);
+            ArrayUtil.<number>.shuffleInPlace(a);
+            ArrayUtil.<number>.sortInPlace(a, (x, y) -> x - y);
             this.expect(a).toEqual(x);
         }
     }
@@ -173,8 +173,8 @@ class _Test extends TestCase {
         var a = _Test.genArray(N).concat(_Test.genArray(N));
 
         for (var i = 0; i < 100; ++i) {
-            ListUtil.<number>.shuffleInPlace(a, 0, a.length >> 1);
-            ListUtil.<number>.sortInPlace(a, (x, y) -> x - y);
+            ArrayUtil.<number>.shuffleInPlace(a, 0, a.length >> 1);
+            ArrayUtil.<number>.sortInPlace(a, (x, y) -> x - y);
             this.expect(a).toEqual(x);
         }
     }
@@ -187,15 +187,15 @@ class _Test extends TestCase {
         var a = _Test.genArray(N).concat(_Test.genArray(N));
 
         for (var i = 0; i < 100; ++i) {
-            ListUtil.<number>.shuffleInPlace(a, 0, a.length >> 1);
-            ListUtil.<number>.sortInPlace(a, (x, y) -> y - x);
+            ArrayUtil.<number>.shuffleInPlace(a, 0, a.length >> 1);
+            ArrayUtil.<number>.sortInPlace(a, (x, y) -> y - x);
             this.expect(a).toEqual(x);
         }
     }
 
     function testCopied() : void {
         var x = [30, 20, 10];
-        var a = ListUtil.<number>.sort(x, (x, y) -> x - y);
+        var a = ArrayUtil.<number>.sort(x, (x, y) -> x - y);
 
         this.expect(a, "a is sorted").toEqual([10, 20, 30]);
         this.expect(x, "x is not changed").toEqual([30, 20, 10]);
@@ -214,7 +214,7 @@ class _Test extends TestCase {
             new Pair.<int, int>(10, 120)
         ];
 
-        ListUtil.<Pair.<int,int>>.sortInPlace(a, (a,b) -> {
+        ArrayUtil.<Pair.<int,int>>.sortInPlace(a, (a,b) -> {
             return a.key - b.key; // sort by key
         });
 
@@ -228,11 +228,11 @@ class _Test extends TestCase {
     }
 
     function testStabilityForLargeArray() : void {
-        var a = ListUtil.<Pair.<int, int>>.make(1000, function (i) {
+        var a = ArrayUtil.<Pair.<int, int>>.make(1000, function (i) {
             return new Pair.<int, int>((Math.random() * 11) as int, i);
         });
 
-        ListUtil.<Pair.<int,int>>.sortInPlace(a, (a,b) -> {
+        ArrayUtil.<Pair.<int,int>>.sortInPlace(a, (a,b) -> {
             return a.key - b.key; // sort by key
         });
 
