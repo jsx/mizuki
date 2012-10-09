@@ -36,11 +36,6 @@ DESCRIPTION
 
 Mizuki provides a set of utilities for [JSX](http://jsx.github.com/), which is not a part of JSX language but inevitable.
 
-TODO
-====================
-
-DateTime, gettext(), Logger, diff utils
-
 COPYRIGHT AND LICENSE
 ====================
 
