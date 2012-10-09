@@ -363,7 +363,7 @@ final class NumberUtil {
         var s = i as string;
 
         if (precision > 0) {
-            var prefixLength = 2; /* "0.length" */
+            var prefixLength = 2; /* "0.".length */
             var f = ((n - i) as string).slice(prefixLength, prefixLength+precision);
             f += StringUtil.repeat("0", precision - f.length);
             s += "." + f;
