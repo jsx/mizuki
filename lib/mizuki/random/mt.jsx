@@ -105,7 +105,11 @@ final class MT implements RandomGenerator {
     var _mti = 0;
 
     function constructor() {
-        this.initialize(this.generateSeed());
+        var seeds = new Array.<number>;
+        for (var i = 0; i < 4; ++i) { // at least 256 bits seeds
+            seeds.push(this.generateSeed());
+        }
+        this.initialize(seeds);
     }
 
     function constructor(seed : number) {

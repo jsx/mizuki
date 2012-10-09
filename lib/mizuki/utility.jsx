@@ -1,10 +1,19 @@
+/***
+ * This module includes set of utilities for built-in classes and
+ * primitive values.
+ *
+ */
+
 import "./detail/east-asian-width.jsx";
 import "./detail/stable-sort.jsx";
 
 final class ArrayUtil.<T> {
 
-    static function clone(a : T[]) : T[] {
-        return a.slice(0);
+    /**
+     * Returns a shallow copy of array.
+     */
+    static function clone(array : T[]) : T[] {
+        return array.slice(0);
     }
 
     static function copyForward(src : T[], srcPos : int, dest : T[], destPos : int, count : int) : void {
@@ -44,7 +53,11 @@ final class ArrayUtil.<T> {
     }
 
     /*
-     * Binary search for lower bound. Equivalent to <code>a.indexOf(value)</code>, but the array must be sorted.
+     * Returns a position to the first element in the range [begin, end) that
+     * is not <em>less</em> than value.
+     *
+     * Equivalent to <code>a.indexOf(value)</code>,
+     * but the array must be sorted.
      */
     static function lowerBound(a : T[], begin : int, end : int, value : Nullable.<T>, cmp : (Nullable.<T>, Nullable.<T>)->int) : int {
         var left  = begin;
@@ -65,7 +78,11 @@ final class ArrayUtil.<T> {
     }
 
     /*
-     * Binary search for upper bound. Equivalent to <code>a.lastIndexOf(value)+1</code>, but the array must be sorted.
+     * Returns a position to the first element in the range [begin, end) that
+     * is <em>greater</em> than value.
+     *
+     * Equivalent to <code>a.lastIndexOf(value)+1</code>,
+     * but the array must be sorted.
      */
     static function upperBound(a : T[], begin : int, end : int, value : Nullable.<T>, cmp : (Nullable.<T>, Nullable.<T>)->int) : int {
         var left  = begin;
@@ -86,7 +103,7 @@ final class ArrayUtil.<T> {
     }
 
     /**
-     * Swaps <code>a[i]</code> and <code>a[j]</code>
+     * Swaps <code>a[i]</code> and <code>a[j]</code>.
      */
     static function swap(a : T[], i : int, j : int) : void {
         var t = a[i];
@@ -94,28 +111,44 @@ final class ArrayUtil.<T> {
         a[j]  = t;
     }
 
-    // Fisher-Yates shuffle
-    static function shuffle(a : T[]) : T[] {
-        var r = ArrayUtil.<T>.clone(a);
+
+    /**
+     * Returns a shuffled array.
+     */
+    static function shuffle(array : T[]) : T[] {
+        // Fisher-Yates shuffle
+        var r = ArrayUtil.<T>.clone(array);
         ArrayUtil.<T>.shuffleInPlace(r);
         return r;
     }
 
-    static function shuffleInPlace(a : T[]) : void {
-        ArrayUtil.<T>.shuffleInPlace(a, 0, a.length);
+    /**
+     * Shuffles array in place.
+     */
+    static function shuffleInPlace(array : T[]) : void {
+        ArrayUtil.<T>.shuffleInPlace(array, 0, array.length);
     }
 
-    static function shuffleInPlace(a : T[], begin : int, end : int) : void {
+    /**
+     * Shuffles the range [begin, end) of array in place.
+     */
+    static function shuffleInPlace(array : T[], begin : int, end : int) : void {
         for (var i = begin; i < end; ++i) {
             var j = (Math.random() * i) as int;
-            ArrayUtil.<T>.swap(a, i, j);
+            ArrayUtil.<T>.swap(array, i, j);
         }
     }
 
-    static function reverseInPlace(a : T[]) : void {
-        ArrayUtil.<T>.reverseInPlace(a, 0, a.length);
+    /*
+     * Reverses array in place.
+     */
+    static function reverseInPlace(array : T[]) : void {
+        ArrayUtil.<T>.reverseInPlace(array, 0, array.length);
     }
 
+    /*
+     * Reverses the range [begin, end) of array in place.
+     */
     static function reverseInPlace(a : T[], begin : int, end : int) : void {
         assert begin >= 0;
         assert begin <= end;
@@ -128,7 +161,7 @@ final class ArrayUtil.<T> {
     }
 
     /**
-     * Sorts an array and return a sorted copy of the array.
+     * Sorts array and return a sorted copy of the array.
      * This sort is stable.
      */
     static function sort(a : T[], cmp : (Nullable.<T>, Nullable.<T>) -> int) : T[] {
@@ -138,7 +171,7 @@ final class ArrayUtil.<T> {
     }
 
     /**
-     * Sorts a range of an array and return a sorted copy of the array.
+     * Returns the sorted copy of [begin, end) of array.
      * This sort is stable.
      */
     static function sort(a : T[], begin : int, end : int, cmp : (Nullable.<T>, Nullable.<T>) -> int) : T[] {
@@ -148,7 +181,7 @@ final class ArrayUtil.<T> {
     }
 
     /**
-     * Sorts an array in place.
+     * Sorts array in place.
      * This sort is stable.
      */
     static function sortInPlace(a : T[], cmp : (Nullable.<T>, Nullable.<T>) -> int) : void {
@@ -156,7 +189,7 @@ final class ArrayUtil.<T> {
     }
 
     /**
-     * Sorts a range of an an array in place.
+     * Sorts the range [begin, end] of array in place.
      * This sort is stable.
      */
     static function sortInPlace(a : T[], begin : int, end : int, cmp :  (Nullable.<T>, Nullable.<T>) -> int) : void {
@@ -231,6 +264,10 @@ final class Enumerable.<C, E> {
 }
 
 final class StringUtil {
+    /**
+      * Repeats string for each byte, regarding its encoding as UTF-8.
+      * The loop will be finished if the callback returns false.
+      */
     static function forEachByte(str : string, cb : function (:int):boolean) : void {
         StringUtil.forEachChar(str, (c) -> {
             if (c < 0x80) { // 1 byte
@@ -296,7 +333,7 @@ final class StringUtil {
     }
 
     /**
-      * Calculates the width of a string.
+      * Calculates the visual width of a string.
       *
       * @see http://www.unicode.org/reports/tr11/
       */
