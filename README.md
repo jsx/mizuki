@@ -17,9 +17,13 @@ SYNOPSIS
     // utilities for list, strings and numbers
 
     import "utility.jsx";
-    log ListUtil.sort([...], compareFunction); // stable sort
+
+    ArrayUtil.<T>.shuffleInPlace(array);
+    ArrayUtil.<T>.sortInPlace(array, compareFunction); // stable sort
+
     log StringUtil.visualWidth("hello");
     log StringUtil.byteLength("hello");
+
     log NumberUtil.format(3.1415, 2); // "3.14"
 
     // date/time format
