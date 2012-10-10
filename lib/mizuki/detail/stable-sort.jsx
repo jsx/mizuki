@@ -246,8 +246,7 @@ class StableSort.<T> {
             ofs     = hint - tmp;
         }
         assert -1 <= lastOfs && lastOfs < ofs && ofs <= len;
-        ++lastOfs;
-        return ArrayUtil.<T>.lowerBound(a, lastOfs+base, ofs+base, key, cmp) - base;
+        return ArrayUtil.<T>.lowerBound(a, 1+lastOfs+base, ofs+base, key, cmp) - base;
     }
 
     static function _gallopRight(key : T, a : T[], base : int, len : int, hint : int, cmp : (Nullable.<T>, Nullable.<T>) -> int) : int {
@@ -285,9 +284,7 @@ class StableSort.<T> {
             ofs     = hint - tmp;
         }
         assert -1 <= lastOfs && lastOfs < ofs && ofs <= len;
-
-        ++lastOfs;
-        return ArrayUtil.<T>.upperBound(a, lastOfs+base, ofs+base, key, cmp) - base;
+        return ArrayUtil.<T>.upperBound(a, 1+lastOfs+base, ofs+base, key, cmp) - base;
     }
 
     function _mergeLo(base1 : int, len1 : int, base2 : int, len2 : int) : void {
