@@ -48,30 +48,36 @@ final class Base64 {
     }
 
     static function _btoa(bin : string) : string {
-        return bin.replace(/.{1,3}/g, function (c) {
+        var a = "";
+        for (var i = 0; i < bin.length; i += 3) {
+            var c = bin.slice(i, i+3);
             switch (c.length) {
             case 1:
                 var ord = (c.charCodeAt(0) << 16);
-                return Base64._b64chars.charAt( ord >>> 18)
-                     + Base64._b64chars.charAt((ord >>> 12) & 63)
-                     + "==";
+                a += Base64._b64chars.charAt( ord >>> 18)
+                  + Base64._b64chars.charAt((ord >>> 12) & 63)
+                  + "==";
+                break;
             case 2:
                 var ord = (c.charCodeAt(0) << 16)
                         | (c.charCodeAt(1) <<  8);
-                return Base64._b64chars.charAt( ord >>> 18)
-                     + Base64._b64chars.charAt((ord >>> 12) & 63)
-                     + Base64._b64chars.charAt((ord >>>  6) & 63)
-                     + "=";
+                a += Base64._b64chars.charAt( ord >>> 18)
+                  + Base64._b64chars.charAt((ord >>> 12) & 63)
+                  + Base64._b64chars.charAt((ord >>>  6) & 63)
+                  + "=";
+                break;
             default:
                 var ord = (c.charCodeAt(0) << 16)
                         | (c.charCodeAt(1) <<  8)
                         |  c.charCodeAt(2);
-                return Base64._b64chars.charAt( ord >>> 18)
-                     + Base64._b64chars.charAt((ord >>> 12) & 63)
-                     + Base64._b64chars.charAt((ord >>>  6) & 63)
-                     + Base64._b64chars.charAt( ord         & 63);
+                a += Base64._b64chars.charAt( ord >>> 18)
+                  + Base64._b64chars.charAt((ord >>> 12) & 63)
+                  + Base64._b64chars.charAt((ord >>>  6) & 63)
+                  + Base64._b64chars.charAt( ord         & 63);
+                break;
             }
-        });
+        }
+        return a;
     }
 
     static function _decode_utf8(bin : string) : string {
