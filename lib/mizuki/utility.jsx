@@ -411,6 +411,9 @@ final class NumberUtil {
 
 }
 
+/*
+ * Base64 encoder/decoder
+ */
 final class Base64 {
     static function encode(str : string) : string {
         return Base64._btoa(Base64._encode_utf8(str));
