@@ -1,4 +1,5 @@
 import "../lib/mizuki/utility.jsx";
+import "../lib/mizuki/base64.jsx";
 import "../lib/mizuki/random/mt.jsx";
 import "test-case.jsx";
 
