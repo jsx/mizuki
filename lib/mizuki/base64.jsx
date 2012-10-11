@@ -23,43 +23,13 @@ final class Base64 {
         return tab;
     }
 
-    // encode UTF16 text string to UTF-8 binary string
-    static function _utob_cb(s : string) : string {
-        var c = s.charCodeAt(0);
-
-        assert c >= 0x80;
-
-        if (c < 0x800) {
-            return String.fromCharCode(
-                     (c >>>  6)         | 0xC0,
-                     (c         & 0x3F) | 0x80);
-        }
-        else {
-            return String.fromCharCode(
-                    ((c >>> 12) & 0x0F) | 0xE0,
-                    ((c >>>  6) & 0x3F) | 0x80,
-                     (c         & 0x3F) | 0x80);
-        }
-    }
-
     static function _encode_utf8(str : string) : string {
-        return str.replace(/[^\x00-\x7F]/g, function (s) {
-            var c = s.charCodeAt(0);
-
-            assert c >= 0x80;
-
-            if (c < 0x800) {
-                return String.fromCharCode(
-                         (c >>>  6)         | 0xC0,
-                         (c         & 0x3F) | 0x80);
-            }
-            else {
-                return String.fromCharCode(
-                        ((c >>> 12) & 0x0F) | 0xE0,
-                        ((c >>>  6) & 0x3F) | 0x80,
-                         (c         & 0x3F) | 0x80);
-            }
+        var s = "";
+        StringUtil.forEachByte(str, function (c) {
+            s += String.fromCharCode(c);
+            return true;
         });
+        return s;
     }
 
     static function _btoa(bin : string) : string {
@@ -95,20 +65,48 @@ final class Base64 {
         return a;
     }
 
-    static function _decode_utf8(bin : string) : string {
-        return bin.replace(/[\xC0-\xDF][\x80-\xBF]|[\xE0-\xEF][\x80-\xBF]{2}/g, function (c) {
-            var u : int;
-            if (c.length < 3){
-                u = ((c.charCodeAt(0) & 0x1F) <<  6)
-                  |  (c.charCodeAt(1) & 0x3F);
+    static function _decode_utf8(utf8str : string) : string {
+        var ustr = "";
+        for (var i = 0; i < utf8str.length;) {
+            var c = utf8str.charCodeAt(i);
+
+            if (c < 0x80) {
+                ustr += String.fromCharCode(c);
+                i += 1;
             }
-            else {
-                u = ((c.charCodeAt(0) & 0x0F) << 12)
-                  | ((c.charCodeAt(1) & 0x3F) <<  6)
-                  |  (c.charCodeAt(2) & 0x3F);
+            else if (c < 0xE0) { // 2 bytes
+                ustr += String.fromCharCode(
+                    ((c & 0x1F) << 6)
+                    | (utf8str.charCodeAt(i+1) & 0x3F)
+                );
+                i += 2;
             }
-            return String.fromCharCode(u);
-        });
+            else if (c < 0xF0) { // 3 bytes
+                ustr += String.fromCharCode(
+                    ((c & 0x0F)                         << 12)
+                    | ((utf8str.charCodeAt(i+1) & 0x3F) <<  6)
+                    |  (utf8str.charCodeAt(i+2) & 0x3F)
+                );
+                i += 3;
+            }
+            else { // 4 bytes
+                var u = (
+                    ((c & 0x07)                         << 18)
+                    | ((utf8str.charCodeAt(i+1) & 0x3F) << 12)
+                    | ((utf8str.charCodeAt(i+2) & 0x3F) <<  6)
+                    |  (utf8str.charCodeAt(i+3) & 0x3F)
+                );
+
+                var surrogate = u - 0x10000;
+                ustr += String.fromCharCode(
+                        ((surrogate >>> 10) & 0x03FF) | 0xD800,
+                        ( surrogate         & 0x03FF) | 0xDC00
+                );
+
+                i += 4;
+            }
+        }
+        return ustr;
     }
 
     static function _atob(str : string) : string {
