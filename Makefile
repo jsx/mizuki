@@ -45,7 +45,13 @@ benchmark-visual-width:
 	js/spidermonkey a.jsx.js
 	js/jscore a.jsx.js
 
-benchmark-all: print-version benchmark-sort benchmark-mt benchmark-visual-width
+benchmark-base64:
+	$(JSX2JS) benchmark/base64.jsx
+	node a.jsx.js
+	js/spidermonkey a.jsx.js
+	js/jscore a.jsx.js
+
+benchmark-all: print-version benchmark-sort benchmark-mt benchmark-visual-width benchmark-base64
 
 print-version:
 	uname --kernel-name --kernel-release --hardware-platform
