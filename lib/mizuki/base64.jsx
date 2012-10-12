@@ -12,8 +12,9 @@ final class Base64 {
 
     /* implementation */
 
-    static const _b64chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/';
-    static const _b64tab = Base64._makeTable(Base64._b64chars);
+    static const _btoaChars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/';
+    static const _atobTab = Base64._makeTable(Base64._btoaChars);
+    static const _invalid = new RegExp("[^" + Base64._btoaChars + "]", "g");
 
     static function _makeTable(binary : string) : Map.<int> {
         var tab = new Map.<int>();
@@ -39,26 +40,26 @@ final class Base64 {
             switch (c.length) {
             case 1:
                 var ord = (c.charCodeAt(0) << 16);
-                a += Base64._b64chars.charAt( ord >>> 18)
-                   + Base64._b64chars.charAt((ord >>> 12) & 63)
+                a += Base64._btoaChars.charAt( ord >>> 18)
+                   + Base64._btoaChars.charAt((ord >>> 12) & 63)
                    + "==";
                 break;
             case 2:
                 var ord = (c.charCodeAt(0) << 16)
                         | (c.charCodeAt(1) <<  8);
-                a += Base64._b64chars.charAt( ord >>> 18)
-                   + Base64._b64chars.charAt((ord >>> 12) & 63)
-                   + Base64._b64chars.charAt((ord >>>  6) & 63)
+                a += Base64._btoaChars.charAt( ord >>> 18)
+                   + Base64._btoaChars.charAt((ord >>> 12) & 63)
+                   + Base64._btoaChars.charAt((ord >>>  6) & 63)
                    + "=";
                 break;
             default:
                 var ord = (c.charCodeAt(0) << 16)
                         | (c.charCodeAt(1) <<  8)
                         |  c.charCodeAt(2);
-                a += Base64._b64chars.charAt( ord >>> 18)
-                   + Base64._b64chars.charAt((ord >>> 12) & 63)
-                   + Base64._b64chars.charAt((ord >>>  6) & 63)
-                   + Base64._b64chars.charAt( ord         & 63);
+                a += Base64._btoaChars.charAt( ord >>> 18)
+                   + Base64._btoaChars.charAt((ord >>> 12) & 63)
+                   + Base64._btoaChars.charAt((ord >>>  6) & 63)
+                   + Base64._btoaChars.charAt( ord         & 63);
                 break;
             }
         }
@@ -110,38 +111,39 @@ final class Base64 {
     }
 
     static function _atob(str : string) : string {
+        var src = str.replace(Base64._invalid, "");
         var b = "";
-        for (var i = 0; i < str.length; i += 4) {
-            var c = str.slice(i, i+4).replace(/=/g, "");
+        for (var i = 0; i < src.length; i += 4) {
+            var c = src.slice(i, i+4);
             switch (c.length) {
             case 1:
-                var ord = (Base64._b64tab[c.charAt(0)] << 18);
+                var ord = (Base64._atobTab[c.charAt(0)] << 18);
                 b += String.fromCharCode( ord >>> 16,
                                          (ord >>>  8) & 0xFF,
                                           ord         & 0xFF);
                 break;
             case 2:
-                var ord = (Base64._b64tab[c.charAt(0)] << 18)
-                        | (Base64._b64tab[c.charAt(1)] << 12);
+                var ord = (Base64._atobTab[c.charAt(0)] << 18)
+                        | (Base64._atobTab[c.charAt(1)] << 12);
                 var s = String.fromCharCode( ord >>> 16,
                                             (ord >>>  8) & 0xFF,
                                              ord         & 0xFF);
                 b += s.slice(0, 1);
                 break;
             case 3:
-                var ord = (Base64._b64tab[c.charAt(0)] << 18)
-                        | (Base64._b64tab[c.charAt(1)] << 12)
-                        | (Base64._b64tab[c.charAt(2)] <<  6);
+                var ord = (Base64._atobTab[c.charAt(0)] << 18)
+                        | (Base64._atobTab[c.charAt(1)] << 12)
+                        | (Base64._atobTab[c.charAt(2)] <<  6);
                 var s = String.fromCharCode( ord >>> 16,
                                             (ord >>>  8) & 0xFF,
                                              ord         & 0xFF);
                 b += s.slice(0, 2);
                 break;
             default:
-                var ord = (Base64._b64tab[c.charAt(0)] << 18)
-                        | (Base64._b64tab[c.charAt(1)] << 12)
-                        | (Base64._b64tab[c.charAt(2)] <<  6)
-                        |  Base64._b64tab[c.charAt(3)];
+                var ord = (Base64._atobTab[c.charAt(0)] << 18)
+                        | (Base64._atobTab[c.charAt(1)] << 12)
+                        | (Base64._atobTab[c.charAt(2)] <<  6)
+                        |  Base64._atobTab[c.charAt(3)];
                 b += String.fromCharCode( ord >>> 16,
                                          (ord >>>  8) & 0xFF,
                                           ord         & 0xFF);

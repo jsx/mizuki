@@ -4,48 +4,71 @@ import "../lib/mizuki/random/mt.jsx";
 import "test-case.jsx";
 
 class _Test extends TestCase {
+    var ascii = [
+        ["", ""],
+        ["ab", "YWI="],
+        ["abc", "YWJj"],
+        ["abcd", "YWJjZA=="],
+        ["ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/ .*-~!\~,$%&(){}[]",
+         "QUJDREVGR0hJSktMTU5PUFFSU1RVVldYWVphYmNkZWZnaGlqa2xtbm9wcXJzdHV2d3h5ejAxMjM0NTY3ODkrLyAuKi1+IX4sJCUmKCl7fVtd"],
+         ["foo\nbar", "Zm9vCmJhcg=="]
+    ];
+
+    var binary = [
+        ["\0", "AA=="],
+        ["\0\1", "AAE="],
+        ["\0\1\2", "AAEC"],
+        ["\0abc", "AGFiYw=="]
+    ];
+
+    var unicode = [
+        ["あ", "44GC"],
+        ["©", "wqk="],
+        ["д", "0LQ="],
+        ["αβγ", "zrHOss6z"],
+        ["薔薇ばらバラ", "6JaU6JaH44Gw44KJ44OQ44Op"],
+        ["𠮟", "8KCunw=="],              // surrogate pairs
+        ["--𪘚𪘚--", "LS3wqpia8KqYmi0t"] // surrogate pairs
+    ];
+
     function testEncodeASCII() : void {
-        this.expect(Base64.encode("")).toBe("");
-        this.expect(Base64.encode("a")).toBe("YQ==");
-        this.expect(Base64.encode("ab")).toBe("YWI=");
-        this.expect(Base64.encode("abc")).toBe("YWJj");
-        this.expect(Base64.encode("abcd")).toBe("YWJjZA==");
+        this.ascii.forEach((item) -> {
+            this.expect(Base64.encode(item[0])).toBe(item[1]);
+        });
     }
 
     function testEncodeBinary() : void {
-        this.expect(Base64.encode("\0")).toBe("AA==");
-        this.expect(Base64.encode("\0\1")).toBe("AAE=");
-        this.expect(Base64.encode("\0\1\2")).toBe("AAEC");
+        this.binary.forEach((item) -> {
+            this.expect(Base64.encode(item[0])).toBe(item[1]);
+        });
     }
 
     function testEncodeUnicode() : void {
-        this.expect(Base64.encode("あ")).toBe("44GC");
-        this.expect(Base64.encode("д")).toBe("0LQ=");
-        this.expect(Base64.encode("薔薇ばらバラ")).toBe("6JaU6JaH44Gw44KJ44OQ44Op");
-
-        this.expect(Base64.encode("𠮟"), "surrogate pairs").toBe("8KCunw==");
+        this.unicode.forEach((item) -> {
+            this.expect(Base64.encode(item[0])).toBe(item[1]);
+        });
     }
 
     function testDecodeASCII() : void {
-        this.expect(Base64.decode("")).toBe("");
-        this.expect(Base64.decode("YQ==")).toBe("a");
-        this.expect(Base64.decode("YWI=")).toBe("ab");
-        this.expect(Base64.decode("YWJj")).toBe("abc");
-        this.expect(Base64.decode("YWJjZA==")).toBe("abcd");
+        this.ascii.forEach((item) -> {
+            this.expect(Base64.decode(item[1])).toBe(item[0]);
+        });
     }
 
     function testDecodeBinary() : void {
-        this.expect(Base64.decode("AA==")).toBe("\0");
-        this.expect(Base64.decode("AAE=")).toBe("\0\1");
-        this.expect(Base64.decode("AAEC")).toBe("\0\1\2");
+        this.binary.forEach((item) -> {
+            this.expect(Base64.decode(item[1])).toBe(item[0]);
+        });
     }
 
     function testDecodeUnicode() : void {
-        this.expect(Base64.decode("44GC")).toBe("あ");
-        this.expect(Base64.decode("0LQ=")).toBe("д");
-        this.expect(Base64.decode("6JaU6JaH44Gw44KJ44OQ44Op")).toBe("薔薇ばらバラ");
+        this.unicode.forEach((item) -> {
+            this.expect(Base64.decode(item[1])).toBe(item[0]);
+        });
+    }
 
-        this.expect(Base64.decode("8KCunw=="), "surrogate pairs").toBe("𠮟");
+    function testDecodeWithSpaces() : void {
+        this.expect(Base64.decode("Y W J \n j Z A = =")).toBe("abcd");
     }
 }
 // vim: set expandtab:
