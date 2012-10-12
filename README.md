@@ -23,6 +23,10 @@ SYNOPSIS
 
     log StringUtil.visualWidth("hello");
     log StringUtil.byteLength("hello");
+    log StringUtil.charLength("hello");
+
+    log Base64.encode(text);
+    log Base64.decode(b64encoded);
 
     log NumberUtil.format(3.1415, 2); // "3.14"
 
@@ -35,6 +39,11 @@ DESCRIPTION
 ====================
 
 Mizuki provides a set of utilities for [JSX](http://jsx.github.com/), which is not a part of JSX language but inevitable.
+
+PREREQUISITES
+====================
+
+The JSX compiler and NodeJS 0.8.0 or later.
 
 COPYRIGHT AND LICENSE
 ====================

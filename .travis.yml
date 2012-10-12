@@ -4,5 +4,4 @@ before_install:
 script:
     - PATH="JSX/bin:$PATH" make test-all JOBS=1
 node_js:
-    - 0.6
     - 0.8
