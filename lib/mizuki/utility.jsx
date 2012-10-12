@@ -415,10 +415,18 @@ final class NumberUtil {
  * Base64 encoder/decoder, regarding UTF-8 as the encoding and respecting to surrogate pairs.
  */
 final class Base64 {
+
+    /*
+     * Encodes the input str in Base64.
+     * The input may be unicode text, so the function encodes str in UTF-8 first.
+     */
     static function encode(str : string) : string {
         return Base64._btoa(Base64._encode_utf8(str));
     }
 
+    /*
+     * Decodes the input str in Base64, assuming the input is encoded in UTF-8.
+     */
     static function decode(str : string) : string {
         return Base64._decode_utf8(Base64._atob(str));
     }
