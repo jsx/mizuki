@@ -1,5 +1,4 @@
 import "../lib/mizuki/utility.jsx";
-import "../lib/mizuki/base64.jsx";
 import "test-case.jsx";
 
 class _Test extends TestCase {

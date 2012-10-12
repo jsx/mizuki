@@ -1,6 +1,5 @@
 import "../lib/mizuki/benchmark.jsx";
 import "../lib/mizuki/utility.jsx";
-import "../lib/mizuki/base64.jsx";
 
 class _Main {
     static function main(args : string[]) : void {
