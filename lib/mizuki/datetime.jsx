@@ -37,13 +37,27 @@ class DateTime {
         return _DateFormat.strptime(date, format, _Locale.get(locale));
     }
 
+
+    /**
+      * Sets the current locale by name. The default is "en".
+      */
+    static function setLocale(name : string) : void {
+        _Locale.setCurrentLocale(name);
+    }
+
+    /**
+     * Registeres a new locale setting for DateTime format.
+     *
+     * @param name the name of the locale
+     * @param A full weekday names used in %A
+     * @param a abbreviated weekday names used in %a
+     * @param B full month names used in %B
+     * @param b abbreviated month name used in %b
+     */
     static function addLocale(name : string, A : string[], a : string[], B : string[], b : string[]) : void {
         _Locale.register(name, new _Locale(name, A, a, B, b));
     }
 
-    static function setLocale(name : string) : void {
-        _Locale.setCurrentLocale(name);
-    }
 }
 
 class _Locale {
@@ -92,6 +106,7 @@ class _Locale {
         this.b = b;
     }
 
+    // name may be "En", "en_US", "en_US.utf8"
     static function normalize(name : string) : string {
         return name.split(/_/)[0].toLowerCase();
     }
