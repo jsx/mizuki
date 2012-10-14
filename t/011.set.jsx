@@ -21,38 +21,6 @@ class _Test extends TestCase {
 		this.expect(set.toArray(), "toArray").toEqual([10, 20, 30]);
 	}
 
-	function testMutableSet() : void {
-		var set = new Set.<number>([
-			10,
-			30,
-			30,
-			20
-		], (a, b) -> a - b);
-
-		this.expect(set.size(), "size").toBe(3);
-
-		set.insert(40);
-
-		this.expect(set.has( 0)).toBe(false);
-		this.expect(set.has(10)).toBe(true);
-		this.expect(set.has(20)).toBe(true);
-		this.expect(set.has(30)).toBe(true);
-		this.expect(set.has(40)).toBe(true);
-
-		set.erase(20);
-
-		this.expect(set.has( 0)).toBe(false);
-		this.expect(set.has(10)).toBe(true);
-		this.expect(set.has(20)).toBe(false);
-		this.expect(set.has(30)).toBe(true);
-		this.expect(set.has(40)).toBe(true);
-
-		this.expect(set.toArray(), "toArray").toEqual([10, 30, 40]);
-
-		set.clear();
-
-		this.expect(set.size(), "clear").toBe(0);
-	}
 
 	function testClone() : void {
 		var set = new Set.<number>([
@@ -94,5 +62,69 @@ class _Test extends TestCase {
 
 		this.expect(a.difference(b).toArray()).toEqual([1, 2, 3]);
 		this.expect(b.difference(a).toArray()).toEqual([6, 7, 8]);
+	}
+
+
+	function testMutableSet() : void {
+		var set = new Set.<number>([
+			10,
+			30,
+			30,
+			20
+		], (a, b) -> a - b);
+
+		this.expect(set.size(), "size").toBe(3);
+
+		set.insert(40);
+
+		this.expect(set.has( 0)).toBe(false);
+		this.expect(set.has(10)).toBe(true);
+		this.expect(set.has(20)).toBe(true);
+		this.expect(set.has(30)).toBe(true);
+		this.expect(set.has(40)).toBe(true);
+
+		set.erase(20);
+
+		this.expect(set.has( 0)).toBe(false);
+		this.expect(set.has(10)).toBe(true);
+		this.expect(set.has(20)).toBe(false);
+		this.expect(set.has(30)).toBe(true);
+		this.expect(set.has(40)).toBe(true);
+
+		this.expect(set.toArray(), "toArray").toEqual([10, 30, 40]);
+
+		set.clear();
+
+		this.expect(set.size(), "clear").toBe(0);
+	}
+
+	function testErase() : void {
+		var set = new Set.<number>([
+			10,
+			30,
+			30,
+			20
+		], (a, b) -> a - b);
+
+		set.erase([20, 30]);
+		this.expect(set.toArray()).toEqual([10]);
+
+		set.erase(11);
+		this.expect(set.toArray()).toEqual([10]);
+	}
+
+	function testInsert() : void {
+		var set = new Set.<number>([
+			10,
+			30,
+			30,
+			20
+		], (a, b) -> a - b);
+
+		set.insert([21, 31]);
+		this.expect(set.toArray()).toEqual([10, 20, 21, 30, 31]);
+
+		set.insert(10);
+		this.expect(set.toArray()).toEqual([10, 20, 21, 30, 31]);
 	}
 }
