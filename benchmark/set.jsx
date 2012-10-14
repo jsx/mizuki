@@ -53,7 +53,7 @@ class _Main {
             b.timeit("set", () -> {
                 var b : boolean;
                 for (var i = 0; i < n; ++i) {
-                    b = set.has("foo" + i as string);
+                    b = set.contains("foo" + i as string);
                 }
             });
         });
@@ -74,7 +74,7 @@ class _Main {
             b.timeit("set", () -> {
                 var b : boolean;
                 for (var i = 0; i < n; ++i) {
-                    b = set.has("foox" + i as string);
+                    b = set.contains("foox" + i as string);
                 }
             });
         });

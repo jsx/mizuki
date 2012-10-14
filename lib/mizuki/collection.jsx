@@ -61,7 +61,7 @@ class Set.<T> {
     /*
      * Checks whether this set has a value with O(n log n) complexity.
      */
-    function has(value : T) : boolean {
+    function contains(value : T) : boolean {
         var index = this.lowerBound(value);
         return this._valueExistsAtIndex(index, value);
     }
@@ -81,7 +81,7 @@ class Set.<T> {
 
         var set = this.createEmptySet();
         this.forEach((item) -> {
-            if (other.has(item)) {
+            if (other.contains(item)) {
                 set.insert(item);
             }
         });
@@ -93,7 +93,7 @@ class Set.<T> {
         assert this._cmp == other._cmp;
 
         var set = this.clone();
-        set.erase(other);
+        set.remove(other);
         return set;
     }
 
@@ -103,22 +103,22 @@ class Set.<T> {
         this._set.length = 0;
     }
 
-    function erase(value : T) : void {
+    function remove(value : T) : void {
         var index = ArrayUtil.<T>.lowerBound(this._set, value, this._cmp);
         if (this._valueExistsAtIndex(index, value)) {
             this._set.splice(index, 1);
         }
     }
 
-    function erase(values : T[]) : void {
+    function remove(values : T[]) : void {
         values.forEach((item) -> {
-            this.erase(item);
+            this.remove(item);
         });
     }
 
-    function erase(other: Set.<T>) : void {
+    function remove(other: Set.<T>) : void {
         other.forEach((item) -> {
-            this.erase(item);
+            this.remove(item);
         });
     }
 

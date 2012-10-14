@@ -12,11 +12,11 @@ class _Test extends TestCase {
 
 		this.expect(set.size(), "size").toBe(3);
 
-		this.expect(set.has( 0)).toBe(false);
-		this.expect(set.has(10)).toBe(true);
-		this.expect(set.has(20)).toBe(true);
-		this.expect(set.has(30)).toBe(true);
-		this.expect(set.has(40)).toBe(false);
+		this.expect(set.contains( 0)).toBe(false);
+		this.expect(set.contains(10)).toBe(true);
+		this.expect(set.contains(20)).toBe(true);
+		this.expect(set.contains(30)).toBe(true);
+		this.expect(set.contains(40)).toBe(false);
 
 		this.expect(set.toArray(), "toArray").toEqual([10, 20, 30]);
 	}
@@ -34,7 +34,7 @@ class _Test extends TestCase {
 
 		set.insert(40);
 
-		this.expect(set2.has(40)).toBe(false);
+		this.expect(set2.contains(40)).toBe(false);
 	}
 
 	function testUnion() : void {
@@ -77,19 +77,19 @@ class _Test extends TestCase {
 
 		set.insert(40);
 
-		this.expect(set.has( 0)).toBe(false);
-		this.expect(set.has(10)).toBe(true);
-		this.expect(set.has(20)).toBe(true);
-		this.expect(set.has(30)).toBe(true);
-		this.expect(set.has(40)).toBe(true);
+		this.expect(set.contains( 0)).toBe(false);
+		this.expect(set.contains(10)).toBe(true);
+		this.expect(set.contains(20)).toBe(true);
+		this.expect(set.contains(30)).toBe(true);
+		this.expect(set.contains(40)).toBe(true);
 
-		set.erase(20);
+		set.remove(20);
 
-		this.expect(set.has( 0)).toBe(false);
-		this.expect(set.has(10)).toBe(true);
-		this.expect(set.has(20)).toBe(false);
-		this.expect(set.has(30)).toBe(true);
-		this.expect(set.has(40)).toBe(true);
+		this.expect(set.contains( 0)).toBe(false);
+		this.expect(set.contains(10)).toBe(true);
+		this.expect(set.contains(20)).toBe(false);
+		this.expect(set.contains(30)).toBe(true);
+		this.expect(set.contains(40)).toBe(true);
 
 		this.expect(set.toArray(), "toArray").toEqual([10, 30, 40]);
 
@@ -98,7 +98,7 @@ class _Test extends TestCase {
 		this.expect(set.size(), "clear").toBe(0);
 	}
 
-	function testErase() : void {
+	function testRemove() : void {
 		var set = new Set.<number>([
 			10,
 			30,
@@ -106,10 +106,10 @@ class _Test extends TestCase {
 			20
 		], (a, b) -> a - b);
 
-		set.erase([20, 30]);
+		set.remove([20, 30]);
 		this.expect(set.toArray()).toEqual([10]);
 
-		set.erase(11);
+		set.remove(11);
 		this.expect(set.toArray()).toEqual([10]);
 	}
 
