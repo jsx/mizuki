@@ -6,6 +6,11 @@ Set of basic utilities for JSX
 SYNOPSIS
 ====================
 
+    // date/time format
+
+    log DateTime.strftime(new Date(),   "%Y-%m-%d %H:%M:%S.%3N");
+    log DateTime.strptime("2012-12-01", "%Y-%m-%d %H:%M:%S.%3N");
+
     // pseudo random generator
 
    import "random-generator/mt.jsx";
@@ -30,10 +35,17 @@ SYNOPSIS
 
     log NumberUtil.format(3.1415, 2); // "3.14"
 
-    // date/time format
+    // Set for any types
 
-    log DateTime.strftime(new Date(),   "%Y-%m-%d %H:%M:%S.%3N");
-    log DateTime.strptime("2012-12-01", "%Y-%m-%d %H:%M:%S.%3N");
+    import "mizuki/collection.jsx";
+
+    var set = new Set.<number>([1, 2, 3], (a, b) -> a - b);
+    set.has(1); // true
+    set.has(4); // false
+
+    var u = set.union(otherSet);
+    var i = set.intersection(otherSet);
+    var d = set.difference(otherSet);
 
 DESCRIPTION
 ====================
