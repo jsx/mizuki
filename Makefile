@@ -47,6 +47,11 @@ benchmark-base64:
 	node a.jsx.js
 	js/jscore a.jsx.js
 
+benchmark-set:
+	$(JSX2JS) benchmark/set.jsx
+	node a.jsx.js
+	js/jscore a.jsx.js
+
 benchmark-all: print-version benchmark-sort benchmark-mt benchmark-visual-width benchmark-base64
 
 print-version:
