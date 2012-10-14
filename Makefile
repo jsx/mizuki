@@ -30,25 +30,21 @@ test-with-jscore:
 benchmark-sort:
 	$(JSX2JS) benchmark/sort.jsx
 	node a.jsx.js
-	js/spidermonkey a.jsx.js
 	js/jscore a.jsx.js
 
 benchmark-mt:
 	$(JSX2JS) benchmark/mt-vs-builtin.jsx
 	node a.jsx.js
-	js/spidermonkey a.jsx.js
 	js/jscore a.jsx.js
 
 benchmark-visual-width:
 	$(JSX2JS) benchmark/visual-width.jsx
 	node a.jsx.js
-	js/spidermonkey a.jsx.js
 	js/jscore a.jsx.js
 
 benchmark-base64:
 	$(JSX2JS) benchmark/base64.jsx
 	node a.jsx.js
-	js/spidermonkey a.jsx.js
 	js/jscore a.jsx.js
 
 benchmark-all: print-version benchmark-sort benchmark-mt benchmark-visual-width benchmark-base64
