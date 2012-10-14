@@ -13,6 +13,7 @@ final class ArrayUtil.<T> {
      * Returns a shallow copy of array.
      */
     static function clone(array : T[]) : T[] {
+        assert array != null;
         return array.slice(0);
     }
 
@@ -77,6 +78,10 @@ final class ArrayUtil.<T> {
         return left;
     }
 
+    static function lowerBound(a : T[], value : Nullable.<T>, cmp : (Nullable.<T>, Nullable.<T>)->int) : int {
+        return ArrayUtil.<T>.lowerBound(a, 0, a.length, value, cmp);
+    }
+
     /*
      * Returns a position to the first element in the range [begin, end) that
      * is <em>greater</em> than value.
@@ -100,6 +105,10 @@ final class ArrayUtil.<T> {
         }
         assert left == right;
         return left;
+    }
+
+    static function upperBound(a : T[], value : Nullable.<T>, cmp : (Nullable.<T>, Nullable.<T>)->int) : int {
+        return ArrayUtil.<T>.upperBound(a, 0, a.length, value, cmp);
     }
 
     /**
