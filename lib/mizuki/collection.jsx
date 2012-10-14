@@ -1,5 +1,10 @@
+
 import "./utility.jsx";
 
+/**
+ * Associative collection that stores unique elements, or value-less map.
+ *
+ */
 class Set.<T> {
     var _set : T[];
     var _cmp : (Nullable.<T>, Nullable.<T>) -> int;
@@ -15,10 +20,7 @@ class Set.<T> {
         this(cmp);
 
         assert a != null;
-
-        a.forEach((item) -> {
-            this.insert(item);
-        });
+        this.insert(a);
     }
 
     function constructor(other :Set.<T>) {
@@ -56,6 +58,9 @@ class Set.<T> {
         return index < this.size() && this._cmp(this._set[index], value) == 0;
     }
 
+    /*
+     * Checks whether this set has a value with O(n log n) complexity.
+     */
     function has(value : T) : boolean {
         var index = this.lowerBound(value);
         return this._valueExistsAtIndex(index, value);
