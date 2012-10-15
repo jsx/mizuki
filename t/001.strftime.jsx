@@ -1,4 +1,4 @@
-import "mizuki/datetime.jsx";
+import "../lib/mizuki/datetime.jsx";
 import "test-case.jsx";
 
 class _Test extends TestCase {
@@ -23,6 +23,10 @@ class _Test extends TestCase {
 		this.expect(DateTime.strftime(d, "%Y-%m-%d %H:%M:%S"))
 			.toBe("2013-05-02 06:08:09");
 
+	}
+
+	function testCtime() : void {
+		this.expect(DateTime.strftime(this.date(), "[%c]"), "%c").toBe("2013-05-02T06:08:09.077+0900");
 	}
 
 	function testLocale() : void {
@@ -78,13 +82,11 @@ class _Test extends TestCase {
 	}
 
 	function testVaryByEnv() : void {
-		this.expect(DateTime.strftime(this.date(), "[%c]"), "%c").notToBe("");
 		this.expect(DateTime.strftime(this.date(), "[%X]"), "%X").notToBe("");
 		this.expect(DateTime.strftime(this.date(), "[%x]"), "%x").notToBe("");
 		this.expect(DateTime.strftime(this.date(), "[%Z]"), "%Z").notToBe("");
 		this.expect(DateTime.strftime(this.date(), "[%z]"), "%z").notToBe("");
 
-		this.note("c: " + DateTime.strftime(this.date(), "[%c]"));
 		this.note("X: " + DateTime.strftime(this.date(), "[%X]"));
 		this.note("x: " + DateTime.strftime(this.date(), "[%x]"));
 		this.note("Z: " + DateTime.strftime(this.date(), "[%Z]"));

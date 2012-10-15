@@ -196,8 +196,22 @@ class _DateFormat {
             return l.b[d.getMonth()];
         case "C":
             return _DateFormat._pad((d.getFullYear() / 100) as int, w ?: 2, p ?: "0");
-        case "c":
-            return d.toLocaleString();
+        case "c": // ISO-8601 "%Y-%m-%dT%H:%M:%S.%3N+%Z"
+            return _DateFormat._format(d, "Y", p, w, l)
+                    + "-"
+                    + _DateFormat._format(d, "m", p, w, l)
+                    + "-"
+                    + _DateFormat._format(d, "d", p, w, l)
+                    + "T"
+                    + _DateFormat._format(d, "H", p, w, l)
+                    + ":"
+                    + _DateFormat._format(d, "M", p, w, l)
+                    + ":"
+                    + _DateFormat._format(d, "S", p, w, l)
+                    + "."
+                    + _DateFormat._format(d, "N", p, 3, l)
+                    + _DateFormat._format(d, "z", p, w, l)
+                    ;
         case "D":
             return _DateFormat._format(d, "m", p, w, l) + "/"
                     + _DateFormat._format(d, "d", p, w, l) + "/"
