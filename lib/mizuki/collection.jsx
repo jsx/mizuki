@@ -38,6 +38,10 @@ class Set.<T> {
         return ArrayUtil.<T>.clone(this._set);
     }
 
+    override function toString() : string {
+        return "Set" + JSON.stringify(this._set);
+    }
+
     function clone() : Set.<T> {
         return new Set.<T>(this);
     }
