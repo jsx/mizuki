@@ -289,19 +289,13 @@ class _DateFormat {
         case "u":
             return (d.getDay() ?: 7) as string;
         case "V":
-            /* replaced by the week number of the year (Monday as the first
-               day of the week) as a decimal number (01-53).  If the week con-
-               taining January 1 has four or more days in the new year, then it
-               is week 1; otherwise it is the last week of the previous year,
-               and the next week is week 1.
-              */
-            return "[FIXME:V]";
+            return _DateFormat._pad(_DateFormat._week_number(d), w ?: 2, p);
         case "v":
             return _DateFormat._format(d, "e", p, w, l) + "-"
                 + _DateFormat._format(d, "b", p, w, l) + "-"
                 + _DateFormat._format(d, "Y", p, w, l);
         case "W":
-            return "[FIXME:W]";
+            return _DateFormat._pad(_DateFormat._week_of_month(d), w ?: 2, p);
         case "w":
             return _DateFormat._pad(d.getDay(), w ?: 0, p ?: "");
         case "X":
@@ -352,6 +346,14 @@ class _DateFormat {
             s = p + s;
         }
         return s;
+    }
+
+    static function _week_number(d : Date) : number {
+        throw new Error("[FIXME] not yet implmented");
+    }
+
+    static function _week_of_month(d : Date) : number {
+        throw new Error("[FIXME] not yet implmented");
     }
 
     static function strptime(date : string, fmt: string, locale : _Locale) : Date {
