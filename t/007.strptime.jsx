@@ -77,27 +77,38 @@ class _Test extends TestCase {
             new Pair("[95]",  "[%y]"),
 
             new Pair("[01]", "[%m]"),
+            new Pair("[09]", "[%m]"),
             new Pair("[10]", "[%m]"),
             new Pair("[12]", "[%m]"),
 
             new Pair("[01]", "[%d]"),
+            new Pair("[09]", "[%d]"),
             new Pair("[10]", "[%d]"),
+            new Pair("[15]", "[%d]"),
             new Pair("[20]", "[%d]"),
+            new Pair("[25]", "[%d]"),
             new Pair("[30]", "[%d]"),
             new Pair("[31]", "[%d]"),
 
             new Pair("[00]", "[%H]"),
             new Pair("[01]", "[%H]"),
+            new Pair("[09]", "[%H]"),
             new Pair("[10]", "[%H]"),
+            new Pair("[11]", "[%H]"),
             new Pair("[20]", "[%H]"),
+            new Pair("[21]", "[%H]"),
             new Pair("[23]", "[%H]"),
 
             new Pair("[00]", "[%M]"),
             new Pair("[01]", "[%M]"),
+            new Pair("[10]", "[%M]"),
+            new Pair("[15]", "[%M]"),
             new Pair("[59]", "[%M]"),
 
             new Pair("[00]", "[%S]"),
             new Pair("[01]", "[%S]"),
+            new Pair("[10]", "[%S]"),
+            new Pair("[15]", "[%M]"),
             new Pair("[59]", "[%S]"),
 
             new Pair("[123]",       "[%3N]"),
