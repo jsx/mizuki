@@ -25,8 +25,8 @@ class _Test extends TestCase {
 
     }
 
-    function testCtime() : void {
-        this.expect(DateTime.strftime(this.date(), "[%c]"), "%c").toBe("2013-05-02T06:08:09.077+0900");
+    function testISO8601() : void {
+        this.expect(DateTime.strftime(this.date(), "[%c]"), "%c").toBe("[2013-05-02T06:08:09.077+0900]");
     }
 
     function testLocale() : void {

@@ -393,18 +393,9 @@ class _DateFormat {
 
         switch (c) {
         case "A":
-            var m = (new RegExp("^" + l.A.join("|"), "i")).exec(date);
-            if (! m) {
-                throw new Error("strptime: failed to parse '" + date + "'");
-            }
-            return date.slice(m[0].length); // FIXME
+            return _DateFormat._parseWeekDay(tm, date, l.A);
         case "a":
-            var m = (new RegExp("^" + l.a.join("|"), "i")).exec(date);
-            if (! m) {
-                throw new Error("strptime: failed to parse '" + date + "'");
-            }
-            return date.slice(m[0].length); // FIXME
-
+            return _DateFormat._parseWeekDay(tm, date, l.a);
         case "B":
             return _DateFormat._parseMonth(tm, date, l.B);
         case "b":
@@ -486,17 +477,26 @@ class _DateFormat {
         return date.slice(1);
     }
 
+    static function _parseWeekDay(tm : _Tm, date : string, names : string[]) : string {
+            var m = (new RegExp("^" + names.join("|"), "i")).exec(date);
+            if (! m) {
+                throw new Error("strptime: failed to parse week date in '" + date + "'");
+            }
+            // parse only. does not change tm
+            return date.slice(m[0].length);
+    }
+
     static function _parseMonth(tm : _Tm, date : string, names : string[]) : string {
         var m = (new RegExp("^" + names.join("|"), "i")).exec(date);
         if (! m) {
-            throw new Error("strptime: failed to parse '" + date.charAt(0) + "'");
+            throw new Error("strptime: failed to parse month in '" + date + "'");
         }
 
-        tm.month = names.indexOf(_DateFormat._toCamelCase(m[0]));
+        tm.month = names.indexOf(_DateFormat._toTitleCase(m[0]));
         return date.slice(m[0].length);
     }
 
-    static function _toCamelCase(s : string) : string {
+    static function _toTitleCase(s : string) : string {
         return s.slice(0, 1).toUpperCase() + s.slice(1).toLowerCase();
     }
 }
