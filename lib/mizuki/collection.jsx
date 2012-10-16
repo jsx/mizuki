@@ -1,9 +1,8 @@
-
 import "./utility.jsx";
 
 /**
- * associative collection that stores unique elements.
- * The concrete classes are <code>Set</code> or <code>StringSet</code>.
+ * Associative collection that stores unique elements.
+ * The concrete classes are <code>Set.&lt;T&gt;</code> and <code>StringSet</code>.
  */
 mixin ISet.<T> {
     /**
@@ -36,13 +35,13 @@ mixin ISet.<T> {
     abstract function toArray() : T[];
 
     /*
-     * Checks whether this set has a value.
+     * Checks whether this set has the given value.
      * The algorithm complexity is O(n log n) in Set.&lt;T&gt; and O(1) in StringSet.
      */
     abstract function contains(value : T) : boolean;
 
     /**
-     * A | B
+     * Returns union of tow set (A | B).
      */
     function union(other : ISet.<T>) : ISet.<T> {
         var set = this.clone();
@@ -51,7 +50,7 @@ mixin ISet.<T> {
     }
 
     /**
-     * A & B
+     * Returns intersection of tow set (A & B).
      */
     function intersection(other : ISet.<T>) : ISet.<T> {
         var set = this.create();
@@ -64,7 +63,7 @@ mixin ISet.<T> {
     }
 
     /**
-     * A & B
+     * Returns a subset of A - B.
      */
     function difference(other : ISet.<T>) : ISet.<T> {
         var set = this.clone();
@@ -88,6 +87,8 @@ mixin ISet.<T> {
 
     /**
      * Adds the given value to the set.
+     *
+     * This method is a mutator.
      */
     abstract function insert(value : T) : void;
 
@@ -105,6 +106,8 @@ mixin ISet.<T> {
 
     /**
      * Deletes the given value from the set.
+     *
+     * This method is a mutator.
      */
     abstract function remove(value : T) : void;
 
