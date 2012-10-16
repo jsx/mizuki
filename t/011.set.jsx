@@ -1,130 +1,184 @@
 import "../lib/mizuki/collection.jsx";
+import "../lib/mizuki/utility.jsx";
 import "test-case.jsx";
 
+
 class _Test extends TestCase {
-	function testSet() : void {
-		var set = new Set.<number>([
-			10,
-			30,
-			30,
-			20
-		], (a, b) -> a - b);
 
-		this.expect(set.size(), "size").toBe(3);
+    function testContains() : void {
+        var set = new Set.<string>( (a , b ) -> StringUtil.compare(a, b) );
+        this.ISetContains(set);
+    }
+    function testContainsSS() : void {
+        var set = new StringSet;
+        this.ISetContains(set);
+    }
+    function ISetContains(set : ISet.<string>) : void {
+        set.insert(["b", "c", "c", "d"]);
 
-		this.expect(set.contains( 0)).toBe(false);
-		this.expect(set.contains(10)).toBe(true);
-		this.expect(set.contains(20)).toBe(true);
-		this.expect(set.contains(30)).toBe(true);
-		this.expect(set.contains(40)).toBe(false);
+        this.expect(set.size(), "size").toBe(3);
 
-		this.expect(set.toArray(), "toArray").toEqual([10, 20, 30]);
-	}
+        this.expect(set.contains("a")).toBe(false);
+        this.expect(set.contains("b")).toBe(true);
+        this.expect(set.contains("c")).toBe(true);
+        this.expect(set.contains("d")).toBe(true);
+        this.expect(set.contains("e")).toBe(false);
 
-
-	function testClone() : void {
-		var set = new Set.<number>([
-			10,
-			30,
-			30,
-			20
-		], (a, b) -> a - b);
-
-		var set2 = set.clone();
-
-		set.insert(40);
-
-		this.expect(set2.contains(40)).toBe(false);
-	}
-
-	function testUnion() : void {
-		var cmp = (a : Nullable.<number>, b : Nullable.<number>) : int -> a - b;
-		var a = new Set.<number>([1, 2, 3, 4, 5], cmp);
-		var b = new Set.<number>([4, 5, 6, 7, 8], cmp);
-
-		this.expect(a.union(b).toArray()).toEqual([1, 2, 3, 4, 5, 6, 7, 8]);
-		this.expect(b.union(a).toArray()).toEqual([1, 2, 3, 4, 5, 6, 7, 8]);
-	}
-
-	function testIntersection() : void {
-		var cmp = (a : Nullable.<number>, b : Nullable.<number>) : int -> a - b;
-		var a = new Set.<number>([1, 2, 3, 4, 5], cmp);
-		var b = new Set.<number>([4, 5, 6, 7, 8], cmp);
-
-		this.expect(a.intersection(b).toArray()).toEqual([4, 5]);
-		this.expect(b.intersection(a).toArray()).toEqual([4, 5]);
-	}
-
-	function testDifferencee() : void {
-		var cmp = (a : Nullable.<number>, b : Nullable.<number>) : int -> a - b;
-		var a = new Set.<number>([1, 2, 3, 4, 5], cmp);
-		var b = new Set.<number>([4, 5, 6, 7, 8], cmp);
-
-		this.expect(a.difference(b).toArray()).toEqual([1, 2, 3]);
-		this.expect(b.difference(a).toArray()).toEqual([6, 7, 8]);
-	}
+        this.expect(set.toArray().sort(), "toArray").toEqual(["b", "c", "d"]);
+    }
 
 
-	function testMutableSet() : void {
-		var set = new Set.<number>([
-			10,
-			30,
-			30,
-			20
-		], (a, b) -> a - b);
+    function testClone() : void {
+        var set = new Set.<string>( (a , b ) -> StringUtil.compare(a, b) );
+        this.ISetClone(set);
+    }
+    function testCloneSS() : void {
+        var set = new StringSet;
+        this.ISetClone(set);
+    }
+    function ISetClone(set : ISet.<string>) : void {
+        set.insert([
+            "a",
+            "c",
+            "c",
+            "d"
+        ]);
 
-		this.expect(set.size(), "size").toBe(3);
+        var set2 = set.clone();
 
-		set.insert(40);
+        set.insert("e");
 
-		this.expect(set.contains( 0)).toBe(false);
-		this.expect(set.contains(10)).toBe(true);
-		this.expect(set.contains(20)).toBe(true);
-		this.expect(set.contains(30)).toBe(true);
-		this.expect(set.contains(40)).toBe(true);
+        this.expect(set .contains("e")).toBe(true);
+        this.expect(set2.contains("e")).toBe(false);
+    }
 
-		set.remove(20);
+    function testUnion() : void {
+        var set = new Set.<string>( (a , b ) -> StringUtil.compare(a, b) );
+        this.ISetUnion(set);
+    }
+    function testUnionSS() : void {
+        var set = new StringSet;
+        this.ISetUnion(set);
+    }
+    function ISetUnion(proto : ISet.<string>) : void {
+        var a = proto.create(["a", "b", "c", "d", "e"]);
+        var b = proto.create(["d", "e", "f", "g", "h"]);
 
-		this.expect(set.contains( 0)).toBe(false);
-		this.expect(set.contains(10)).toBe(true);
-		this.expect(set.contains(20)).toBe(false);
-		this.expect(set.contains(30)).toBe(true);
-		this.expect(set.contains(40)).toBe(true);
+        this.expect(a.union(b).toArray().sort()).toEqual(["a", "b", "c", "d", "e", "f", "g", "h"]);
+        this.expect(b.union(a).toArray().sort()).toEqual(["a", "b", "c", "d", "e", "f", "g", "h"]);
+    }
 
-		this.expect(set.toArray(), "toArray").toEqual([10, 30, 40]);
 
-		set.clear();
+    function testIntersection() : void {
+        var set = new Set.<string>( (a , b ) -> StringUtil.compare(a, b) );
+        this.ISetIntersection(set);
+    }
+    function testIntersectionSS() : void {
+        var set = new StringSet;
+        this.ISetIntersection(set);
+    }
+    function ISetIntersection(proto : ISet.<string>) : void {
+        var a = proto.create(["a", "b", "c", "d", "e"]);
+        var b = proto.create(["d", "e", "f", "g", "h"]);
 
-		this.expect(set.size(), "clear").toBe(0);
-	}
+        this.expect(a.intersection(b).toArray()).toEqual(["d", "e"]);
+        this.expect(b.intersection(a).toArray()).toEqual(["d", "e"]);
+    }
 
-	function testRemove() : void {
-		var set = new Set.<number>([
-			10,
-			30,
-			30,
-			20
-		], (a, b) -> a - b);
+    function testDifference() : void {
+        var set = new Set.<string>( (a , b ) -> StringUtil.compare(a, b) );
+        this.ISetDifference(set);
+    }
+    function testDifferenceSS() : void {
+        var set = new StringSet;
+        this.ISetDifference(set);
+    }
+    function ISetDifference(proto : ISet.<string>) : void {
+        var a = proto.create(["a", "b", "c", "d", "e"]);
+        var b = proto.create(["d", "e", "f", "g", "h"]);
 
-		set.remove([20, 30]);
-		this.expect(set.toArray()).toEqual([10]);
+        this.expect(a.difference(b).toArray()).toEqual(["a", "b", "c"]);
+        this.expect(b.difference(a).toArray()).toEqual(["f", "g", "h"]);
+    }
 
-		set.remove(11);
-		this.expect(set.toArray()).toEqual([10]);
-	}
+    function testBasicMutator() : void {
+        var set = new Set.<string>( (a , b ) -> StringUtil.compare(a, b) );
+        this.ISetBasicMutator(set);
+    }
+    function testBasicMutatorSS() : void {
+        var set = new StringSet;
+        this.ISetBasicMutator(set);
+    }
+    function ISetBasicMutator(set : ISet.<string>) : void {
+        set.insert([
+            "b", "c", "c", "d"
+        ]);
 
-	function testInsert() : void {
-		var set = new Set.<number>([
-			10,
-			30,
-			30,
-			20
-		], (a, b) -> a - b);
+        this.expect(set.size(), "size").toBe(3);
 
-		set.insert([21, 31]);
-		this.expect(set.toArray()).toEqual([10, 20, 21, 30, 31]);
+        set.insert("e");
 
-		set.insert(10);
-		this.expect(set.toArray()).toEqual([10, 20, 21, 30, 31]);
-	}
+        this.expect(set.contains("a")).toBe(false);
+        this.expect(set.contains("b")).toBe(true);
+        this.expect(set.contains("c")).toBe(true);
+        this.expect(set.contains("d")).toBe(true);
+        this.expect(set.contains("e")).toBe(true);
+
+        set.remove("c");
+
+        this.expect(set.contains("a")).toBe(false);
+        this.expect(set.contains("b")).toBe(true);
+        this.expect(set.contains("c")).toBe(false);
+        this.expect(set.contains("d")).toBe(true);
+        this.expect(set.contains("e")).toBe(true);
+
+        this.expect(set.toArray().sort(), "toArray").toEqual(["b", "d", "e"]);
+
+        set.clear();
+
+        this.expect(set.size(), "clear").toBe(0);
+        this.expect(set.toArray().sort(), "toArray").toEqual([] : string[]);
+    }
+
+    function testInsert() : void {
+        var set = new Set.<string>( (a , b ) -> StringUtil.compare(a, b) );
+        this.ISetInsert(set);
+    }
+    function testInsertSS() : void {
+        var set = new StringSet;
+        this.ISetInsert(set);
+    }
+    function ISetInsert(set : ISet.<string>) : void {
+        set.insert(["b", "c", "c", "d"]);
+
+        set.insert(["cc", "dd"]);
+        this.expect(set.toArray().sort()).toEqual(["b", "c", "cc", "d", "dd"]);
+
+        set.insert("b");
+        this.expect(set.toArray().sort()).toEqual(["b", "c", "cc", "d", "dd"]);
+
+        set.insert("a");
+        this.expect(set.toArray().sort()).toEqual(["a", "b", "c", "cc", "d", "dd"]);
+    }
+
+    function testRemove() : void {
+        var set = new Set.<string>( (a , b ) -> StringUtil.compare(a, b) );
+        this.ISetRemove(set);
+    }
+    function testRemoveSS() : void {
+        var set = new StringSet;
+        this.ISetRemove(set);
+    }
+    function ISetRemove(set : ISet.<string>) : void {
+        set.insert(["b", "c", "c", "d"]);
+
+        set.remove(["c", "d"]);
+        this.expect(set.toArray()).toEqual(["b"]);
+
+        set.remove("bb");
+        this.expect(set.toArray()).toEqual(["b"]);
+    }
+
 }
+
+// vim: set expandtab:
