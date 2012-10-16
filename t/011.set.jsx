@@ -24,7 +24,7 @@ class _Test extends TestCase {
         this.expect(set.contains("d")).toBe(true);
         this.expect(set.contains("e")).toBe(false);
 
-        this.expect(set.toArray().sort(), "toArray").toEqual(["b", "c", "d"]);
+        this.expect(set.toArray(), "toArray").toEqual(["b", "c", "d"]);
     }
 
 
@@ -64,8 +64,8 @@ class _Test extends TestCase {
         var a = proto.create(["a", "b", "c", "d", "e"]);
         var b = proto.create(["d", "e", "f", "g", "h"]);
 
-        this.expect(a.union(b).toArray().sort()).toEqual(["a", "b", "c", "d", "e", "f", "g", "h"]);
-        this.expect(b.union(a).toArray().sort()).toEqual(["a", "b", "c", "d", "e", "f", "g", "h"]);
+        this.expect(a.union(b).toArray()).toEqual(["a", "b", "c", "d", "e", "f", "g", "h"]);
+        this.expect(b.union(a).toArray()).toEqual(["a", "b", "c", "d", "e", "f", "g", "h"]);
     }
 
 
@@ -132,12 +132,12 @@ class _Test extends TestCase {
         this.expect(set.contains("d")).toBe(true);
         this.expect(set.contains("e")).toBe(true);
 
-        this.expect(set.toArray().sort(), "toArray").toEqual(["b", "d", "e"]);
+        this.expect(set.toArray(), "toArray").toEqual(["b", "d", "e"]);
 
         set.clear();
 
         this.expect(set.size(), "clear").toBe(0);
-        this.expect(set.toArray().sort(), "toArray").toEqual([] : string[]);
+        this.expect(set.toArray(), "toArray").toEqual([] : string[]);
     }
 
     function testInsert() : void {
@@ -152,13 +152,13 @@ class _Test extends TestCase {
         set.insert(["b", "c", "c", "d"]);
 
         set.insert(["cc", "dd"]);
-        this.expect(set.toArray().sort()).toEqual(["b", "c", "cc", "d", "dd"]);
+        this.expect(set.toArray()).toEqual(["b", "c", "cc", "d", "dd"]);
 
         set.insert("b");
-        this.expect(set.toArray().sort()).toEqual(["b", "c", "cc", "d", "dd"]);
+        this.expect(set.toArray()).toEqual(["b", "c", "cc", "d", "dd"]);
 
         set.insert("a");
-        this.expect(set.toArray().sort()).toEqual(["a", "b", "c", "cc", "d", "dd"]);
+        this.expect(set.toArray()).toEqual(["a", "b", "c", "cc", "d", "dd"]);
     }
 
     function testRemove() : void {

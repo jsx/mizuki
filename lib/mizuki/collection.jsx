@@ -31,6 +31,7 @@ mixin ISet.<T> {
 
     /**
      * Convers the set to an array.
+     * The order of the array is always fixed.
      */
     abstract function toArray() : T[];
 
@@ -250,7 +251,7 @@ class StringSet implements ISet.<string> {
         this.forEach(function(item) {
             a.push(item);
         });
-        return a;
+        return a.sort();
     }
 
     override function contains(value : string) : boolean {
