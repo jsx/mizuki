@@ -214,7 +214,6 @@ class Set.<T> implements ISet.<T> { // where T must be comparable
 
 class StringSet implements ISet.<string> {
     var _map  = new Map.<boolean>;
-    var _size = 0;
 
     function constructor() {
     }
@@ -236,7 +235,11 @@ class StringSet implements ISet.<string> {
     }
 
     override function size() : int {
-        return this._size;
+        var count = 0;
+        this.forEach((item) -> {
+            ++count;
+        });
+        return count;
     }
 
     override function toArray() : string[] {
@@ -259,21 +262,14 @@ class StringSet implements ISet.<string> {
 
     override function clear() : void {
         this._map  = new Map.<boolean>;
-        this._size = 0;
     }
 
     override function remove(value : string) : void {
-        if (this._map.hasOwnProperty(value)) {
-            this._size--;
-            delete this._map[value];
-        }
+        delete this._map[value];
     }
 
     override function insert(value : string) : void {
-        if (! this._map.hasOwnProperty(value)) {
-            this._size++;
-            this._map[value] = true;
-        }
+        this._map[value] = true;
     }
 }
 
