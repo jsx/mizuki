@@ -6,17 +6,17 @@ import "./utility.jsx";
  * The concrete classes are <code>Set</code> or <code>StringSet</code>.
  */
 mixin ISet.<T> {
-    /*
+    /**
      * Clones the same object as the receiver.
      */
     abstract function clone() : ISet.<T>;
 
-    /*
+    /**
      * Creates an empty set instance.
      */
     abstract function create() : ISet.<T>;
 
-    /*
+    /**
      * Creates a set instance with <code>values</code>.
      */
     function create(values : T[]) : ISet.<T> {
@@ -25,12 +25,12 @@ mixin ISet.<T> {
         return set;
     }
 
-    /*
+    /**
      * Returns the size of the set.
      */
     abstract function size() : int;
 
-    /*
+    /**
      * Convers the set to an array.
      */
     abstract function toArray() : T[];
@@ -41,7 +41,7 @@ mixin ISet.<T> {
      */
     abstract function contains(value : T) : boolean;
 
-    /*
+    /**
      * A | B
      */
     function union(other : ISet.<T>) : ISet.<T> {
@@ -50,7 +50,7 @@ mixin ISet.<T> {
         return set;
     }
 
-    /*
+    /**
      * A & B
      */
     function intersection(other : ISet.<T>) : ISet.<T> {
@@ -63,7 +63,7 @@ mixin ISet.<T> {
         return set;
     }
 
-    /*
+    /**
      * A & B
      */
     function difference(other : ISet.<T>) : ISet.<T> {
@@ -72,21 +72,21 @@ mixin ISet.<T> {
         return set;
     }
 
-    /*
+    /**
      * Calls the given block for each element of the set.
      */
     abstract function forEach (block : (T)->void) : void;
 
     // mutators
 
-    /*
+    /**
      * Clears all the elements of the set.
      *
      * This method is a mutator.
      */
     abstract function clear() : void;
 
-    /*
+    /**
      * Adds the given value to the set.
      */
     abstract function insert(value : T) : void;
@@ -103,7 +103,7 @@ mixin ISet.<T> {
         });
     }
 
-    /*
+    /**
      * Deletes the given value from the set.
      */
     abstract function remove(value : T) : void;
