@@ -2,35 +2,57 @@
 import "./utility.jsx";
 
 /**
- * Associative collection that stores unique elements, or value-less map.
- *
+ * associative collection that stores unique elements.
+ * The concrete classes are <code>Set</code> or <code>StringSet</code>.
  */
-
 mixin ISet.<T> {
+    /*
+     * Clones the same object as the receiver.
+     */
     abstract function clone() : ISet.<T>;
 
+    /*
+     * Creates an empty set instance.
+     */
     abstract function create() : ISet.<T>;
 
+    /*
+     * Creates a set instance with <code>values</code>.
+     */
     function create(values : T[]) : ISet.<T> {
         var set = this.create();
         set.insert(values);
         return set;
     }
 
+    /*
+     * Returns the size of the set.
+     */
     abstract function size() : int;
 
+    /*
+     * Convers the set to an array.
+     */
     abstract function toArray() : T[];
 
+    /*
+     * Checks whether this set has a value.
+     * The algorithm complexity is O(n log n) in Set.&lt;T&gt; and O(1) in StringSet.
+     */
     abstract function contains(value : T) : boolean;
 
-    // A | B
+    /*
+     * A | B
+     */
     function union(other : ISet.<T>) : ISet.<T> {
         var set = this.clone();
         set.insert(other);
         return set;
     }
 
-    // A & B
+    /*
+     * A & B
+     */
     function intersection(other : ISet.<T>) : ISet.<T> {
         var set = this.create();
         this.forEach((item) -> {
@@ -41,19 +63,32 @@ mixin ISet.<T> {
         return set;
     }
 
-    // A - B
+    /*
+     * A & B
+     */
     function difference(other : ISet.<T>) : ISet.<T> {
         var set = this.clone();
         set.remove(other);
         return set;
     }
 
+    /*
+     * Calls the given block for each element of the set.
+     */
     abstract function forEach (block : (T)->void) : void;
 
     // mutators
 
+    /*
+     * Clears all the elements of the set.
+     *
+     * This method is a mutator.
+     */
     abstract function clear() : void;
 
+    /*
+     * Adds the given value to the set.
+     */
     abstract function insert(value : T) : void;
 
     function insert(values : T[]) : void {
@@ -68,6 +103,9 @@ mixin ISet.<T> {
         });
     }
 
+    /*
+     * Deletes the given value from the set.
+     */
     abstract function remove(value : T) : void;
 
     function remove(values : T[]) : void {
@@ -141,9 +179,6 @@ class Set.<T> implements ISet.<T> { // where T must be comparable
         return index < this.size() && this._cmp(this._set[index], value) == 0;
     }
 
-    /*
-     * Checks whether this set has a value with O(n log n) complexity.
-     */
     override function contains(value : T) : boolean {
         var index = this.lowerBound(value);
         return this._valueExistsAtIndex(index, value);
