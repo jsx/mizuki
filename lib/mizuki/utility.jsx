@@ -56,9 +56,6 @@ final class ArrayUtil.<T> {
     /*
      * Returns a position to the first element in the range [begin, end) that
      * is not <em>less</em> than value.
-     *
-     * Equivalent to <code>a.indexOf(value)</code>,
-     * but the array must be sorted.
      */
     static function lowerBound(a : T[], begin : int, end : int, value : Nullable.<T>, cmp : (Nullable.<T>, Nullable.<T>)->int) : int {
         var left  = begin;
@@ -85,9 +82,6 @@ final class ArrayUtil.<T> {
     /*
      * Returns a position to the first element in the range [begin, end) that
      * is <em>greater</em> than value.
-     *
-     * Equivalent to <code>a.lastIndexOf(value)+1</code>,
-     * but the array must be sorted.
      */
     static function upperBound(a : T[], begin : int, end : int, value : Nullable.<T>, cmp : (Nullable.<T>, Nullable.<T>)->int) : int {
         var left  = begin;
