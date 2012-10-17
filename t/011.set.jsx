@@ -179,6 +179,20 @@ class _Test extends TestCase {
         this.expect(set.toArray()).toEqual(["b"]);
     }
 
+    function testIgnoreCaseStringSet() : void {
+        var set = new Set.<string>( (a , b ) -> StringUtil.compareIgnoreCase(a, b) );
+
+        set.insert(["foo", "BAR", "Baz"]);
+
+        this.expect(set.contains("foo")).toBe(true);
+        this.expect(set.contains("FOO")).toBe(true);
+        this.expect(set.contains("bar")).toBe(true);
+        this.expect(set.contains("BAR")).toBe(true);
+        this.expect(set.contains("baz")).toBe(true);
+        this.expect(set.contains("BAZ")).toBe(true);
+
+        this.expect(set.toArray(), "ignore-cased string set saving cases").toEqual(["BAR", "Baz", "foo"]);
+    }
 }
 
 // vim: set expandtab:
