@@ -227,6 +227,43 @@ final class ArrayUtil.<T> {
         return r;
     }
 
+    /**
+     * Returns the index for the first value which the predicate return true,
+     * or returns -1 on not found like <code>Array#indexOf()</code>.
+     */
+    static function firstIndex(a : T[], predicate : (Nullable.<T>)->boolean) : int {
+        return ArrayUtil.<T>.firstIndex(a, 0, a.length, predicate);
+    }
+
+    static function firstIndex(a : T[], begin : int, end : int, predicate : (Nullable.<T>)->boolean) : int {
+        var cur = begin;
+        while (cur < end) {
+            if (predicate(a[cur])) {
+                return cur;
+            }
+            ++cur;
+        }
+        return -1;
+    }
+
+    /**
+     * Returns the index for the last value which the predicate return true,
+     * or returns -1 on not found like <code>Array#lastIndexOf()</code>.
+     */
+    static function lastIndex(a : T[], predicate : (Nullable.<T>)->boolean) : int {
+        return ArrayUtil.<T>.lastIndex(a, 0, a.length, predicate);
+    }
+
+    static function lastIndex(a : T[], begin : int, end : int, predicate : (Nullable.<T>)->boolean) : int {
+        var cur = end;
+        while (cur >= begin) {
+            if (predicate(a[cur])) {
+                return cur;
+            }
+            --cur;
+        }
+        return -1;
+    }
 }
 
 final class Enumerable.<C, E> {
