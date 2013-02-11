@@ -1,5 +1,5 @@
 
-JOBS  := 2
+JOBS  := 4
 PROVE :=prove --jobs=$(JOBS)
 
 DETAIL = lib/mizuki/detail
