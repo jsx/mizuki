@@ -42,7 +42,7 @@ mixin ISet.<T> {
     abstract function contains(value : T) : boolean;
 
     /**
-     * Returns union of tow set (A | B).
+     * Returns union of two sets (A | B).
      */
     function union(other : ISet.<T>) : ISet.<T> {
         var set = this.clone();
@@ -51,7 +51,7 @@ mixin ISet.<T> {
     }
 
     /**
-     * Returns intersection of tow set (A & B).
+     * Returns intersection of two sets (A & B).
      */
     function intersection(other : ISet.<T>) : ISet.<T> {
         var set = this.create();
