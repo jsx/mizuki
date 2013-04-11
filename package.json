@@ -1,0 +1,24 @@
+{
+  "name":        "mizuki",
+  "version":     "0.0.1",
+  "description": "Set of basic utilities for JSX",
+  "keywords": ["jsx" ],
+  "repository" : "git://github.com/gfx/mizuki.git",
+  "bugs" : { "url" : "https://github.com/gfx/mizuki/issues" },
+  "author": {
+        "name":  "Goro Fuji (gfx)",
+        "email": "gfuji@cpan.org"
+  },
+  "directories": {
+    "lib": "./lib"
+  },
+  "dependencies": {
+      "jsx": "0.9.x"
+  },
+  "engines": {
+    "node": ">= 0.8.0"
+  },
+  "scripts" : {
+      "test" : "make test JOBS=1 SKIP_PHANTOMJS_TEST=1"
+  }
+}
