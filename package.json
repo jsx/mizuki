@@ -19,6 +19,5 @@
     "node": ">= 0.8.0"
   },
   "scripts" : {
-      "test" : "make test JOBS=1 SKIP_PHANTOMJS_TEST=1"
   }
 }
