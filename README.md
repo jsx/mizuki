@@ -6,22 +6,29 @@ Set of basic utilities for JSX
 SYNOPSIS
 ====================
 
+
+import "mizuki/datetime.jsx"
+---------------------
+
     // date/time format
 
     log DateTime.strftime(new Date(),   "%Y-%m-%d %H:%M:%S.%3N");
     log DateTime.strptime("2012-12-01", "%Y-%m-%d %H:%M:%S.%3N");
 
-    // pseudo random generator
 
-   import "random-generator/mt.jsx";
+import "random-generator/mt.jsx";
+---------------------
+
+    // pseudo random generator
 
     var r = new MT(); // Mersenne Twister generator
     log r.nextInt32();
     log r.nextUUID(); // RFC-4122 complaint UUID
 
-    // utilities for arrays, strings and numbers
+import "utility.jsx";
+---------------------
 
-    import "utility.jsx";
+    // utilities for arrays, strings and numbers
 
     ArrayUtil.<T>.shuffleInPlace(array);
     ArrayUtil.<T>.sortInPlace(array, compareFunction); // stable sort
@@ -35,9 +42,11 @@ SYNOPSIS
 
     log NumberUtil.format(3.1415, 2); // "3.14"
 
-    // Set for any types
 
-    import "mizuki/collection.jsx";
+import "mizuki/collection.jsx";
+---------------------
+
+    // Set for any types
 
     var set = new Set.<number>([1, 2, 3], (a, b) -> a - b);
     set.has(1); // true
