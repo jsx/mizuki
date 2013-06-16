@@ -7,7 +7,7 @@ mixin RandomGenerator {
     /**
      * Generates a random seed. Note that this is not secure.
      */
-    function generateSeed() : int {
+    function generateSeed() : number {
         var UINT32_MAX = 0xffffffff;
 
         var seed = Date.now();
@@ -69,7 +69,7 @@ mixin RandomGenerator {
         return 0;
     }
 
-    function _hex(n : int, width : int) : string {
+    function _hex(n : number, width : number) : string {
         var str = n.toString(16);
         while (str.length < width) {
             str = "0" + str;
@@ -77,7 +77,7 @@ mixin RandomGenerator {
         return str;
     }
 
-    function _nextUInt(bits : int) : int {
+    function _nextUInt(bits : number) : number {
         assert 0 <= bits && bits <= 32;
         return this.nextInt32() >>> (32 - bits);
     }
