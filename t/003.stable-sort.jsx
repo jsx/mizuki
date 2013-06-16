@@ -218,7 +218,7 @@ class _Test extends TestCase {
             return a.key - b.key; // sort by key
         });
 
-        a.reduce((previous, current) -> {
+        a.reduce.<Pair.<int, int>>((previous, current) -> {
             if (previous.key == current.key) {
                 this.expect(previous.value).toBeLE(current.value);
             }
@@ -236,7 +236,7 @@ class _Test extends TestCase {
             return a.key - b.key; // sort by key
         });
 
-        a.reduce((previous, current) -> {
+        a.reduce.<Pair.<int, int>>((previous, current) -> {
             if (previous.key == current.key) {
                 this.expect(previous.value, "key:" + previous.key as string).toBeLE(current.value);
             }
