@@ -22,7 +22,7 @@ test-tz:
 	TZ=GMT-0 $(PROVE)
 
 test-release:
-	JSX_OPTS=--release $(PROVE)
+	JSX_OPTS="--release --minify" $(PROVE)
 
 test-with-jscore:
 	JSX_RUNJS=js/jscore $(PROVE)
