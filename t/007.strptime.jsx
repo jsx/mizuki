@@ -61,10 +61,11 @@ class _Test extends TestCase {
         this.expect(DateTime.strftime(DateTime.strptime(s, f), f), f).toBe(s);
 
 
-        this.expect(DateTime.strptime("[January]", "[%B]").getMonth(), "%B (1)").toBe(0);
-        this.expect(DateTime.strptime("[february]", "[%B]").getMonth(), "%B (2)").toBe(1);
-        this.expect(DateTime.strptime("[Jan]", "[%b]").getMonth(), "%b (1)").toBe(0);
-        this.expect(DateTime.strptime("[feb]", "[%b]").getMonth(), "%b (2)").toBe(1);
+        this.expect(DateTime.strptime("[January] [15] [2013]", "[%B] [%d] [%Y]").getMonth(), "%B for Janary").toBe(0);
+        this.expect(DateTime.strptime("[february] [15] [2013]", "[%B] [%d] [%Y]").getMonth(), "%B for february").toBe(1);
+
+        this.expect(DateTime.strptime("[Jan] [15] [2013]", "[%b] [%d] [%Y]").getMonth(), "%b for Jan").toBe(0);
+        this.expect(DateTime.strptime("[feb] [15] [2013]", "[%b] [%d] [%Y]").getMonth(), "%b for feb").toBe(1);
     }
 
     function testFormat() : void {
@@ -119,7 +120,8 @@ class _Test extends TestCase {
 
         data.forEach((p) -> {
             var d = DateTime.strptime(p.str, p.fmt);
-            this.expect(DateTime.strftime(d, p.fmt), p.toString()).toBe(p.str);
+            var s = DateTime.strftime(d, p.fmt);
+            this.expect(s, p.toString() + " (" + d.toString() + ")").toBe(p.str);
         });
     }
 

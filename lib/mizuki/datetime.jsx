@@ -134,8 +134,6 @@ class _DateFormat {
     static const _SPACE_PADDING   = "_";
     static const _ZERO_PADDING    = "0";
 
-    static const CurrentTZOffset = (new Date(0)).getTimezoneOffset();
-
     static function strftime(date : Date, fmt : string, locale : _Locale) : string {
         var r = "";
 
@@ -375,9 +373,14 @@ class _DateFormat {
         if (date != "") {
             throw new Error("strptime: failed to parse '" + date + "'");
         }
-        return new Date(Date.UTC(
-                tm.year, tm.month, tm.date,
-                tm.hours, tm.minutes, tm.seconds, tm.ms) + (tm.tz * 60 * 1000));
+        if (tm.hasTimezoneOffset()) {
+            return new Date(Date.UTC(
+                    tm.year, tm.month, tm.date,
+                    tm.hours, tm.minutes, tm.seconds, tm.ms) + tm.getTimezoneOffsetInMS());
+        }
+        else {
+            return new Date(tm.year, tm.month, tm.date, tm.hours, tm.minutes, tm.seconds, tm.ms);
+        }
     }
 
     static function _parse(tm : _Tm, date : string, c : string, p : string, w : number, l : _Locale) : string {
@@ -449,29 +452,29 @@ class _DateFormat {
             }
             tm.tzName = m[0];
             if (/^(?:UTC|GMT)$/i.test(tm.tzName)) {
-                tm.tz = 0;
+                tm.setTimezoneOffset(0);
             }
             return date.slice(m[0].length);
         case "z": // timezone offset "Z" | "+hh:mm" | "+hhmm" | "+hh"
             return (function () : string {
                 var m = /^([+-])(2[0-4]|[0-1][0-9])(?:[:]?([0-5][0-9]))?/.exec(date);
                 if (m) {
-                    tm.tz = (m[2] as int) * 60;
+                    var tz = (m[2] as int) * 60;
                     if (m[3] != null) {
-                        tm.tz += m[3] as int;
+                        tz += m[3] as int;
                     }
 
                     if (m[1] == "+") {
-                        tm.tz = -tm.tz;
+                        tz = -tz;
                     }
-
+                    tm.setTimezoneOffset(tz);
                     return date.slice(m[0].length);
                 }
 
                 if (date.charAt(0) != "Z") {
                     throw new Error("strptime: failed to parse '" + date + "'");
                 }
-                tm.tz = 0;
+                tm.setTimezoneOffset(0);
                 return date.slice(1); // skip "Z"
             }());
 
@@ -504,7 +507,7 @@ class _DateFormat {
 }
 
 class _Tm {
-    var year    = 0;
+    var year    = 1970;
     var month   = 0;
     var date    = 1;
     var hours   = 0;
@@ -512,9 +515,26 @@ class _Tm {
     var seconds = 0;
     var ms      = 0;
 
-    var tz      = _DateFormat.CurrentTZOffset;
+    var _tz     = null : Nullable.<number>;
     var tzName  = "";
     var wday    = 0; // day of week
+
+    function hasTimezoneOffset() : boolean {
+        return this._tz != null;
+    }
+    function setTimezoneOffset(offset : number) : void {
+        this._tz = offset * 60 * 1000;
+    }
+
+    function getTimezoneOffsetInMS() : number {
+        if (this.hasTimezoneOffset()) {
+            return this._tz;
+        }
+        else {
+            // tz offset varies because of the summar time
+            return new Date(this.year, this.month, this.date, this.hours, this.minutes, this.seconds, this.ms).getTimezoneOffset() * 60 * 1000;
+        }
+    }
 }
 
 // vim: set expandtab:
