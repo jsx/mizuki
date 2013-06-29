@@ -430,11 +430,7 @@ final class StringUtil {
 }
 
 final class NumberUtil {
-    static function format(n : number, precision : int) : string {
-        return NumberUtil.format(n, precision, 0);
-    }
-
-    static function format(n : number, precision : int, width : int) : string {
+    static function format(n : number, precision : int, width : int = 0) : string {
         var i = n as int;
 
         var s = i as string;
