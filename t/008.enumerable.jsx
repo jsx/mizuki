@@ -7,7 +7,7 @@ class _Test extends TestCase {
 	function compile() : void {
 		var nodeList = dom.document.querySelectorAll(".foo");
 
-		Enumerable.<NodeList, Node>.from(nodeList).forEach((item) -> {
+		List.<NodeList, Node>.from(nodeList).forEach((item) -> {
 			return true;
 		});
 	}
@@ -15,7 +15,7 @@ class _Test extends TestCase {
 	function testForEach() : void {
 		var result = new Array.<string>;
 
-		Enumerable.<number[], number>.from([1, 2, 3]).forEach((item) -> {
+		List.<number[], number>.from([1, 2, 3]).forEach((item) -> {
 			result.push(item as string);
 			return true;
 		});
@@ -24,7 +24,7 @@ class _Test extends TestCase {
 
 		result = new Array.<string>;
 
-		Enumerable.<number[], number>.from([1, 2, 3]).forEach((item, index) -> {
+		List.<number[], number>.from([1, 2, 3]).forEach((item, index) -> {
 			result.push(index as string);
 			return true;
 		});
@@ -33,7 +33,7 @@ class _Test extends TestCase {
 	}
 
 	function testToArray() : void {
-		var result = Enumerable.<number[], number>.from([1, 2, 3]).toArray();
+		var result = List.<number[], number>.from([1, 2, 3]).toArray();
 		this.expect(result).toEqual([1, 2, 3]);
 	}
 

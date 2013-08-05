@@ -266,11 +266,11 @@ final class ArrayUtil.<T> {
     }
 }
 
-final class Enumerable.<C, E> {
+final class List.<C, E> {
     var _c : C;
 
-    static function from(collection : C) : Enumerable.<C, E> {
-        return new Enumerable.<C, E>(collection);
+    static function from(collection : C) : List.<C, E> {
+        return new List.<C, E>(collection);
     }
 
     function constructor(c : C) {
