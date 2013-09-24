@@ -56,7 +56,6 @@ class Benchmark {
     function timeit(title : string, prepare : () -> void, block : () -> void) : void {
         var count = 0;
 
-        var start   = Date.now();
         var elapsed = 0;
         do {
             ++count;
