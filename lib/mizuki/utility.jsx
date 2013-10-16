@@ -427,61 +427,7 @@ final class StringUtil {
         return s;
     }
 
-}
-
-final class NumberUtil {
-    static function format(n : number, precision : int, width : int = 0) : string {
-        var i = n as int;
-
-        var s = i as string;
-
-        if (precision > 0) {
-            var prefixLength = 2; /* "0.".length */
-            var f = ((n - i) as string).slice(prefixLength, prefixLength+precision);
-            f += StringUtil.repeat("0", precision - f.length);
-            s += "." + f;
-        }
-
-        return StringUtil.repeat(" ", width - s.length) + s;
-    }
-
-}
-
-/*
- * Base64 encoder/decoder, regarding UTF-8 as the encoding and respecting to surrogate pairs.
- */
-final class Base64 {
-
-    /*
-     * Encodes the input str in Base64.
-     * The input may be unicode text, so the function encodes str in UTF-8 first.
-     */
-    static function encode(str : string) : string {
-        return Base64._btoa(Base64._encode_utf8(str));
-    }
-
-    /*
-     * Decodes the input str in Base64, assuming the input is encoded in UTF-8.
-     */
-    static function decode(str : string) : string {
-        return Base64._decode_utf8(Base64._atob(str));
-    }
-
-    /* implementation */
-
-    static const _btoaChars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/';
-    static const _atobTab = Base64._makeTable(Base64._btoaChars);
-    static const _invalid = new RegExp("[^" + Base64._btoaChars + "]", "g");
-
-    static function _makeTable(binary : string) : Map.<int> {
-        var tab = new Map.<int>();
-        for (var i = 0; i < binary.length; ++i) {
-            tab[binary.charAt(i)] = i;
-        }
-        return tab;
-    }
-
-    static function _encode_utf8(str : string) : string {
+    static function encode_utf8(str : string) : string {
         var s = "";
         StringUtil.forEachByte(str, function (c) {
             s += String.fromCharCode(c);
@@ -490,40 +436,7 @@ final class Base64 {
         return s;
     }
 
-    static function _btoa(bin : string) : string {
-        var a = "";
-        for (var i = 0; i < bin.length; i += 3) {
-            var c = bin.slice(i, i+3);
-            switch (c.length) {
-            case 1:
-                var ord = (c.charCodeAt(0) << 16);
-                a += Base64._btoaChars.charAt( ord >>> 18)
-                   + Base64._btoaChars.charAt((ord >>> 12) & 63)
-                   + "==";
-                break;
-            case 2:
-                var ord = (c.charCodeAt(0) << 16)
-                        | (c.charCodeAt(1) <<  8);
-                a += Base64._btoaChars.charAt( ord >>> 18)
-                   + Base64._btoaChars.charAt((ord >>> 12) & 63)
-                   + Base64._btoaChars.charAt((ord >>>  6) & 63)
-                   + "=";
-                break;
-            default:
-                var ord = (c.charCodeAt(0) << 16)
-                        | (c.charCodeAt(1) <<  8)
-                        |  c.charCodeAt(2);
-                a += Base64._btoaChars.charAt( ord >>> 18)
-                   + Base64._btoaChars.charAt((ord >>> 12) & 63)
-                   + Base64._btoaChars.charAt((ord >>>  6) & 63)
-                   + Base64._btoaChars.charAt( ord         & 63);
-                break;
-            }
-        }
-        return a;
-    }
-
-    static function _decode_utf8(utf8str : string) : string {
+    static function decode_utf8(utf8str : string) : string {
         var ustr = "";
         for (var i = 0; i < utf8str.length;) {
             var c = utf8str.charCodeAt(i);
@@ -565,6 +478,93 @@ final class Base64 {
             }
         }
         return ustr;
+    }
+
+}
+
+final class NumberUtil {
+    static function format(n : number, precision : int, width : int = 0) : string {
+        var i = n as int;
+
+        var s = i as string;
+
+        if (precision > 0) {
+            var prefixLength = 2; /* "0.".length */
+            var f = ((n - i) as string).slice(prefixLength, prefixLength+precision);
+            f += StringUtil.repeat("0", precision - f.length);
+            s += "." + f;
+        }
+
+        return StringUtil.repeat(" ", width - s.length) + s;
+    }
+
+}
+
+/*
+ * Base64 encoder/decoder, regarding UTF-8 as the encoding and respecting to surrogate pairs.
+ */
+final class Base64 {
+
+    /*
+     * Encodes the input str in Base64.
+     * The input may be unicode text, so the function encodes str in UTF-8 first.
+     */
+    static function encode(str : string) : string {
+        return Base64._btoa(StringUtil.encode_utf8(str));
+    }
+
+    /*
+     * Decodes the input str in Base64, assuming the input is encoded in UTF-8.
+     */
+    static function decode(str : string) : string {
+        return StringUtil.decode_utf8(Base64._atob(str));
+    }
+
+    /* implementation */
+
+    static const _btoaChars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/';
+    static const _atobTab = Base64._makeTable(Base64._btoaChars);
+    static const _invalid = new RegExp("[^" + Base64._btoaChars + "]", "g");
+
+    static function _makeTable(binary : string) : Map.<int> {
+        var tab = new Map.<int>();
+        for (var i = 0; i < binary.length; ++i) {
+            tab[binary.charAt(i)] = i;
+        }
+        return tab;
+    }
+
+    static function _btoa(bin : string) : string {
+        var a = "";
+        for (var i = 0; i < bin.length; i += 3) {
+            var c = bin.slice(i, i+3);
+            switch (c.length) {
+            case 1:
+                var ord = (c.charCodeAt(0) << 16);
+                a += Base64._btoaChars.charAt( ord >>> 18)
+                   + Base64._btoaChars.charAt((ord >>> 12) & 63)
+                   + "==";
+                break;
+            case 2:
+                var ord = (c.charCodeAt(0) << 16)
+                        | (c.charCodeAt(1) <<  8);
+                a += Base64._btoaChars.charAt( ord >>> 18)
+                   + Base64._btoaChars.charAt((ord >>> 12) & 63)
+                   + Base64._btoaChars.charAt((ord >>>  6) & 63)
+                   + "=";
+                break;
+            default:
+                var ord = (c.charCodeAt(0) << 16)
+                        | (c.charCodeAt(1) <<  8)
+                        |  c.charCodeAt(2);
+                a += Base64._btoaChars.charAt( ord >>> 18)
+                   + Base64._btoaChars.charAt((ord >>> 12) & 63)
+                   + Base64._btoaChars.charAt((ord >>>  6) & 63)
+                   + Base64._btoaChars.charAt( ord         & 63);
+                break;
+            }
+        }
+        return a;
     }
 
     static function _atob(str : string) : string {
