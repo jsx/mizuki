@@ -56,6 +56,11 @@ import "mizuki/collection.jsx";
     var i = set.intersection(otherSet);
     var d = set.difference(otherSet);
 
+import "mizuki/digest/md5.jsx";
+---------------------
+
+    var hex = MD5.hex("value"); // -> 2063c1608d6e0baf80249c42e2be5804
+
 DESCRIPTION
 ====================
 
