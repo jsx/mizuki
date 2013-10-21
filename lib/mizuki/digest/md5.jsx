@@ -237,7 +237,7 @@ final class MD5 {
 
 class _Main {
   static function main(argv : string[]) : void {
-    console.log(argv.join());
+    console.log(MD5.hex(argv.join()));
   }
 }
 
