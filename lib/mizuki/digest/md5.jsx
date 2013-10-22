@@ -8,12 +8,10 @@ import "../utility.jsx";
 final class MD5 {
   static const _USE_SAFE_ADD = false;
 
-  /*
-  * Add integers, wrapping at 2^32. This uses 16-bit operations internally
-  * to work around bugs in some JS interpreters.
-  */
   static function _add(x : number, y : number) : number {
     if (MD5._USE_SAFE_ADD) {
+      // Adds integers, wrapping at 2^32. This uses 16-bit operations
+      // internally to work around bugs in some JS interpreters.
       var lsw = (x & 0xFFFF) + (y & 0xFFFF),
         msw = (x >> 16) + (y >> 16) + (lsw >> 16);
       return (msw << 16) | (lsw & 0xFFFF);
@@ -23,16 +21,12 @@ final class MD5 {
     }
   }
 
-  /*
-  * Bitwise rotate a 32-bit number to the left.
-  */
+  // Bitwise rotate a 32-bit number to the left.
   static function _bit_rol(num : number, cnt : number) : number {
     return (num << cnt) | (num >>> (32 - cnt));
   }
 
-  /*
-  * These functions implement the four basic operations the algorithm uses.
-  */
+  // These functions implement the four basic operations the algorithm uses.
   static function _cmn(q : number, a : number, b : number, x : number, s : number, t : number) : number {
     return MD5._add(MD5._bit_rol(MD5._add(MD5._add(a, q), MD5._add(x, t)), s), b);
   }
@@ -49,9 +43,7 @@ final class MD5 {
     return MD5._cmn(c ^ (b | (~d)), a, b, x ?: 0, s, t);
   }
 
-  /*
-  * Calculate the MD5 of an array of little-endian words, and a bit length.
-  */
+  // Calculates the MD5 of an array of little-endian words, and a bit length.
   static function _binl_md5(x : number[], len : number) : number[] {
     /* append padding */
     x[len >> 5] |= 0x80 << (len % 32);
@@ -145,9 +137,7 @@ final class MD5 {
     return [a, b, c, d];
   }
 
-  /*
-  * Convert an array of little-endian words to a string
-  */
+  // Converts an array of little-endian words to a string
   static function _binl2rstr(input : number[]) : string {
     var i,
       output = '';
@@ -157,10 +147,8 @@ final class MD5 {
     return output;
   }
 
-  /*
-  * Convert a raw string to an array of little-endian words
-  * Characters >255 have their high-byte silently ignored.
-  */
+  // Converts a raw string to an array of little-endian words
+  // Characters >255 have their high-byte silently ignored.
   static function _rstr2binl(input : string) : number[] {
     var i,
       output = new number[];
@@ -174,37 +162,11 @@ final class MD5 {
     return output;
   }
 
-  /*
-  * Calculate the MD5 of a raw string
-  */
+  // Calculates the MD5 of a raw string
   static function _rstr_md5(s : string) : string {
     return MD5._binl2rstr(MD5._binl_md5(MD5._rstr2binl(s), s.length * 8));
   }
 
-  /*
-  * Calculate the HMAC-MD5, of a key and some data (raw strings)
-  */
-  static function _rstr_hmac_md5(key : string, data : string) : string {
-    var i,
-      bkey = MD5._rstr2binl(key),
-      ipad = new number[],
-      opad = new number[],
-      hash;
-    ipad[15] = opad[15] = null;
-    if (bkey.length > 16) {
-      bkey = MD5._binl_md5(bkey, key.length * 8);
-    }
-    for (i = 0; i < 16; i += 1) {
-      ipad[i] = (bkey[i] ?: 0) ^ 0x36363636;
-      opad[i] = (bkey[i] ?: 0) ^ 0x5C5C5C5C;
-    }
-    hash = MD5._binl_md5(ipad.concat(MD5._rstr2binl(data)), 512 + data.length * 8);
-    return MD5._binl2rstr(MD5._binl_md5(opad.concat(hash), 512 + 128));
-  }
-
-  /*
-  * Convert a raw string to a hex string
-  */
   static function _rstr2hex(input : string) : string {
     var hex_tab = '0123456789abcdef',
       output = '',
@@ -218,20 +180,22 @@ final class MD5 {
     return output;
   }
 
-  /*
-  * Take string arguments and return either raw or hex encoded strings
-  */
-  static function raw(s : string) : string {
-    return MD5._rstr_md5(StringUtil.encode_utf8(s));
+  /**
+   * Returns the raw MD5 digest of the argument.
+   * If the argument includes wide-characters (a.k.a. multi-byte string),
+   * it will be encoded to UTF-8 binaries first.
+   */
+  static function raw(str : string) : string {
+    return MD5._rstr_md5(StringUtil.encode_utf8(str));
   }
-  static function hex(s : string) : string {
-    return MD5._rstr2hex(MD5.raw(s));
-  }
-  static function raw_hmac(key : string, data : string) : string {
-    return MD5._rstr_hmac_md5(StringUtil.encode_utf8(key), StringUtil.encode_utf8(data));
-  }
-  static function hex_hmac(key : string, data : string) : string {
-    return MD5._rstr2hex(MD5.raw_hmac(key, data));
+
+  /**
+   * Returns the hex encoded MD5 digest of the argument.
+   * If the argument includes wide-characters (a.k.a. multi-byte string),
+   * it will be encoded to UTF-8 binaries first.
+   */
+  static function hex(str : string) : string {
+    return MD5._rstr2hex(MD5.raw(str));
   }
 }
 
