@@ -8,7 +8,7 @@ mixin RandomGenerator {
      * Generates a random seed. Note that this is not secure.
      */
     function generateSeed() : number {
-        var UINT32_MAX = 0xffffffff;
+        const UINT32_MAX = 0xffffffff;
 
         var seed = Date.now();
         seed ^= Math.random() * UINT32_MAX;
@@ -49,8 +49,8 @@ mixin RandomGenerator {
      * Generates a random number on [0,1) with 53-bit resolution.
      */
     function nextReal53() : number {
-        var a = this.nextInt32() >>> 5;
-        var b = this.nextInt32() >>> 6;
+        const a = this.nextInt32() >>> 5;
+        const b = this.nextInt32() >>> 6;
         return (a * 67108864.0 + b) * (1.0 / 9007199254740992.0);
     }
 
@@ -88,17 +88,17 @@ mixin RandomGenerator {
      */
     function nextUUID() : string {
         // 4.1.1. Variant
-        var VARIANT = 2; // 0b10 ("specified in this document")
+        const VARIANT = 2; // 0b10 ("specified in this document")
 
         // 4.1.3. Version
-        var VERSION = 4; // 0b100 ("The randomly or pseudo-randomly generated")
+        const VERSION = 4; // 0b100 ("The randomly or pseudo-randomly generated")
 
-        var r0 = this._nextUInt(32);
-        var r1 = this._nextUInt(16);
-        var r2 = this._nextUInt(12) | (VERSION << 12);
-        var r3 = this._nextUInt(14) | (VARIANT << 14);
-        var r4 = this._nextUInt(32);
-        var r5 = this._nextUInt(16);
+        const r0 = this._nextUInt(32);
+        const r1 = this._nextUInt(16);
+        const r2 = this._nextUInt(12) | (VERSION << 12);
+        const r3 = this._nextUInt(14) | (VARIANT << 14);
+        const r4 = this._nextUInt(32);
+        const r5 = this._nextUInt(16);
 
         return this._hex(r0, 8)
             + "-" + this._hex(r1, 4)

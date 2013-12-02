@@ -19,7 +19,7 @@ final class ArrayUtil.<T> {
 
     static function copyForward(src : T[], srcPos : int, dest : T[], destPos : int, count : int) : void {
         assert src != dest || srcPos >= destPos;
-        var end = destPos + count;
+        const end = destPos + count;
         while (destPos < end) {
             dest[destPos++] = src[srcPos++];
         }
@@ -63,7 +63,7 @@ final class ArrayUtil.<T> {
         assert left <= right;
 
         while (left < right) {
-            var mid = left + ((right - left) >>> 1); // (a+b)/2 causes overflow
+            const mid = left + ((right - left) >>> 1); // (a+b)/2 causes overflow
             if (cmp(a[mid], value) < 0) {
                 left = mid + 1;
             }
@@ -89,7 +89,7 @@ final class ArrayUtil.<T> {
         assert left <= right;
 
         while (left < right) {
-            var mid = left + ((right - left) >>> 1); // (a+b)/2 causes overflow
+            const mid = left + ((right - left) >>> 1); // (a+b)/2 causes overflow
             if (cmp(a[mid], value) <= 0) {
                 left = mid + 1;
             }
@@ -109,9 +109,9 @@ final class ArrayUtil.<T> {
      * Swaps <code>a[i]</code> and <code>a[j]</code>.
      */
     static function swap(a : T[], i : int, j : int) : void {
-        var t = a[i];
-        a[i]  = a[j];
-        a[j]  = t;
+        const t = a[i];
+        a[i]    = a[j];
+        a[j]    = t;
     }
 
 
@@ -120,7 +120,7 @@ final class ArrayUtil.<T> {
      */
     static function shuffle(array : T[]) : T[] {
         // Fisher-Yates shuffle
-        var r = ArrayUtil.<T>.clone(array);
+        const r = ArrayUtil.<T>.clone(array);
         ArrayUtil.<T>.shuffleInPlace(r);
         return r;
     }
@@ -137,7 +137,7 @@ final class ArrayUtil.<T> {
      */
     static function shuffleInPlace(array : T[], begin : int, end : int) : void {
         for (var i = begin; i < end; ++i) {
-            var j = (Math.random() * i) as int;
+            const j = (Math.random() * i) as int;
             ArrayUtil.<T>.swap(array, i, j);
         }
     }
@@ -168,7 +168,7 @@ final class ArrayUtil.<T> {
      * This sort is stable.
      */
     static function sort(a : T[], cmp : (Nullable.<T>, Nullable.<T>) -> int) : T[] {
-        var r = ArrayUtil.<T>.clone(a);
+        const r = ArrayUtil.<T>.clone(a);
         StableSort.<T>.sortInPlace(r, 0, r.length, cmp);
         return r;
     }
@@ -178,7 +178,7 @@ final class ArrayUtil.<T> {
      * This sort is stable.
      */
     static function sort(a : T[], begin : int, end : int, cmp : (Nullable.<T>, Nullable.<T>) -> int) : T[] {
-        var r = ArrayUtil.<T>.clone(a);
+        const r = ArrayUtil.<T>.clone(a);
         StableSort.<T>.sortInPlace(r, begin, end, cmp);
         return r;
     }
@@ -206,7 +206,7 @@ final class ArrayUtil.<T> {
      * @param maker called with the index and expected to make an item
      */
     static function make(n : int, maker : (int) -> T) : T[] {
-        var a = new T[](n);
+        const a = new T[](n);
         for (var i = 0; i < n; ++i) {
             a[i] = maker(i);
         }
@@ -220,7 +220,7 @@ final class ArrayUtil.<T> {
 
     static function zip(a : T[], b : T[], begin : int, end : int) : T[][] {
         assert a.length == b.length;
-        var r = new T[][];
+        const r = new T[][];
         for (var i = begin; i < end; ++i) {
             r[i] = [ a[i], b[i] ];
         }
@@ -278,7 +278,7 @@ final class List.<C, E> {
     }
 
     function toArray() : Array.<E> {
-        var a = new Array.<E>;
+        const a = new Array.<E>;
         this.forEach((item) -> {
             a.push(item);
             return true;
@@ -439,7 +439,7 @@ final class StringUtil {
     static function decode_utf8(utf8str : string) : string {
         var ustr = "";
         for (var i = 0; i < utf8str.length;) {
-            var c = utf8str.charCodeAt(i);
+            const c = utf8str.charCodeAt(i);
 
             if (c < 0x80) {
                 ustr += String.fromCharCode(c);
@@ -461,14 +461,14 @@ final class StringUtil {
                 i += 3;
             }
             else { // 4 bytes
-                var u = (
+                const u = (
                     ((c & 0x07)                         << 18)
                     | ((utf8str.charCodeAt(i+1) & 0x3F) << 12)
                     | ((utf8str.charCodeAt(i+2) & 0x3F) <<  6)
                     |  (utf8str.charCodeAt(i+3) & 0x3F)
                 );
 
-                var surrogate = u - 0x10000;
+                const surrogate = u - 0x10000;
                 ustr += String.fromCharCode(
                         ((surrogate >>> 10) & 0x03FF) | 0xD800,
                         ( surrogate         & 0x03FF) | 0xDC00
@@ -484,12 +484,12 @@ final class StringUtil {
 
 final class NumberUtil {
     static function format(n : number, precision : int, width : int = 0) : string {
-        var i = n as int;
+        const i = n as int;
 
         var s = i as string;
 
         if (precision > 0) {
-            var prefixLength = 2; /* "0.".length */
+            const prefixLength = 2; /* "0.".length */
             var f = ((n - i) as string).slice(prefixLength, prefixLength+precision);
             f += StringUtil.repeat("0", precision - f.length);
             s += "." + f;
@@ -527,7 +527,7 @@ final class Base64 {
     static const _invalid = new RegExp("[^" + Base64._btoaChars + "]", "g");
 
     static function _makeTable(binary : string) : Map.<int> {
-        var tab = new Map.<int>();
+        const tab = new Map.<int>();
         for (var i = 0; i < binary.length; ++i) {
             tab[binary.charAt(i)] = i;
         }
@@ -537,26 +537,26 @@ final class Base64 {
     static function _btoa(bin : string) : string {
         var a = "";
         for (var i = 0; i < bin.length; i += 3) {
-            var c = bin.slice(i, i+3);
+            const c = bin.slice(i, i+3);
             switch (c.length) {
             case 1:
-                var ord = (c.charCodeAt(0) << 16);
+                const ord = (c.charCodeAt(0) << 16);
                 a += Base64._btoaChars.charAt( ord >>> 18)
                    + Base64._btoaChars.charAt((ord >>> 12) & 63)
                    + "==";
                 break;
             case 2:
-                var ord = (c.charCodeAt(0) << 16)
-                        | (c.charCodeAt(1) <<  8);
+                const ord = (c.charCodeAt(0) << 16)
+                          | (c.charCodeAt(1) <<  8);
                 a += Base64._btoaChars.charAt( ord >>> 18)
                    + Base64._btoaChars.charAt((ord >>> 12) & 63)
                    + Base64._btoaChars.charAt((ord >>>  6) & 63)
                    + "=";
                 break;
             default:
-                var ord = (c.charCodeAt(0) << 16)
-                        | (c.charCodeAt(1) <<  8)
-                        |  c.charCodeAt(2);
+                const ord = (c.charCodeAt(0) << 16)
+                          | (c.charCodeAt(1) <<  8)
+                          |  c.charCodeAt(2);
                 a += Base64._btoaChars.charAt( ord >>> 18)
                    + Base64._btoaChars.charAt((ord >>> 12) & 63)
                    + Base64._btoaChars.charAt((ord >>>  6) & 63)
@@ -568,39 +568,39 @@ final class Base64 {
     }
 
     static function _atob(str : string) : string {
-        var src = str.replace(Base64._invalid, "");
+        const src = str.replace(Base64._invalid, "");
         var b = "";
         for (var i = 0; i < src.length; i += 4) {
-            var c = src.slice(i, i+4);
+            const c = src.slice(i, i+4);
             switch (c.length) {
             case 1:
-                var ord = (Base64._atobTab[c.charAt(0)] << 18);
+                const ord = (Base64._atobTab[c.charAt(0)] << 18);
                 b += String.fromCharCode( ord >>> 16,
                                          (ord >>>  8) & 0xFF,
                                           ord         & 0xFF);
                 break;
             case 2:
-                var ord = (Base64._atobTab[c.charAt(0)] << 18)
-                        | (Base64._atobTab[c.charAt(1)] << 12);
-                var s = String.fromCharCode( ord >>> 16,
-                                            (ord >>>  8) & 0xFF,
-                                             ord         & 0xFF);
+                const ord = (Base64._atobTab[c.charAt(0)] << 18)
+                          | (Base64._atobTab[c.charAt(1)] << 12);
+                const s = String.fromCharCode( ord >>> 16,
+                                              (ord >>>  8) & 0xFF,
+                                               ord         & 0xFF);
                 b += s.slice(0, 1);
                 break;
             case 3:
-                var ord = (Base64._atobTab[c.charAt(0)] << 18)
-                        | (Base64._atobTab[c.charAt(1)] << 12)
-                        | (Base64._atobTab[c.charAt(2)] <<  6);
-                var s = String.fromCharCode( ord >>> 16,
-                                            (ord >>>  8) & 0xFF,
-                                             ord         & 0xFF);
+                const ord = (Base64._atobTab[c.charAt(0)] << 18)
+                          | (Base64._atobTab[c.charAt(1)] << 12)
+                          | (Base64._atobTab[c.charAt(2)] <<  6);
+                const s = String.fromCharCode( ord >>> 16,
+                                              (ord >>>  8) & 0xFF,
+                                               ord         & 0xFF);
                 b += s.slice(0, 2);
                 break;
             default:
-                var ord = (Base64._atobTab[c.charAt(0)] << 18)
-                        | (Base64._atobTab[c.charAt(1)] << 12)
-                        | (Base64._atobTab[c.charAt(2)] <<  6)
-                        |  Base64._atobTab[c.charAt(3)];
+                const ord = (Base64._atobTab[c.charAt(0)] << 18)
+                          | (Base64._atobTab[c.charAt(1)] << 12)
+                          | (Base64._atobTab[c.charAt(2)] <<  6)
+                          |  Base64._atobTab[c.charAt(3)];
                 b += String.fromCharCode( ord >>> 16,
                                          (ord >>>  8) & 0xFF,
                                           ord         & 0xFF);

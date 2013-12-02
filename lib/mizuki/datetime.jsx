@@ -234,8 +234,8 @@ class _DateFormat {
             return _DateFormat._pad(d.getHours() % 12 ?: 12, w ?: 2, p ?: "0");
         case "j": // day of year
             return (function() : string {
-                var first = new Date(d.getFullYear(), 0, 1);
-                var msOfYear = d.getTime() - first.getTime();
+                const first = new Date(d.getFullYear(), 0, 1);
+                const msOfYear = d.getTime() - first.getTime();
                 return _DateFormat._pad(Math.ceil(msOfYear / (24 * 60 * 60 * 1000)), w ?: 3, p ?: "0");
             }());
         case "k":
@@ -248,7 +248,7 @@ class _DateFormat {
             return _DateFormat._pad(d.getMonth()+1, w ?: 2, p ?: "0");
         case "N":
             return (function() : string {
-                var nanoseconds = (d.getMilliseconds() * 1000 * 1000) as int;
+                const nanoseconds = (d.getMilliseconds() * 1000 * 1000) as int;
                 if (w == 0 || w >= 9) {
                     return _DateFormat._pad(nanoseconds, w ?: 9, p ?: "0");
                 }
@@ -280,8 +280,8 @@ class _DateFormat {
             return "\t";
         case "U": // week of year
             return (function() : string {
-                var first = new Date(d.getFullYear(), 0, 1);
-                var msOfYear = d.getTime() - first.getTime();
+                const first = new Date(d.getFullYear(), 0, 1);
+                const msOfYear = d.getTime() - first.getTime();
                 return _DateFormat._pad(Math.ceil(msOfYear / (7 * 24 * 60 * 60 * 1000)), w ?: 0, p ?: _DateFormat._NO_PADDING);
             }());
         case "u":
@@ -322,8 +322,8 @@ class _DateFormat {
                 var sign = o >= 0 ? "+" : "-";
                 o = Math.abs(o);
 
-                var h = _DateFormat._pad((o / 60) as int, (w/2) ?: 2, p ?: "0");
-                var m = _DateFormat._pad((o % 60) as int, (w/2) ?: 2, p ?: "0");
+                const h = _DateFormat._pad((o / 60) as int, (w/2) ?: 2, p ?: "0");
+                const m = _DateFormat._pad((o % 60) as int, (w/2) ?: 2, p ?: "0");
                 return sign + h + m;
             }());
         case "%":
@@ -355,7 +355,7 @@ class _DateFormat {
     }
 
     static function strptime(date : string, fmt: string, locale : _Locale) : Date {
-        var tm = new _Tm;
+        const tm = new _Tm;
 
         _DateFormat._parseFormat(fmt, (isFormat, c, padding, width) -> {
             if (isFormat) {
@@ -384,8 +384,8 @@ class _DateFormat {
     }
 
     static function _parse(tm : _Tm, date : string, c : string, p : string, w : number, l : _Locale) : string {
-        var match = function (p : RegExp, f : function (x : int) : void) : string {
-            var m = p.exec(date);
+        const match = function (p : RegExp, f : function (x : int) : void) : string {
+            const m = p.exec(date);
             if (! m) {
                 throw new Error("strptime: failed to parse '" + date + "'");
             }
@@ -441,12 +441,12 @@ class _DateFormat {
 
         case "N": // nanoseconds (%6N is microseconds; %3N is milliseconds)
             return match(new RegExp("^[0-9]{" + (w ?: 9) as string + "}"), (x : int) : void -> {
-                var unit = Math.pow(10, (w ?: 9) - 3);
+                const unit = Math.pow(10, (w ?: 9) - 3);
                 tm.ms = (x / unit) as int;
             });
 
         case "Z":
-            var m = /^\w+/.exec(date);
+            const m = /^\w+/.exec(date);
             if (! m) {
                 throw new Error("strptime: failed to parse '" + date.charAt(0) + "'");
             }
@@ -457,7 +457,7 @@ class _DateFormat {
             return date.slice(m[0].length);
         case "z": // timezone offset "Z" | "+hh:mm" | "+hhmm" | "+hh"
             return (function () : string {
-                var m = /^([+-])(2[0-4]|[0-1][0-9])(?:[:]?([0-5][0-9]))?/.exec(date);
+                const m = /^([+-])(2[0-4]|[0-1][0-9])(?:[:]?([0-5][0-9]))?/.exec(date);
                 if (m) {
                     var tz = (m[2] as int) * 60;
                     if (m[3] != null) {
@@ -483,7 +483,7 @@ class _DateFormat {
     }
 
     static function _parseWeekDay(tm : _Tm, date : string, names : string[]) : string {
-            var m = (new RegExp("^" + names.join("|"), "i")).exec(date);
+            const m = (new RegExp("^" + names.join("|"), "i")).exec(date);
             if (! m) {
                 throw new Error("strptime: failed to parse week date in '" + date + "'");
             }
@@ -492,7 +492,7 @@ class _DateFormat {
     }
 
     static function _parseMonth(tm : _Tm, date : string, names : string[]) : string {
-        var m = (new RegExp("^" + names.join("|"), "i")).exec(date);
+        const m = (new RegExp("^" + names.join("|"), "i")).exec(date);
         if (! m) {
             throw new Error("strptime: failed to parse month in '" + date + "'");
         }

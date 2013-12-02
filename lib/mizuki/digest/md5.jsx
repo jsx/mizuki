@@ -12,8 +12,8 @@ final class MD5 {
     if (MD5._USE_SAFE_ADD) {
       // Adds integers, wrapping at 2^32. This uses 16-bit operations
       // internally to work around bugs in some JS interpreters.
-      var lsw = (x & 0xFFFF) + (y & 0xFFFF),
-        msw = (x >> 16) + (y >> 16) + (lsw >> 16);
+      const lsw = (x & 0xFFFF) + (y & 0xFFFF);
+      const msw = (x >> 16) + (y >> 16) + (lsw >> 16);
       return (msw << 16) | (lsw & 0xFFFF);
     }
     else {

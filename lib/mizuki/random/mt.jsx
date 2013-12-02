@@ -89,10 +89,10 @@ final class MT implements RandomGenerator {
 
     // multiplies uint32_t
     static function _mul(a : number, b : number) : number {
-        var a1 = a >>> 16;
-        var a2 = a & 0xffff;
-        var b1 = b >>> 16;
-        var b2 = b & 0xffff;
+        const a1 = a >>> 16;
+        const a2 = a & 0xffff;
+        const b1 = b >>> 16;
+        const b2 = b & 0xffff;
 
         return (((a1 * b2 + a2 * b1) << 16) + a2 * b2) >>> 0;
     }
@@ -105,7 +105,7 @@ final class MT implements RandomGenerator {
     var _mti = 0;
 
     function constructor() {
-        var seeds = new Array.<number>;
+        const seeds = new Array.<number>;
         for (var i = 0; i < 4; ++i) { // at least 256 bits seeds
             seeds.push(this.generateSeed());
         }
@@ -120,7 +120,7 @@ final class MT implements RandomGenerator {
     }
 
     function initialize(s : number) : void {
-        var mt = this._mt;
+        const mt = this._mt;
         mt[0] = s >>> 0;
 
         for(var i = 1; i < MT._N; ++i) {
@@ -132,7 +132,7 @@ final class MT implements RandomGenerator {
     function initialize(seeds : number[]) : void {
         this.initialize(19650218);
 
-        var mt = this._mt;
+        const mt = this._mt;
 
         var i = 1;
         var j = 0;
@@ -180,7 +180,7 @@ final class MT implements RandomGenerator {
     static const _mag01 = [ 0x0, MT._MATRIX_A ];
 
     function _nextState() : void {
-        var mt = this._mt;
+        const mt = this._mt;
         var kk = 0;
         for (; kk < MT._N - MT._M; ++kk) {
             var y = (mt[kk] & MT._UPPER_MASK) | (mt[kk+1] & MT._LOWER_MASK);
