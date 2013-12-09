@@ -49,19 +49,18 @@ final class MD5 {
     x[len >> 5] |= 0x80 << (len % 32);
     x[(((len + 64) >>> 9) << 4) + 14] = len;
 
-    var i, olda, oldb, oldc, oldd,
-      a =  1732584193,
-      b = -271733879,
-      c = -1732584194,
-      d =  271733878;
+    var a =  1732584193;
+    var b =  -271733879;
+    var c = -1732584194;
+    var d =   271733878;
 
-    for (i = 0; i < x.length; i += 16) {
-      olda = a;
-      oldb = b;
-      oldc = c;
-      oldd = d;
+    for (var i = 0; i < x.length; i += 16) {
+      const olda = a;
+      const oldb = b;
+      const oldc = c;
+      const oldd = d;
 
-      a = MD5._ff(a, b, c, d, x[i],     7, -680876936);
+      a = MD5._ff(a, b, c, d, x[i],       7, -680876936);
       d = MD5._ff(d, a, b, c, x[i +  1], 12, -389564586);
       c = MD5._ff(c, d, a, b, x[i +  2], 17,  606105819);
       b = MD5._ff(b, c, d, a, x[i +  3], 22, -1044525330);
@@ -81,7 +80,7 @@ final class MD5 {
       a = MD5._gg(a, b, c, d, x[i +  1],  5, -165796510);
       d = MD5._gg(d, a, b, c, x[i +  6],  9, -1069501632);
       c = MD5._gg(c, d, a, b, x[i + 11], 14,  643717713);
-      b = MD5._gg(b, c, d, a, x[i],    20, -373897302);
+      b = MD5._gg(b, c, d, a, x[i],      20, -373897302);
       a = MD5._gg(a, b, c, d, x[i +  5],  5, -701558691);
       d = MD5._gg(d, a, b, c, x[i + 10],  9,  38016083);
       c = MD5._gg(c, d, a, b, x[i + 15], 14, -660478335);
@@ -104,7 +103,7 @@ final class MD5 {
       c = MD5._hh(c, d, a, b, x[i +  7], 16, -155497632);
       b = MD5._hh(b, c, d, a, x[i + 10], 23, -1094730640);
       a = MD5._hh(a, b, c, d, x[i + 13],  4,  681279174);
-      d = MD5._hh(d, a, b, c, x[i],    11, -358537222);
+      d = MD5._hh(d, a, b, c, x[i],      11, -358537222);
       c = MD5._hh(c, d, a, b, x[i +  3], 16, -722521979);
       b = MD5._hh(b, c, d, a, x[i +  6], 23,  76029189);
       a = MD5._hh(a, b, c, d, x[i +  9],  4, -640364487);
@@ -112,7 +111,7 @@ final class MD5 {
       c = MD5._hh(c, d, a, b, x[i + 15], 16,  530742520);
       b = MD5._hh(b, c, d, a, x[i +  2], 23, -995338651);
 
-      a = MD5._ii(a, b, c, d, x[i],     6, -198630844);
+      a = MD5._ii(a, b, c, d, x[i],       6, -198630844);
       d = MD5._ii(d, a, b, c, x[i +  7], 10,  1126891415);
       c = MD5._ii(c, d, a, b, x[i + 14], 15, -1416354905);
       b = MD5._ii(b, c, d, a, x[i +  5], 21, -57434055);
@@ -139,9 +138,8 @@ final class MD5 {
 
   // Converts an array of little-endian words to a string
   static function _binl2rstr(input : number[]) : string {
-    var i,
-      output = '';
-    for (i = 0; i < input.length * 32; i += 8) {
+    var output = '';
+    for (var i = 0; i < input.length * 32; i += 8) {
       output += String.fromCharCode((input[i >> 5] >>> (i % 32)) & 0xFF);
     }
     return output;
@@ -150,13 +148,12 @@ final class MD5 {
   // Converts a raw string to an array of little-endian words
   // Characters >255 have their high-byte silently ignored.
   static function _rstr2binl(input : string) : number[] {
-    var i,
-      output = new number[];
+    var output = new number[];
     output[(input.length >> 2) - 1] = null;
-    for (i = 0; i < output.length; i += 1) {
+    for (var i = 0; i < output.length; i += 1) {
       output[i] = 0;
     }
-    for (i = 0; i < input.length * 8; i += 8) {
+    for (var i = 0; i < input.length * 8; i += 8) {
       output[i >> 5] |= (input.charCodeAt(i / 8) & 0xFF) << (i % 32);
     }
     return output;
@@ -168,14 +165,11 @@ final class MD5 {
   }
 
   static function _rstr2hex(input : string) : string {
-    var hex_tab = '0123456789abcdef',
-      output = '',
-      x,
-      i;
-    for (i = 0; i < input.length; i += 1) {
-      x = input.charCodeAt(i);
-      output += hex_tab.charAt((x >>> 4) & 0x0F) +
-        hex_tab.charAt(x & 0x0F);
+    const hex = '0123456789abcdef';
+    var output = '';
+    for (var i = 0; i < input.length; i += 1) {
+      const x = input.charCodeAt(i);
+      output += hex.charAt((x >>> 4) & 0x0F) + hex.charAt(x & 0x0F);
     }
     return output;
   }
