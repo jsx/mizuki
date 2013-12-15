@@ -2,3 +2,4 @@
 *.swp
 *.jsx.js
 v8.log
+node_modules/
