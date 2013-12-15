@@ -14,7 +14,7 @@ import "mizuki/datetime.jsx"
     log DateTime.strftime(new Date(),   "%Y-%m-%d %H:%M:%S.%3N"); // strftime(3)
     log DateTime.strptime("2012-12-01", "%Y-%m-%d %H:%M:%S.%3N"); // strptime(3)
 
-import "random/mt.jsx";
+import "mizuki/random/mt.jsx";
 ---------------------
 
     // pseudo random generator
@@ -24,7 +24,7 @@ import "random/mt.jsx";
     log r.nextReal(); // Generates [0, 1) number with 53-bit resolution
     log r.nextUUID(); // RFC-4122 complaint UUID
 
-import "utility.jsx";
+import "mizuki/utility.jsx";
 ---------------------
 
     // utilities for arrays, strings and numbers
