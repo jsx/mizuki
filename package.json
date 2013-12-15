@@ -1,7 +1,7 @@
 {
-  "name":        "mizuki",
-  "version":     "0.0.1",
-  "description": "Set of basic utilities for JSX",
+  "name":        "mizuki.jsx",
+  "version":     "0.1.0",
+  "description": "Set of common utilities for JSX",
   "keywords": ["jsx" ],
   "repository" : "git://github.com/gfx/mizuki.git",
   "bugs" : { "url" : "https://github.com/gfx/mizuki/issues" },
@@ -19,5 +19,6 @@
     "node": ">= 0.8.0"
   },
   "scripts" : {
+    "test" : "make test"
   }
 }
