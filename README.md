@@ -65,6 +65,13 @@ DESCRIPTION
 
 Mizuki provides a set of utilities for [JSX](http://jsx.github.com/), which is not a part of JSX language but inevitable.
 
+INSTALL
+====================
+
+This package is published as https://npmjs.org/package/mizuki.jsx
+
+    npm install mizuki.jsx
+
 PREREQUISITES
 ====================
 
