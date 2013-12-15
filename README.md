@@ -1,4 +1,4 @@
-mizuki [![Build Status](https://secure.travis-ci.org/gfx/mizuki.png)](http://travis-ci.org/gfx/mizuki)
+mizuki [![Build Status](https://secure.travis-ci.org/jsx/mizuki.png)](http://travis-ci.org/jsx/mizuki)
 ====================
 
 Set of basic utilities for JSX
