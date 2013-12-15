@@ -1,8 +1,8 @@
 {
   "name":        "mizuki.jsx",
-  "version":     "0.1.0",
+  "version":     "0.1.1",
   "description": "Set of common utilities for JSX",
-  "keywords": ["jsx" ],
+  "keywords": ["jsx", "set", "stable sort", "strftime", "strptime", "random", "mersenne twister", "uuid", "utf8", "base64", "md5" ],
   "repository" : "git://github.com/gfx/mizuki.git",
   "bugs" : { "url" : "https://github.com/gfx/mizuki/issues" },
   "author": {
